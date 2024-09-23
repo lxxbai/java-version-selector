@@ -1,0 +1,13 @@
+/* styles.css */
+.uninstall-button {
+    -fx-text-fill: red;
+}
+
+/* 在 CSS 文件中 */
+.custom-shadow-button {
+    -fx-background-color: #3392ff; /* 自定义背景色 */
+    -fx-text-fill: white; /* 字体颜色 */
+    -fx-padding: 5 10; /* 内边距 */
+    -fx-font-size: 13px; /* 字体大小 */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 0, 5); /* 添加阴影效果 */
+}

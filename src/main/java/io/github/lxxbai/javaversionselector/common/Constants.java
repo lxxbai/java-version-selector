@@ -1,0 +1,18 @@
+package io.github.lxxbai.javaversionselector.common;
+
+
+/**
+ * 常量
+ *
+ * @author lxxbai
+ */
+public class Constants {
+
+    /**
+     * 版本列表地址
+     */
+    public static final String VERSIONS_URL = "https://gitee.com/shupeng.liao/static-resources/raw/master/java-version-selector/versions.json";
+
+
+    public static final String STR_JAVA_HOME = "JAVA_HOME";
+}

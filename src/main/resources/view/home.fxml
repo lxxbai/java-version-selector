@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXTextField?>
+<BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.github.lxxbai.javaversionselector.view.JavaVersionView"
+            stylesheets="@../css/styles.css">
+    <stylesheets>
+    </stylesheets>
+
+    <top>
+        <VBox>
+            <HBox spacing="5.0" BorderPane.alignment="CENTER" style="-fx-background-color: white;">
+                <JFXTextField fx:id="filterTextField" promptText="过滤" labelFloat = "true"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <JFXButton alignment="CENTER_RIGHT" onAction="#onUpdateDataButtonClick" text="更新数据"
+                           HBox.hgrow="NEVER" styleClass="custom-shadow-button"/>
+                <padding>
+                    <Insets bottom="10.0" left="10" right="10.0"/>
+                </padding>
+            </HBox>
+        </VBox>
+    </top>
+    <center>
+        <TableView fx:id="tableView" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="versionColumn" reorderable="false" resizable="false" sortable="false" text="版本"/>
+                <TableColumn fx:id="releaseDateColumn" reorderable="false" resizable="false" sortable="false"
+                             text="发布日期"/>
+                <TableColumn fx:id="statusColumn" reorderable="false" resizable="false" sortable="false" text="状态"/>
+                <TableColumn fx:id="actionColumn" reorderable="false" resizable="false" sortable="false" text="操作"/>
+            </columns>
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+        </TableView>
+    </center>
+</BorderPane>
