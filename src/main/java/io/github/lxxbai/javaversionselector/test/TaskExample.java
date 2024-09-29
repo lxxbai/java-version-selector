@@ -1,10 +1,9 @@
-package io.github.lxxbai.javaversionselector;
+package io.github.lxxbai.javaversionselector.test;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;

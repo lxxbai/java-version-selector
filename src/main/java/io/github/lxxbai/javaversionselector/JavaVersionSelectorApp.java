@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author lxxbai
+ */
 @EnableSpringUtil
 @SpringBootApplication(scanBasePackages = "io.github.lxxbai.javaversionselector")
 public class JavaVersionSelectorApp extends Application {
@@ -21,13 +24,13 @@ public class JavaVersionSelectorApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // 加载主页面
-        JVSMainView JVSMainView = new JVSMainView();
+        JVSMainView jVSMainView = new JVSMainView();
         // 设置标题
         stage.setTitle("Java Version Selector");
         // 设置图标
         stage.getIcons().add(new Image(ResourceUtil.toExternalForm("pic/jv.png")));
         // 设置场景
-        stage.setScene(new Scene(JVSMainView));
+        stage.setScene(new Scene(jVSMainView));
         // 设置 Stage 的位置，使其居中
         ScreenUtil.setScreenPosition(stage, 0.6, 0.6);
         // 创建系统托盘
