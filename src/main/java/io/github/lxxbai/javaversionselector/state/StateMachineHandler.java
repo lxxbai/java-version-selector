@@ -4,6 +4,8 @@ import cn.hutool.core.util.ArrayUtil;
 import com.alibaba.cola.statemachine.Action;
 import com.alibaba.cola.statemachine.Condition;
 
+import java.util.Objects;
+
 /**
  * 统一执行器
  *
@@ -36,5 +38,9 @@ public interface StateMachineHandler<S, E, C> extends Action<S, E, C>, Condition
     default boolean moreFrom() {
         S[] froms = froms();
         return ArrayUtil.isNotEmpty(froms) && froms.length > 1;
+    }
+
+    default boolean nullTo() {
+        return Objects.isNull(to());
     }
 }

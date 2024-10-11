@@ -13,20 +13,20 @@ import lombok.Getter;
 public enum VersionActionEnum {
 
     INSTALL("INSTALL", "安装"),
-    //暂停下载
-    DOWNLOAD_PAUSE("DOWNLOAD_PAUSE", "暂停下载"),
-    //下载失败
-    DOWNLOAD_FAILURE("DOWNLOAD_FAILURE", "下载失败"),
-    //下载完成
-    DOWNLOADED("DOWNLOADED", "下载完成"),
-    //继续下载
-    CONTINUE_DOWNLOAD("CONTINUE_DOWNLOAD", "继续下载"),
-    //取消下载
-    CANCEL_DOWNLOAD("CANCEL_DOWNLOAD", "取消下载"),
+    //取消
+    CANCEL("CANCEL", "取消安装"),
+    //失败
+    FAILURE("FAILURE", "失败"),
+    //成功
+    SUCCESS("SUCCESS", "成功"),
+    //完成
+    COMPLETE("COMPLETE", "完成"),
     //解压
     UNZIP("UNZIP", "解压"),
     //配置
     CONFIG("CONFIG", "配置"),
+    //应用
+    APPLY("APPLY", "应用"),
     //继续安装
     CONTINUE_INSTALL("CONTINUE_INSTALL", "继续安装"),
     //重新安装

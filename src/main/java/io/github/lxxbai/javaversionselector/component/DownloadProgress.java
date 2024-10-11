@@ -73,6 +73,9 @@ public class DownloadProgress implements BaseNode {
      * 本方法通过线程池调度给定的任务，实现异步执行
      */
     public void start() {
+        if (task.isRunning()) {
+            return;
+        }
         ThreadPoolUtil.execute(task);
     }
 

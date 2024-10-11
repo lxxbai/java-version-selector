@@ -1,7 +1,7 @@
 
 package io.github.lxxbai.javaversionselector.model;
 
-import io.github.lxxbai.javaversionselector.common.enums.StatusEnum;
+import io.github.lxxbai.javaversionselector.common.enums.VersionStatusEnum;
 import lombok.Data;
 
 
@@ -24,9 +24,19 @@ public class UserJavaVersion {
     private String localPath;
 
     /**
+     * 已解压本地路径
+     */
+    private String zipLocalPath;
+
+    /**
+     * 已解压本地路径
+     */
+    private String unzipLocalPath;
+
+    /**
      * 状态
      */
-    private StatusEnum status;
+    private VersionStatusEnum status;
 
     /**
      * 是否是当前版本
@@ -51,4 +61,14 @@ public class UserJavaVersion {
      * mac下载地址
      */
     private String macDownloadUrl;
+
+    /**
+     * mac下载地址
+     */
+    private String downloadUrl;
+
+    /**
+     * 是否安装中
+     */
+    private Boolean installing = false;
 }

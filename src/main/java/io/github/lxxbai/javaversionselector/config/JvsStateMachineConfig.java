@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 /**
+ * 状态机配置
+ *
  * @author lxxbai
  */
 @Configuration
@@ -29,9 +31,11 @@ public class JvsStateMachineConfig {
             //是否多个状态
             boolean moreFrom = handler.moreFrom();
             if (moreFrom) {
-                builder.externalTransitions().fromAmong(handler.froms())
+                builder.externalTransitions()
+                        .fromAmong(handler.froms())
                         .to(handler.to())
                         .on(handler.event())
+
                         .when(handler)
                         .perform(handler);
             } else {
@@ -43,6 +47,7 @@ public class JvsStateMachineConfig {
                         .perform(handler);
             }
         });
+        builder.setFailCallback((sourceState, event, context) -> System.out.println(context));
         return builder.build("JVS");
     }
 }

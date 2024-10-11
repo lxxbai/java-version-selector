@@ -11,6 +11,8 @@ import lombok.Data;
 @Data
 public class VersionContext {
 
+    private String version;
+
     /**
      * 当前状态
      */
@@ -27,4 +29,9 @@ public class VersionContext {
      * 动作
      */
     private VersionActionEnum versionAction;
+
+    /**
+     * 由于无后置处理, 所以需要添加一个下一步动作用于判断是否需要主动触发下一个action
+     */
+    private VersionActionEnum nextAction;
 }

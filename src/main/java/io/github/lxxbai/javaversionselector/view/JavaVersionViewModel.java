@@ -1,11 +1,10 @@
 package io.github.lxxbai.javaversionselector.view;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.ZipUtil;
 import com.alibaba.cola.statemachine.StateMachine;
-import io.github.lxxbai.javaversionselector.common.enums.StatusEnum;
 import io.github.lxxbai.javaversionselector.common.enums.VersionActionEnum;
 import io.github.lxxbai.javaversionselector.common.enums.VersionStatusEnum;
+import io.github.lxxbai.javaversionselector.event.StatusChangeEvent;
 import io.github.lxxbai.javaversionselector.manager.JavaVersionManager;
 import io.github.lxxbai.javaversionselector.model.UserJavaVersion;
 import io.github.lxxbai.javaversionselector.state.context.VersionContext;
@@ -16,10 +15,15 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author lxxbai
@@ -38,20 +42,41 @@ public class JavaVersionViewModel {
     @Getter
     private final ObservableList<UserJavaVersion> userVersionList = FXCollections.observableArrayList();
 
+    @Getter
+    private final Map<String, Integer> userVersionMap = new ConcurrentHashMap<>();
+
     @PostConstruct
     public void init() {
         //初始化数据
-        this.userVersionList.addAll(javaVersionManager.queryAllUserJavaVersion(false));
+        addAll(javaVersionManager.queryAllUserJavaVersion(false));
+    }
+
+
+    private void addAll(List<UserJavaVersion> dataList) {
+        userVersionList.addAll(dataList);
+        for (int i = 0; i < dataList.size(); i++) {
+            userVersionMap.put(dataList.get(i).getVersion(), i);
+        }
+    }
+
+    private void clear() {
+        userVersionMap.clear();
+        userVersionList.clear();
     }
 
     /**
      * 刷新
+     *
+     * @param refreshData 是否刷新版本基础数据
+     * @param clearText   是否清空过滤的值
      */
-    public void refresh() {
+    public void refresh(boolean refreshData, boolean clearText) {
         //过滤的值设置为空
-        filterText.setValue("");
-        userVersionList.clear();
-        userVersionList.addAll(javaVersionManager.queryAllUserJavaVersion(true));
+        if (clearText) {
+            filterText.setValue("");
+        }
+        clear();
+        addAll(javaVersionManager.queryAllUserJavaVersion(refreshData));
     }
 
     /**
@@ -62,18 +87,18 @@ public class JavaVersionViewModel {
         String value = filterText.getValue();
         List<UserJavaVersion> userVersionList = javaVersionManager.queryAllUserJavaVersion(false);
         if (StrUtil.isBlank(value)) {
-            this.userVersionList.clear();
-            this.userVersionList.addAll(userVersionList);
+            clear();
+            addAll(userVersionList);
             return;
         }
-        this.userVersionList.clear();
+        clear();
         List<UserJavaVersion> filteredVersions = new ArrayList<>();
         for (UserJavaVersion version : userVersionList) {
             if (version.getVersion().contains(value)) {
                 filteredVersions.add(version);
             }
         }
-        this.userVersionList.addAll(filteredVersions);
+        addAll(filteredVersions);
     }
 
     /**
@@ -86,63 +111,66 @@ public class JavaVersionViewModel {
         this.userVersionList.set(index, userJavaVersion);
     }
 
+    /**
+     * 更新表格数据
+     *
+     * @param userJavaVersion 版本信息
+     */
+    private void refreshColumn(UserJavaVersion userJavaVersion) {
+        Integer index = userVersionMap.get(userJavaVersion.getVersion());
+        if (Objects.isNull(index)) {
+            return;
+        }
+        this.userVersionList.set(index, userJavaVersion);
+    }
+
+    /**
+     * 异步状态改变
+     *
+     * @param statusChangeEvent 事件
+     */
+    @Async("threadPoolExecutor")
+    @EventListener(StatusChangeEvent.class)
+    public void doStatusChange(StatusChangeEvent statusChangeEvent) {
+        VersionContext versionContext = new VersionContext();
+        Integer index = userVersionMap.get(statusChangeEvent.getVersion());
+        if (Objects.isNull(index)) {
+            return;
+        }
+        versionContext.setVersion(statusChangeEvent.getVersion());
+        versionContext.setIndex(index);
+        versionContext.setVersionStatus(userVersionList.get(index).getStatus());
+        versionContext.setUserJavaVersion(this.userVersionList.get(index));
+        versionContext.setVersionAction(statusChangeEvent.getVersionAction());
+        doStatusChange(versionContext);
+    }
 
     /**
      * 状态改变
+     *
      * @param versionContext 上下文
      */
-    public void doStatusChange(VersionContext versionContext) {
+    private void doStatusChange(VersionContext versionContext) {
+        //执行状态机
         VersionStatusEnum versionStatusEnum = jvsStateMachine.fireEvent(versionContext.getVersionStatus(),
                 versionContext.getVersionAction(), versionContext);
         UserJavaVersion userJavaVersion = versionContext.getUserJavaVersion();
         versionContext.setVersionStatus(versionStatusEnum);
-        refreshColumn(versionContext.getIndex(), userJavaVersion);
-    }
-
-
-    /**
-     * 下载完成
-     */
-    public void downloadStatusChange(int index, StatusEnum statusEnum) {
-        UserJavaVersion userJavaVersion = userVersionList.get(index);
-        userJavaVersion.setStatus(statusEnum);
-        javaVersionManager.downloadStatusChange(userJavaVersion);
-        refreshColumn(index, userJavaVersion);
-        //下载成功后，解压文件，配置对应的环境变量
-        if (statusEnum == StatusEnum.INSTALLED) {
-            ZipUtil.unzip(userJavaVersion.getLocalPath(), "D:\\Java");
-            javaVersionManager.apply(userJavaVersion);
+        userJavaVersion.setStatus(versionStatusEnum);
+        //更新数据库
+        javaVersionManager.doStatusChange(userJavaVersion);
+        //更新表格数据,有一种情况,应用后,之前应用的版本未刷新
+        if (versionContext.getVersionAction().equals(VersionActionEnum.APPLY)) {
+            refresh(false, false);
+        } else {
+            refreshColumn(versionContext.getIndex(), userJavaVersion);
+        }
+        //判断是否需要自动执行下一个状态
+        VersionActionEnum nextAction = versionContext.getNextAction();
+        if (Objects.nonNull(nextAction)) {
+            doStatusChange(new StatusChangeEvent(versionContext.getVersion(), nextAction));
         }
     }
-
-    /**
-     * 应用
-     *
-     * @param index 下标
-     */
-    public void apply(int index) {
-        UserJavaVersion userJavaVersion = userVersionList.get(index);
-        userJavaVersion.setStatus(StatusEnum.CURRENT);
-        userJavaVersion.setCurrent(true);
-        //调用应用
-        javaVersionManager.apply(userJavaVersion);
-        refreshColumn(index, userJavaVersion);
-    }
-
-    /**
-     * 卸载
-     *
-     * @param index 下标
-     */
-    public void unInstall(int index) {
-        UserJavaVersion userJavaVersion = userVersionList.get(index);
-        userJavaVersion.setStatus(StatusEnum.NOT_INSTALLED);
-        userJavaVersion.setCurrent(false);
-        //调用应用
-        javaVersionManager.apply(userJavaVersion);
-        refreshColumn(index, userJavaVersion);
-    }
-
 
     public StringProperty filterTextProperty() {
         return filterText;

@@ -1,26 +1,33 @@
 package io.github.lxxbai.javaversionselector.common.factory;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import com.jfoenix.controls.JFXButton;
-import io.github.lxxbai.javaversionselector.common.enums.StatusEnum;
+import io.github.lxxbai.javaversionselector.common.enums.VersionActionEnum;
+import io.github.lxxbai.javaversionselector.common.enums.VersionStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.ResourceUtil;
+import io.github.lxxbai.javaversionselector.event.StatusChangeEvent;
 import io.github.lxxbai.javaversionselector.model.UserJavaVersion;
-import io.github.lxxbai.javaversionselector.view.JavaVersionViewModel;
-import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.util.Callback;
+import org.springframework.context.ApplicationContext;
 
 import java.util.List;
 
+/**
+ * 操作按钮
+ *
+ * @author lxxbai
+ */
 public class VersionActionFactory implements Callback<TableColumn<UserJavaVersion, String>, TableCell<UserJavaVersion, String>> {
 
     /**
      * 数据管理器
      */
-    private final JavaVersionViewModel javaVersionViewModel;
+    private final ApplicationContext applicationContext;
 
-    public VersionActionFactory(JavaVersionViewModel javaVersionViewModel) {
-        this.javaVersionViewModel = javaVersionViewModel;
+    public VersionActionFactory() {
+        this.applicationContext = SpringUtil.getApplicationContext();
     }
 
     @Override
@@ -35,48 +42,67 @@ public class VersionActionFactory implements Callback<TableColumn<UserJavaVersio
                     return;
                 }
                 UserJavaVersion userJavaVersion = getTableView().getItems().get(getIndex());
-                StatusEnum status = userJavaVersion.getStatus();
+                String version = userJavaVersion.getVersion();
+                VersionStatusEnum status = userJavaVersion.getStatus();
                 switch (status) {
-                    case NOT_INSTALLED, INSTALLED_FAILURE, INSTALLED_PAUSE -> {
+                    case NOT_INSTALLED -> {
                         JFXButton button = new JFXButton();
                         button.setText("安装");
-                        button.setOnAction(event -> installDialog(getTableView().getItems(), getIndex()));
+                        button.setOnAction(event -> installDialog(userJavaVersion));
+                        setGraphic(button);
+                    }
+                    case DOWNLOAD_FAILURE, UNZIPPING_FAILURE, CONFIGURING_FAILURE -> {
+                        JFXButton button = new JFXButton();
+                        button.setText("重新安装");
+                        button.setOnAction(event -> publishEvent(version, VersionActionEnum.REINSTALL));
                         setGraphic(button);
                     }
                     case INSTALLED -> {
                         // 创建下拉菜单
-                        MenuButton contextMenu = createContextMenu(List.of("应用", "卸载"), getIndex());
+                        MenuButton contextMenu = createContextMenu(List.of("应用", "卸载"), version);
                         setGraphic(contextMenu);
                     }
                     case CURRENT -> {
                         JFXButton button = new JFXButton();
                         button.setText("卸载");
                         //todo 添加弹框
-                        button.setOnAction(event -> javaVersionViewModel.unInstall(getIndex()));
+                        button.setOnAction(event -> publishEvent(version, VersionActionEnum.UNINSTALL));
                         setGraphic(button);
                     }
-                    case INSTALLING -> {
+                    case DOWNLOADING -> {
                         JFXButton button = new JFXButton();
-                        button.setText("暂停");
-                        button.setOnAction(event -> javaVersionViewModel.downloadStatusChange(getIndex(),
-                                StatusEnum.INSTALLED_PAUSE));
+                        button.setText("取消");
+                        button.setOnAction(event -> publishEvent(version, VersionActionEnum.CANCEL));
                         setGraphic(button);
                     }
-                    default -> setText(null);
+                    case UNZIPPING, CONFIGURING, UNINSTALLING, APPLYING -> {
+                        JFXButton button = new JFXButton();
+                        button.setText("处理中");
+                        button.setDisable(true);
+                        setGraphic(button);
+                    }
+                    default -> {
+                        JFXButton button = new JFXButton();
+                        button.setText("继续安装");
+                        button.setOnAction(event -> publishEvent(version, VersionActionEnum.CONTINUE_INSTALL));
+                        setGraphic(button);
+                    }
                 }
             }
         };
     }
 
 
+    private void publishEvent(String version, VersionActionEnum event) {
+        applicationContext.publishEvent(new StatusChangeEvent(version, event));
+    }
+
     /**
      * 安装对话框
      *
-     * @param dataList 版本
-     * @param index    下标
+     * @param version 版本
      */
-    private void installDialog(ObservableList<UserJavaVersion> dataList, int index) {
-        UserJavaVersion version = dataList.get(index);
+    private void installDialog(UserJavaVersion version) {
         Alert alert = new Alert(Alert.AlertType.NONE);
         alert.setTitle("确认操作");
         alert.setHeaderText("版本 " + version.getVersion() + " 是否安装？");
@@ -91,7 +117,7 @@ public class VersionActionFactory implements Callback<TableColumn<UserJavaVersio
         alert.showAndWait().ifPresent(response -> {
             if (response == yesButton) {
                 //显示进度条
-                javaVersionViewModel.downloadStatusChange(index, StatusEnum.INSTALLING);
+                publishEvent(version.getVersion(), VersionActionEnum.INSTALL);
             }
         });
     }
@@ -101,19 +127,19 @@ public class VersionActionFactory implements Callback<TableColumn<UserJavaVersio
      * 创建下拉菜单
      *
      * @param contents 菜单内容
-     * @param index    版本信息
+     * @param version  版本信息
      * @return 菜单
      */
-    private MenuButton createContextMenu(List<String> contents, int index) {
+    private MenuButton createContextMenu(List<String> contents, String version) {
         MenuButton contextMenu = new MenuButton("更多");
         List<MenuItem> items = contents.stream().map(content -> {
             MenuItem menuItem = new MenuItem(content);
             menuItem.setOnAction(event -> {
                 if (StrUtil.equals("应用", content)) {
-                    javaVersionViewModel.apply(index);
+                    publishEvent(version, VersionActionEnum.APPLY);
                 } else {
                     //卸载
-                    javaVersionViewModel.unInstall(index);
+                    publishEvent(version, VersionActionEnum.UNINSTALL);
                 }
             });
             return menuItem;

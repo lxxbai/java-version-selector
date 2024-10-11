@@ -1,7 +1,7 @@
 
 package io.github.lxxbai.javaversionselector.datasource.entity;
 
-import io.github.lxxbai.javaversionselector.common.enums.StatusEnum;
+import io.github.lxxbai.javaversionselector.common.enums.VersionStatusEnum;
 import lombok.Data;
 
 
@@ -26,7 +26,7 @@ public class UserJavaVersionDO {
     /**
      * 状态
      */
-    private StatusEnum status;
+    private VersionStatusEnum status;
 
     /**
      * 是否是当前版本

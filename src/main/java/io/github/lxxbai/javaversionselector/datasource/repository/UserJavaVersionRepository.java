@@ -1,9 +1,10 @@
 package io.github.lxxbai.javaversionselector.datasource.repository;
 
 
+import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import io.github.lxxbai.javaversionselector.common.Constants;
-import io.github.lxxbai.javaversionselector.common.enums.StatusEnum;
+import io.github.lxxbai.javaversionselector.common.enums.VersionStatusEnum;
 import io.github.lxxbai.javaversionselector.datasource.entity.UserJavaVersionDO;
 import lombok.Getter;
 import org.springframework.stereotype.Repository;
@@ -36,14 +37,14 @@ public class UserJavaVersionRepository extends InMemoryRepository<UserJavaVersio
         String currentVersionHome = envMap.get(Constants.STR_JAVA_HOME);
         Map<String, String> pathVersionMap = new HashMap<>();
         envMap.forEach((k, v) -> {
-            if (StrUtil.startWith(k, Constants.STR_JAVA_HOME)) {
-                String version = k.replace(Constants.STR_JAVA_HOME, "");
+            if (ReUtil.contains(Constants.JAVA_HOME_REGEX, k)) {
+                String version = ReUtil.get(Constants.JAVA_HOME_REGEX, k, 1);
                 if (StrUtil.isNotBlank(version)) {
                     UserJavaVersionDO userJavaVersionDO = new UserJavaVersionDO();
-                    userJavaVersionDO.setStatus(StatusEnum.INSTALLED);
+                    userJavaVersionDO.setStatus(VersionStatusEnum.INSTALLED);
                     userJavaVersionDO.setLocalPath(v);
                     userJavaVersionDO.setVersion(version);
-                    pathVersionMap.put(v, k.replace(Constants.STR_JAVA_HOME, ""));
+                    pathVersionMap.put(v, version);
                     installedVersions.add(userJavaVersionDO);
                 }
             }
@@ -55,7 +56,7 @@ public class UserJavaVersionRepository extends InMemoryRepository<UserJavaVersio
             if (StrUtil.equalsIgnoreCase(currentVersion, x.getVersion())) {
                 x.setCurrent(true);
                 x.setVersion(currentVersion);
-                x.setStatus(StatusEnum.CURRENT);
+                x.setStatus(VersionStatusEnum.CURRENT);
             } else {
                 x.setCurrent(false);
             }
@@ -71,17 +72,8 @@ public class UserJavaVersionRepository extends InMemoryRepository<UserJavaVersio
         UserJavaVersionDO first = currentVersion();
         if (Objects.nonNull(first)) {
             first.setCurrent(false);
-            first.setStatus(StatusEnum.INSTALLED);
+            first.setStatus(VersionStatusEnum.INSTALLED);
         }
-    }
-
-    /**
-     * 应用版本
-     */
-    public void applyVersion(String version) {
-        UserJavaVersionDO newVersion = findByVersion(version);
-        newVersion.setCurrent(true);
-        newVersion.setStatus(StatusEnum.CURRENT);
     }
 
     /**
@@ -91,19 +83,6 @@ public class UserJavaVersionRepository extends InMemoryRepository<UserJavaVersio
      */
     public UserJavaVersionDO currentVersion() {
         return findFirst(UserJavaVersionDO::getCurrent, true);
-    }
-
-    /**
-     * 当前版本
-     *
-     * @return 当前版本
-     */
-    public Boolean current(String version) {
-        UserJavaVersionDO userJavaVersionDO = currentVersion();
-        if (Objects.nonNull(userJavaVersionDO)) {
-            return StrUtil.equals(userJavaVersionDO.getVersion(), version);
-        }
-        return false;
     }
 
 

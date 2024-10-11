@@ -13,6 +13,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.stereotype.Component;
 
 
+/**
+ * @author lxxbai
+ */
 @Component
 public class JavaVersionView {
 
@@ -44,9 +47,9 @@ public class JavaVersionView {
         filterTextField.textProperty().addListener(str -> javaVersionViewModel.filter());
         versionColumn.setCellValueFactory(new PropertyValueFactory<>("version"));
         releaseDateColumn.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
-        statusColumn.setCellFactory(new VersionStatusCellFactory(javaVersionViewModel));
+        statusColumn.setCellFactory(new VersionStatusCellFactory());
         // 设置操作列的单元格工厂
-        actionColumn.setCellFactory(new VersionActionFactory(javaVersionViewModel));
+        actionColumn.setCellFactory(new VersionActionFactory());
         //设置数据源
         tableView.setItems(javaVersionViewModel.getUserVersionList());
     }
@@ -54,6 +57,6 @@ public class JavaVersionView {
 
     @FXML
     private void onUpdateDataButtonClick() {
-        javaVersionViewModel.refresh();
+        javaVersionViewModel.refresh(true, true);
     }
 }
