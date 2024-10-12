@@ -53,7 +53,6 @@ public class JavaVersionManager {
             userJavaVersion.setStatus(VersionStatusEnum.NOT_INSTALLED);
             userJavaVersion.setCurrent(false);
             userJavaVersion.setReleaseDate(one.getReleaseDate());
-            userJavaVersion.setX64WindowsDownloadUrl(one.getX64WindowsDownloadUrl());
             if (dataMap.containsKey(one.getVersion())) {
                 UserJavaVersionDO oneUserVersion = dataMap.get(one.getVersion());
                 userJavaVersion.setLocalPath(oneUserVersion.getLocalPath());
