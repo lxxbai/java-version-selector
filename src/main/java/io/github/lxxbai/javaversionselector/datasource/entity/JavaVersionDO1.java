@@ -33,6 +33,21 @@ public class JavaVersionDO1 {
     private String releaseDate;
 
     /**
+     * 文件名称
+     */
+    private String fileName;
+
+    /**
+     * 文件大小
+     */
+    private String fileSize;
+
+    /**
+     * 文件类型
+     */
+    private String fileType;
+
+    /**
      * 是否可直接下载
      */
     private boolean canDownload;
@@ -42,10 +57,17 @@ public class JavaVersionDO1 {
      */
     private String downloadUrl;
 
-
+    /**
+     * 唯一版本号
+     */
     private String ukVersion;
 
 
+    /**
+     * 获取唯一版本号
+     *
+     * @return 唯一版本号
+     */
     public String getUkVersion() {
         // md5(vendor + version)
         return SecureUtil.md5(vmVendor + javaVersion);

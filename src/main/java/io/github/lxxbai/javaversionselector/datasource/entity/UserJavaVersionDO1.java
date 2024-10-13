@@ -1,6 +1,7 @@
 
 package io.github.lxxbai.javaversionselector.datasource.entity;
 
+import cn.hutool.crypto.SecureUtil;
 import lombok.Data;
 
 
@@ -28,11 +29,6 @@ public class UserJavaVersionDO1 {
     private String javaVersion;
 
     /**
-     * 发布日期
-     */
-    private String releaseDate;
-
-    /**
      * 本地java_home路径
      */
     private String localHomePath;
@@ -51,4 +47,21 @@ public class UserJavaVersionDO1 {
      * 来源 : local or platform
      */
     private String source;
+
+
+    /**
+     * 唯一版本号
+     */
+    private String ukVersion;
+
+
+    /**
+     * 获取唯一版本号
+     *
+     * @return 唯一版本号
+     */
+    public String getUkVersion() {
+        // md5(vendor + version)
+        return SecureUtil.md5(vmVendor + javaVersion);
+    }
 }
