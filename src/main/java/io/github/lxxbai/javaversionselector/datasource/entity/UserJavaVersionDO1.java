@@ -1,7 +1,7 @@
 
 package io.github.lxxbai.javaversionselector.datasource.entity;
 
-import cn.hutool.crypto.SecureUtil;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 
@@ -11,22 +11,8 @@ import lombok.Data;
  * @author lxxbai
  */
 @Data
-public class UserJavaVersionDO1 {
-
-    /**
-     * 供应商  oracle jdk or openjdk or other
-     */
-    private String vmVendor;
-
-    /**
-     * 主版本
-     */
-    private String mainVersion;
-
-    /**
-     * 版本
-     */
-    private String javaVersion;
+@TableName("T_USER_JAVA_VERSION")
+public class UserJavaVersionDO1 extends VersionBaseDO {
 
     /**
      * 本地java_home路径
@@ -47,21 +33,4 @@ public class UserJavaVersionDO1 {
      * 来源 : local or platform
      */
     private String source;
-
-
-    /**
-     * 唯一版本号
-     */
-    private String ukVersion;
-
-
-    /**
-     * 获取唯一版本号
-     *
-     * @return 唯一版本号
-     */
-    public String getUkVersion() {
-        // md5(vendor + version)
-        return SecureUtil.md5(vmVendor + javaVersion);
-    }
 }

@@ -1,22 +1,14 @@
-
 package io.github.lxxbai.javaversionselector.datasource.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
- * java版本信息
- *
  * @author lxxbai
  */
-@TableName("T_JAVA_VERSION")
 @Data
-public class JavaVersionDO1 extends VersionBaseDO {
-
-    /**
-     * 发布日期
-     */
-    private String releaseDate;
+@TableName("T_DOWNLOAD_RECORD")
+public class DownloadRecordDO extends VersionBaseDO {
 
     /**
      * 文件名称
@@ -34,12 +26,17 @@ public class JavaVersionDO1 extends VersionBaseDO {
     private String fileType;
 
     /**
-     * 是否可直接下载
+     * 下载状态
      */
-    private boolean canDownload;
+    private String downloadStatus;
 
     /**
      * 下载/跳转下载地址
      */
     private String downloadUrl;
+
+    /**
+     * 创建时间
+     */
+    private String createdAt;
 }

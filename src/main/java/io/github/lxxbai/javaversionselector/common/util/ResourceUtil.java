@@ -1,5 +1,6 @@
 package io.github.lxxbai.javaversionselector.common.util;
 
+import javafx.scene.image.Image;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -38,5 +39,17 @@ public class ResourceUtil {
      */
     public static String toExternalForm(String path) {
         return getUrl(path).toExternalForm();
+    }
+
+
+    /**
+     * 将指定路径的图像加载为Image对象
+     *
+     * @param path 图像文件的路径
+     * @return 返回一个新创建的Image对象
+     */
+    public static Image toImage(String path) {
+        // 使用ResourceUtil类将路径转换为外部形式，然后创建并返回一个新的Image对象
+        return new Image(toExternalForm(path));
     }
 }

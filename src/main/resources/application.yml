@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:sqlite:${db.home}/userData.db
+    driver-class-name: org.sqlite.JDBC
+  sql:
+    init:
+      # 初始化表
+      schema-locations: classpath:db/schema.sql
+      mode: always
+      continue-on-error: true
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+    database-id: sqlite

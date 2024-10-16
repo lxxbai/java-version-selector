@@ -8,11 +8,11 @@ public class ScreenUtil {
     /**
      * 屏幕宽度
      */
-    private static double SCREEN_WIDTH = Screen.getPrimary().getVisualBounds().getWidth();
+    private static final double SCREEN_WIDTH = Screen.getPrimary().getVisualBounds().getWidth();
     /**
      * 屏幕高度
      */
-    private static double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
+    private static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
 
 
     /**

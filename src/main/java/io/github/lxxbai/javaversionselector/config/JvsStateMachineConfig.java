@@ -35,7 +35,6 @@ public class JvsStateMachineConfig {
                         .fromAmong(handler.froms())
                         .to(handler.to())
                         .on(handler.event())
-
                         .when(handler)
                         .perform(handler);
             } else {
