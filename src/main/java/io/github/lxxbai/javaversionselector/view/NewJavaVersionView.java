@@ -1,14 +1,14 @@
 package io.github.lxxbai.javaversionselector.view;
 
-import io.github.lxxbai.javaversionselector.common.factory.VersionActionFactory;
-import io.github.lxxbai.javaversionselector.common.factory.VersionStatusCellFactory;
-import io.github.lxxbai.javaversionselector.model.UserJavaVersion;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
+import io.github.lxxbai.javaversionselector.common.factory.JavaVersionStatusFactory;
+import io.github.lxxbai.javaversionselector.model.JavaVersionVO;
 import jakarta.annotation.Resource;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.stereotype.Component;
 
@@ -18,45 +18,70 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class NewJavaVersionView {
-
     @Resource
-    private JavaVersionViewModel javaVersionViewModel;
+    private NewJavaVersionViewModel newJavaVersionViewModel;
     @FXML
-    private TableView<UserJavaVersion> tableView;
+    private JFXTextField filterJavaVersion;
     @FXML
-    private TableColumn<UserJavaVersion, String> versionColumn;
+    public JFXComboBox<String> filterMainVersion;
     @FXML
-    private TableColumn<UserJavaVersion, String> releaseDateColumn;
+    public JFXComboBox<String> filterVmVendor;
     @FXML
-    private TableColumn<UserJavaVersion, String> statusColumn;
+    private TableView<JavaVersionVO> tableView;
     @FXML
-    private TableColumn<UserJavaVersion, String> actionColumn;
+    public TableColumn<JavaVersionVO, String> vmVendor;
     @FXML
-    private TextField filterTextField;
+    public TableColumn<JavaVersionVO, String> mainVersion;
+    public TableColumn<JavaVersionVO, String> javaVersion;
+    @FXML
+    public TableColumn<JavaVersionVO, String> releaseDate;
+    @FXML
+    public TableColumn<JavaVersionVO, String> fileName;
+    @FXML
+    public TableColumn<JavaVersionVO, String> fileSize;
+    @FXML
+    public TableColumn<JavaVersionVO, String> action;
 
     @FXML
     public void initialize() throws Exception {
         ReadOnlyDoubleProperty width = tableView.widthProperty();
         //设置百分比宽度
-        versionColumn.prefWidthProperty().bind(width.multiply(.2));
-        releaseDateColumn.prefWidthProperty().bind(width.multiply(.3));
-        statusColumn.prefWidthProperty().bind(width.multiply(.3));
-        actionColumn.prefWidthProperty().bind(width.multiply(.2));
-        filterTextField.textProperty().bindBidirectional(javaVersionViewModel.filterTextProperty());
-        filterTextField.setOnKeyPressed(keyEvent -> javaVersionViewModel.filter());
-        filterTextField.textProperty().addListener(str -> javaVersionViewModel.filter());
-        versionColumn.setCellValueFactory(new PropertyValueFactory<>("version"));
-        releaseDateColumn.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
-        statusColumn.setCellFactory(new VersionStatusCellFactory());
-        // 设置操作列的单元格工厂
-        actionColumn.setCellFactory(new VersionActionFactory());
-        //设置数据源
-        tableView.setItems(javaVersionViewModel.getUserVersionList());
+        vmVendor.prefWidthProperty().bind(width.multiply(.1));
+        mainVersion.prefWidthProperty().bind(width.multiply(.1));
+        javaVersion.prefWidthProperty().bind(width.multiply(.1));
+        releaseDate.prefWidthProperty().bind(width.multiply(.15));
+        fileName.prefWidthProperty().bind(width.multiply(.3));
+        fileSize.prefWidthProperty().bind(width.multiply(.15));
+        action.prefWidthProperty().bind(width.multiply(.1));
+        //绑定数据
+        filterJavaVersion.textProperty().bindBidirectional(newJavaVersionViewModel.getFilterJavaVersion());
+        filterMainVersion.valueProperty().bindBidirectional(newJavaVersionViewModel.getFilterMainVersion());
+        filterVmVendor.valueProperty().bindBidirectional(newJavaVersionViewModel.getFilterVmVendor());
+        //变更事件
+        filterJavaVersion.textProperty().addListener(str -> newJavaVersionViewModel.filter());
+        filterJavaVersion.setOnKeyPressed(keyEvent -> newJavaVersionViewModel.filter());
+        filterJavaVersion.textProperty().addListener(str -> newJavaVersionViewModel.filter());
+        filterVmVendor.valueProperty().addListener(str -> newJavaVersionViewModel.filter());
+        filterMainVersion.valueProperty().addListener(str -> newJavaVersionViewModel.filter());
+        vmVendor.setCellValueFactory(new PropertyValueFactory<>("vmVendor"));
+        mainVersion.setCellValueFactory(new PropertyValueFactory<>("mainVersion"));
+        javaVersion.setCellValueFactory(new PropertyValueFactory<>("javaVersion"));
+        releaseDate.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
+        fileName.setCellValueFactory(new PropertyValueFactory<>("fileName"));
+        fileSize.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
+        action.setCellFactory(new JavaVersionStatusFactory());
+        tableView.setItems(newJavaVersionViewModel.getJavaVersionList());
+        filterVmVendor.setItems(newJavaVersionViewModel.getVmVendorList());
+        filterMainVersion.setItems(newJavaVersionViewModel.getMainVersionList());
     }
-
 
     @FXML
     private void onUpdateDataButtonClick() {
-        javaVersionViewModel.refresh(true, true);
+        newJavaVersionViewModel.refresh();
+    }
+
+    @FXML
+    private void resetFilter() {
+        newJavaVersionViewModel.resetFilter();
     }
 }

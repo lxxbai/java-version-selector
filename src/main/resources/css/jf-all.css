@@ -1,0 +1,9 @@
+/* 可以为所有控件设置相同规则 */
+*:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+/*选中后的颜色修改*/
+*:selected {
+    -fx-background-color: rgba(227, 153, 226, 0.97);
+}

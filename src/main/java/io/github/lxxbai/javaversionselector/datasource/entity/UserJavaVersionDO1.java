@@ -1,6 +1,7 @@
 
 package io.github.lxxbai.javaversionselector.datasource.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -27,6 +28,7 @@ public class UserJavaVersionDO1 extends VersionBaseDO {
     /**
      * 是否是当前版本
      */
+    @TableField(exist = false)
     private Boolean current;
 
     /**

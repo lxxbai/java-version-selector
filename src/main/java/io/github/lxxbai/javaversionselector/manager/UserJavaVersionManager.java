@@ -50,7 +50,7 @@ public class UserJavaVersionManager extends ServiceImpl<UserJavaVersionMapper, U
         String javaVersion = jvmProperties.get("java.version");
         String vendor = jvmProperties.get("java.vm.vendor");
         Integer mainVersionInt = MapUtil.getInt(jvmProperties, "java.class.version");
-        String mainVersion = Objects.isNull(mainVersionInt) ? "未知" : String.valueOf(mainVersionInt - 44);
+        String mainVersion = Objects.isNull(mainVersionInt) ? "未知" : "JDK" + (mainVersionInt - 44);
         UserJavaVersionDO1 userJavaVersionDO = new UserJavaVersionDO1();
         userJavaVersionDO.setLocalHomePath(javaHome);
         userJavaVersionDO.setStatus(VersionStatusEnum.INSTALLED.getStatus());

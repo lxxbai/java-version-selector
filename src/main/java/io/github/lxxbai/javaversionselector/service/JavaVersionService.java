@@ -2,6 +2,8 @@ package io.github.lxxbai.javaversionselector.service;
 
 import cn.hutool.core.collection.CollUtil;
 import io.github.lxxbai.javaversionselector.common.enums.DownloadStatusEnum;
+import io.github.lxxbai.javaversionselector.common.util.ObjectMapperUtil;
+import io.github.lxxbai.javaversionselector.common.util.StringUtil;
 import io.github.lxxbai.javaversionselector.datasource.entity.DownloadRecordDO;
 import io.github.lxxbai.javaversionselector.datasource.entity.JavaVersionDO1;
 import io.github.lxxbai.javaversionselector.datasource.entity.UserJavaVersionDO1;
@@ -44,6 +46,7 @@ public class JavaVersionService {
         }
         //获取所有版本信息
         List<JavaVersionDO1> javaVersionList = javaVersionManager1.list();
+        System.out.println(ObjectMapperUtil.toJsonString(javaVersionList));
         //获取用户下载的信息
         List<DownloadRecordDO> downloadRecordList = downloadRecordManager.list();
         //转map
@@ -77,5 +80,24 @@ public class JavaVersionService {
             vo.setDownloadStatus(DownloadStatusEnum.NO_DOWNLOADING);
             return vo;
         }).toList();
+    }
+
+
+    /**
+     * 根据虚拟机供应商、主要版本和Java版本过滤Java版本信息
+     *
+     * @param vmVendor    虚拟机供应商，如'Oracle Corporation'
+     * @param mainVersion Java主要版本，如'1.8'
+     * @param javaVersion Java版本，如'1.8.0_231'
+     * @return 返回过滤后的Java版本信息列表
+     */
+    public List<JavaVersionVO> filter(String vmVendor, String mainVersion, String javaVersion) {
+        // 查询所有Java版本信息，不进行缓存
+        List<JavaVersionVO> javaVersionVOList = queryAll(false);
+        // 使用流式操作过滤Java版本信息
+        // 过滤条件：虚拟机供应商、主要版本和Java版本任意一个为空或相等
+        return javaVersionVOList.stream().filter(v -> StringUtil.isBlankOrEqual(vmVendor, v.getVmVendor())
+                && StringUtil.isBlankOrEqual(mainVersion, v.getMainVersion())
+                && StringUtil.isBlankOrEqual(javaVersion, v.getJavaVersion())).toList();
     }
 }

@@ -1,6 +1,7 @@
 package io.github.lxxbai.javaversionselector;
 
 import cn.hutool.extra.spring.EnableSpringUtil;
+import com.jfoenix.assets.JFoenixResources;
 import io.github.lxxbai.javaversionselector.common.util.AppInitUtil;
 import io.github.lxxbai.javaversionselector.common.util.ResourceUtil;
 import io.github.lxxbai.javaversionselector.common.util.ScreenUtil;
@@ -10,6 +11,7 @@ import io.github.lxxbai.javaversionselector.view.JVSMainView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.kordamp.bootstrapfx.BootstrapFX;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -32,8 +34,13 @@ public class JavaVersionSelectorApp extends Application {
         stage.setTitle("Java Version Selector");
         // 设置图标
         stage.getIcons().add(ResourceUtil.toImage("pic/jv.png"));
+        Scene scene = new Scene(jVSMainView);
+        scene.getStylesheets().addAll(
+                ResourceUtil.toExternalForm("css/jf-all.css"),
+                BootstrapFX.bootstrapFXStylesheet()
+        );
         // 设置场景
-        stage.setScene(new Scene(jVSMainView));
+        stage.setScene(scene);
         // 设置 Stage 的位置，使其居中
         ScreenUtil.setScreenPosition(stage, 0.6, 0.6);
         // 创建系统托盘

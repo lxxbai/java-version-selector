@@ -26,4 +26,21 @@ public class OsUtil {
             throw new RuntimeException("不支持的操作系统");
         }
     }
+
+    /**
+     * 获取操作系统名称
+     *
+     * @return 操作系统名称
+     */
+    public static OsEnum getOs() {
+        if (OS_INFO.isWindows()) {
+            return OsEnum.WINDOWS;
+        } else if (OS_INFO.isLinux()) {
+            return OsEnum.LINUX;
+        } else if (OS_INFO.isMac()) {
+            return OsEnum.MAC;
+        } else {
+            throw new RuntimeException("不支持的操作系统");
+        }
+    }
 }

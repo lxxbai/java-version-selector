@@ -10,8 +10,7 @@ CREATE TABLE IF NOT EXISTS "T_JAVA_VERSION" (
   "FILE_SIZE" TEXT(16) NOT NULL, -- 文件大小
   "FILE_TYPE" TEXT(16) NOT NULL, -- 文件类型
   "CAN_DOWNLOAD" integer NOT NULL, -- 是否可以下载
-  "DOWNLOAD_URL" TEXT NOT NULL, -- 下载地址
-  "LOCAL_HOME_PATH" TEXT -- 本地存放路径
+  "DOWNLOAD_URL" TEXT NOT NULL -- 下载地址
 );
 
 -- 用户版本列表

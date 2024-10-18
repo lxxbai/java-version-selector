@@ -1,30 +1,28 @@
+
 package io.github.lxxbai.javaversionselector.test;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.List;
-
-public class JFoenixComboBoxExample extends Application {
+public class JFoenixTextExample extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        List<String> versions = List.of("--所有版本--", "jdk8", "jdk9", "jdk10", "jdk11");
+        // 创建带描述的标签
+        Label descriptionLabel = new Label("请选择一个选项：");
         // 创建 JFXComboBox
-        JFXComboBox<String> comboBox = new JFXComboBox<>();
-        comboBox.setEditable(false);
-        // 添加选项
-        comboBox.getItems().addAll(versions);
-        comboBox.setValue("--所有版本--");
-        VBox root = new VBox(15, comboBox);
-        root.setPadding(new Insets(20));
-
+        JFXTextField ces = new JFXTextField();
+        ces.setPromptText("ces");
         // 创建场景
-        Scene scene = new Scene(root, 400, 200);
+        Scene scene = new Scene(ces, 400, 200);
         primaryStage.setTitle("JFoenix ComboBox 示例");
         primaryStage.setScene(scene);
         primaryStage.show();

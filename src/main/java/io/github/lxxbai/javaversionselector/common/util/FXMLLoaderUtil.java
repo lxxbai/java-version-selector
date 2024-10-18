@@ -4,10 +4,15 @@ import cn.hutool.extra.spring.SpringUtil;
 import io.github.lxxbai.javaversionselector.common.exception.ClientException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * @author lxxbai
+ */
+@Slf4j
 public class FXMLLoaderUtil {
 
     /**
@@ -22,6 +27,7 @@ public class FXMLLoaderUtil {
             loader.setControllerFactory(SpringUtil::getBean);
             return loader.load();
         } catch (IOException e) {
+            log.error("异常:", e);
             throw new ClientException("Path_error", "配置错误");
         }
     }
