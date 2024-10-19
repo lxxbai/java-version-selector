@@ -22,8 +22,7 @@ public class FXMLLoaderUtil {
      */
     public static <T extends Node> T load(String fxmlPath) {
         try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(ResourceUtil.getUrl(fxmlPath));
+            FXMLLoader loader = loadLoader(fxmlPath);
             loader.setControllerFactory(SpringUtil::getBean);
             return loader.load();
         } catch (IOException e) {
@@ -31,6 +30,7 @@ public class FXMLLoaderUtil {
             throw new ClientException("Path_error", "配置错误");
         }
     }
+
 
     /**
      * 加载fxml
@@ -41,5 +41,16 @@ public class FXMLLoaderUtil {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(url);
         return loader.load();
+    }
+
+    /**
+     * 加载fxml
+     *
+     * @param fxmlPath 路径
+     */
+    public static FXMLLoader loadLoader(String fxmlPath) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(ResourceUtil.getUrl(fxmlPath));
+        return loader;
     }
 }

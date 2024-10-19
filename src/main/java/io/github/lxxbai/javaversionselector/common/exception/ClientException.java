@@ -19,4 +19,8 @@ public class ClientException extends RuntimeException {
     public ClientException(String errorCode, String errorMsg) {
         super(errorMsg);
     }
+
+    public ClientException(String errorMsg) {
+        super(errorMsg);
+    }
 }

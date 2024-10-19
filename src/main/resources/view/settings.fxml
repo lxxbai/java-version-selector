@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.Insets?>
+<GridPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
+          fx:controller="io.github.lxxbai.javaversionselector.view.SettingsView" prefWidth="300" prefHeight="250">
+        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+        <Label text="下载任务并行数:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <JFXTextField fx:id="parallelDownloadsField" promptText="请输入下载任务并行数" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="下载文件存放地址:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <JFXTextField fx:id="downloadPathField" promptText="选择下载文件存放地址" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <JFXButton text="选择目录" onAction="#chooseDownloadDirectory" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+
+        <Label text="JDK 文件放置地址:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <JFXTextField fx:id="jdkPathField" promptText="选择 JDK 文件放置地址" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <JFXButton text="选择目录" onAction="#chooseJdkDirectory" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+</GridPane>

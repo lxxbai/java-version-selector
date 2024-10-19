@@ -1,13 +1,11 @@
 package io.github.lxxbai.javaversionselector;
 
 import cn.hutool.extra.spring.EnableSpringUtil;
-import com.jfoenix.assets.JFoenixResources;
-import io.github.lxxbai.javaversionselector.common.util.AppInitUtil;
-import io.github.lxxbai.javaversionselector.common.util.ResourceUtil;
-import io.github.lxxbai.javaversionselector.common.util.ScreenUtil;
-import io.github.lxxbai.javaversionselector.common.util.TrayUtil;
+import cn.hutool.extra.spring.SpringUtil;
+import io.github.lxxbai.javaversionselector.common.util.*;
 import io.github.lxxbai.javaversionselector.config.GlobalExceptionHandler;
 import io.github.lxxbai.javaversionselector.view.JVSMainView;
+import io.github.lxxbai.javaversionselector.view.SettingsView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -28,6 +26,8 @@ public class JavaVersionSelectorApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        //保存stage
+        StageUtil.setPrimaryStage(stage);
         // 加载主页面
         JVSMainView jVSMainView = new JVSMainView();
         // 设置标题
@@ -52,6 +52,8 @@ public class JavaVersionSelectorApp extends Application {
             // 隐藏窗口
             stage.hide();
         });
+        // 检查配置
+        SpringUtil.getBean(SettingsView.class).checkConfig();
         stage.show();
     }
 
