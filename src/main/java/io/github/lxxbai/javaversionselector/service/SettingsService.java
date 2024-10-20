@@ -5,6 +5,7 @@ import io.github.lxxbai.javaversionselector.manager.UserConfigInfoManager;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -15,9 +16,6 @@ public class SettingsService {
 
     @Resource
     private UserConfigInfoManager userConfigInfoManager;
-
-
-    private static final String SETTINGS_VIEW_FXML = "settings.fxml";
 
     /**
      * 检查系统是否已经配置
@@ -33,7 +31,7 @@ public class SettingsService {
                 .one();
 
         // 如果没有找到配置信息，返回false，表示系统未配置
-        if (Objects.isNull(userConfigInfo)){
+        if (Objects.isNull(userConfigInfo)) {
             return false;
         }
 
@@ -41,4 +39,15 @@ public class SettingsService {
         return Boolean.parseBoolean(userConfigInfo.getDicValue());
     }
 
+
+    /**
+     * 保存配置信息
+     *
+     * @param configList 配置信息列表
+     * @return 成功
+     */
+    public boolean saveConfigList(List<UserConfigInfoDO> configList) {
+        userConfigInfoManager.saveBatch(configList);
+        return true;
+    }
 }

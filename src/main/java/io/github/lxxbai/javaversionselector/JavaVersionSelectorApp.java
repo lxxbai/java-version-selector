@@ -36,8 +36,9 @@ public class JavaVersionSelectorApp extends Application {
         stage.getIcons().add(ResourceUtil.toImage("pic/jv.png"));
         Scene scene = new Scene(jVSMainView);
         scene.getStylesheets().addAll(
-                ResourceUtil.toExternalForm("css/jf-all.css"),
-                BootstrapFX.bootstrapFXStylesheet()
+                ResourceUtil.toExternalForm("css/jf-all.css")
+//                ,ResourceUtil.toExternalForm("css/jfoenix-main-demo.css")
+//                BootstrapFX.bootstrapFXStylesheet()
         );
         // 设置场景
         stage.setScene(scene);

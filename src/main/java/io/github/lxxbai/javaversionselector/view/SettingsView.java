@@ -8,9 +8,9 @@ import jakarta.annotation.Resource;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -20,28 +20,29 @@ public class SettingsView {
 
     @Resource
     private SettingsViewModel settingsViewModel;
-
     @Resource
     private SettingsService settingsService;
-
     @FXML
-    private JFXTextField parallelDownloadsField;
+    public JFXComboBox<Integer> parallelDownloadsComboBox;
     @FXML
     private JFXTextField downloadPathField;
     @FXML
     private JFXTextField jdkPathField;
 
-    private JFXDialog dialog;
-
-    public void setDialog(JFXDialog dialog) {
-        this.dialog = dialog;
+    @FXML
+    public void initialize() {
+        parallelDownloadsComboBox.getItems().addAll(1, 2, 3, 4, 5);
+        parallelDownloadsComboBox.valueProperty().bindBidirectional(settingsViewModel.parallelDownloadsProperty().asObject());
+        downloadPathField.textProperty().bindBidirectional(settingsViewModel.downloadPathProperty());
+        jdkPathField.textProperty().bindBidirectional(settingsViewModel.jdkPathProperty());
     }
+
 
     @FXML
     private void chooseDownloadDirectory() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("选择下载文件存放地址");
-        File selectedDirectory = directoryChooser.showDialog((Stage) downloadPathField.getScene().getWindow());
+        File selectedDirectory = directoryChooser.showDialog(downloadPathField.getScene().getWindow());
         if (selectedDirectory != null) {
             downloadPathField.setText(selectedDirectory.getAbsolutePath());
         }
@@ -51,18 +52,12 @@ public class SettingsView {
     private void chooseJdkDirectory() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("选择 JDK 文件放置地址");
-        File selectedDirectory = directoryChooser.showDialog((Stage) jdkPathField.getScene().getWindow());
+        File selectedDirectory = directoryChooser.showDialog(jdkPathField.getScene().getWindow());
         if (selectedDirectory != null) {
             jdkPathField.setText(selectedDirectory.getAbsolutePath());
         }
     }
 
-    @FXML
-    private void closeDialog() {
-        if (dialog != null) {
-            dialog.close();
-        }
-    }
 
     public void checkConfig() {
         //检查配置
@@ -80,7 +75,8 @@ public class SettingsView {
             // 添加关闭按钮
             JFXButton closeButton = new JFXButton("关闭");
             content.setActions(closeButton);
-            JFXAlert alert = new JFXAlert(StageUtil.getPrimaryStage());
+            JFXAlert<Void> alert = new JFXAlert<>(StageUtil.getPrimaryStage());
+            closeButton.setOnAction(e -> alert.close());
             alert.setOverlayClose(false);
             alert.setContent(content);
             alert.showAndWait();
