@@ -17,11 +17,13 @@ public class PropertyFactory {
 
     static {
         PROPERTY_CREATORS.put(String.class, (value) -> (Property) new SimpleStringProperty(StrUtil.toStringOrNull(value)));
-        PROPERTY_CREATORS.put(Integer.class, (value) -> (Property) new SimpleIntegerProperty(Objects.isNull(value) ? null : (Integer) value));
-        PROPERTY_CREATORS.put(Double.class, (value) -> (Property) new SimpleDoubleProperty(Objects.isNull(value) ? null : (Double) value));
-        PROPERTY_CREATORS.put(Long.class, (value) -> (Property) new SimpleLongProperty(Objects.isNull(value) ? null : (Long) value));
-        PROPERTY_CREATORS.put(Float.class, (value) -> (Property) new SimpleFloatProperty(Objects.isNull(value) ? null : (Float) value));
-        PROPERTY_CREATORS.put(Boolean.class, (value) -> (Property) new SimpleBooleanProperty(Objects.isNull(value) ? null : (Boolean) value));
+        PROPERTY_CREATORS.put(Integer.class, (value) -> (Property) (Objects.isNull(value) ? new SimpleIntegerProperty() :
+                new SimpleIntegerProperty((Integer) value)));
+        PROPERTY_CREATORS.put(Double.class, (value) -> (Property) (Objects.isNull(value) ? new SimpleDoubleProperty() :
+                new SimpleDoubleProperty((Double) value)));
+        PROPERTY_CREATORS.put(Long.class, (value) -> (Property) (Objects.isNull(value) ? new SimpleLongProperty() : new SimpleLongProperty((Long) value)));
+        PROPERTY_CREATORS.put(Float.class, (value) -> (Property) (Objects.isNull(value) ? new SimpleFloatProperty() : new SimpleFloatProperty((Float) value)));
+        PROPERTY_CREATORS.put(Boolean.class, (value) -> (Property) (Objects.isNull(value) ? new SimpleBooleanProperty() : new SimpleBooleanProperty((Boolean) value)));
     }
 
     /**

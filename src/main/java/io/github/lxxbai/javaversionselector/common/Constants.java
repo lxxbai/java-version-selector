@@ -27,6 +27,7 @@ public class Constants {
 
     public static final String JAVA_X_HOME = "JAVA%s_HOME";
 
+    public static final String DOWNLOAD_CONFIG_KEY = "DOWNLOAD_CONFIG";
 
     /**
      * 构建并返回操作系统版本的URL

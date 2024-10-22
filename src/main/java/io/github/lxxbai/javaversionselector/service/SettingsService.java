@@ -1,5 +1,6 @@
 package io.github.lxxbai.javaversionselector.service;
 
+import io.github.lxxbai.javaversionselector.common.Constants;
 import io.github.lxxbai.javaversionselector.common.util.ObjectMapperUtil;
 import io.github.lxxbai.javaversionselector.datasource.entity.UserConfigInfoDO;
 import io.github.lxxbai.javaversionselector.manager.UserConfigInfoManager;
@@ -27,7 +28,7 @@ public class SettingsService {
         // 查询数据库中键为"CONFIGURED"的配置信息，以确定系统是否已经配置
         return userConfigInfoManager
                 .lambdaQuery()
-                .eq(UserConfigInfoDO::getDicKey, "DOWNLOAD_CONFIG")
+                .eq(UserConfigInfoDO::getDicKey, Constants.DOWNLOAD_CONFIG_KEY)
                 .exists();
     }
 
@@ -58,9 +59,21 @@ public class SettingsService {
      * @return 成功
      */
     public boolean saveConfig(String key, String value) {
-        UserConfigInfoDO userConfigInfoDO = new UserConfigInfoDO();
-        userConfigInfoDO.setDicKey(key);
-        userConfigInfoDO.setDicValue(value);
+        //查询是否存在
+        boolean exists = userConfigInfoManager
+                .lambdaQuery()
+                .eq(UserConfigInfoDO::getDicKey, key)
+                .exists();
+        if (exists) {
+            userConfigInfoManager.lambdaUpdate()
+                    .set(UserConfigInfoDO::getDicValue, value)
+                    .eq(UserConfigInfoDO::getDicKey, key);
+        } else {
+            UserConfigInfoDO userConfigInfoDO = new UserConfigInfoDO();
+            userConfigInfoDO.setDicKey(key);
+            userConfigInfoDO.setDicValue(value);
+            userConfigInfoManager.save(userConfigInfoDO);
+        }
         return true;
     }
 }

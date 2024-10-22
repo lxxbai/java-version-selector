@@ -1,8 +1,11 @@
 package io.github.lxxbai.javaversionselector.view;
 
 import com.jfoenix.controls.*;
+import com.jfoenix.validation.IntegerValidator;
+import com.jfoenix.validation.RequiredFieldValidator;
 import io.github.lxxbai.javaversionselector.common.util.FXMLLoaderUtil;
 import io.github.lxxbai.javaversionselector.common.util.StageUtil;
+import io.github.lxxbai.javaversionselector.model.DownloadConfig;
 import io.github.lxxbai.javaversionselector.service.SettingsService;
 import jakarta.annotation.Resource;
 import javafx.application.Platform;
@@ -33,10 +36,20 @@ public class SettingsView {
 
     @FXML
     public void initialize() {
+        parallelDownloadsComboBox.getValidators()
+                .add(new RequiredFieldValidator("请选择数字"));
+        //数据绑定
         parallelDownloadsComboBox.getItems().addAll(1, 2, 3, 4, 5);
-//        parallelDownloadsComboBox.valueProperty().bindBidirectional(settingsViewModel.parallelDownloadsProperty().asObject());
-//        downloadPathField.textProperty().bindBidirectional(settingsViewModel.downloadPathProperty());
-//        jdkPathField.textProperty().bindBidirectional(settingsViewModel.jdkPathProperty());
+        parallelDownloadsComboBox.valueProperty()
+                .bindBidirectional(settingsViewModel.getModelProperty().buildProperty(DownloadConfig::getParallelDownloads));
+        downloadPathField.textProperty()
+                .bindBidirectional(settingsViewModel.getModelProperty().buildProperty(DownloadConfig::getDownloadPath));
+        downloadPathField.getValidators().add(new RequiredFieldValidator("请选择下载路径"));
+
+        jdkPathField.textProperty()
+                .bindBidirectional(settingsViewModel.getModelProperty().buildProperty(DownloadConfig::getJdkPathUrl));
+        //初始化数据
+        settingsViewModel.load();
     }
 
 
@@ -61,6 +74,9 @@ public class SettingsView {
     }
 
 
+    /**
+     * 检查配置，如果没有配置则弹出设置窗口
+     */
     public void checkConfig() {
         //检查配置
         Platform.runLater(() -> {
@@ -75,10 +91,14 @@ public class SettingsView {
             Node node = FXMLLoaderUtil.load("view/settings.fxml");
             content.setBody(node);
             // 添加关闭按钮
-            JFXButton closeButton = new JFXButton("关闭");
-            content.setActions(closeButton);
+            JFXButton saveButton = new JFXButton("保存");
+            content.setActions(saveButton);
             JFXAlert<Void> alert = new JFXAlert<>(StageUtil.getPrimaryStage());
-            closeButton.setOnAction(e -> alert.close());
+            //保存数据并关闭
+            saveButton.setOnAction(e -> {
+                settingsViewModel.save();
+                alert.close();
+            });
             alert.setOverlayClose(false);
             alert.setContent(content);
             alert.showAndWait();

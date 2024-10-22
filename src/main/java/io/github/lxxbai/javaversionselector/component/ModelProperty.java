@@ -2,11 +2,13 @@ package io.github.lxxbai.javaversionselector.component;
 
 import cn.hutool.core.lang.func.Func1;
 import cn.hutool.core.lang.func.LambdaUtil;
+import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import io.github.lxxbai.javaversionselector.common.factory.PropertyFactory;
 import javafx.beans.property.Property;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -25,7 +27,7 @@ public class ModelProperty<T> {
     /**
      * 类
      */
-    private Class<T> clazz;
+    private final Class<T> clazz;
 
     /**
      * 属性缓存
@@ -33,17 +35,21 @@ public class ModelProperty<T> {
     private final Map<Field, Property> propertyMap = new HashMap<>();
 
     public ModelProperty() {
+//        this.clazz = (Class<T>) ClassUtil.getTypeArgument(this.getClass());
+        this.clazz = (Class<T>) ClassUtil.getTypeArgument(this.getClass());
     }
 
     public ModelProperty(T model) {
         this.model = model;
-        this.clazz = (Class<T>) model.getClass();
+        this.clazz = (Class<T>) ClassUtil.getTypeArgument(this.getClass());
     }
 
 
     public void setModel(T model) {
+        if (Objects.isNull(model)) {
+            return;
+        }
         this.model = model;
-        this.clazz = (Class<T>) model.getClass();
         fullProperty();
     }
 
@@ -84,9 +90,6 @@ public class ModelProperty<T> {
     public <P> Property<P> buildProperty(Func1<T, P> function) {
         // 获取属性类型
         String fieldName = LambdaUtil.getFieldName(function);
-        if (Objects.isNull(clazz)) {
-            clazz = LambdaUtil.getRealClass(function);
-        }
         //获取字段
         Field field = ReflectUtil.getField(clazz, fieldName);
         //获取属性值
