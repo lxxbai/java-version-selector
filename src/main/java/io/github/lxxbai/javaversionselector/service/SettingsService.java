@@ -1,11 +1,11 @@
 package io.github.lxxbai.javaversionselector.service;
 
+import io.github.lxxbai.javaversionselector.common.util.ObjectMapperUtil;
 import io.github.lxxbai.javaversionselector.datasource.entity.UserConfigInfoDO;
 import io.github.lxxbai.javaversionselector.manager.UserConfigInfoManager;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -25,29 +25,42 @@ public class SettingsService {
      */
     public boolean configured() {
         // 查询数据库中键为"CONFIGURED"的配置信息，以确定系统是否已经配置
-        UserConfigInfoDO userConfigInfo = userConfigInfoManager
+        return userConfigInfoManager
                 .lambdaQuery()
-                .eq(UserConfigInfoDO::getDicKey, "CONFIGURED")
+                .eq(UserConfigInfoDO::getDicKey, "DOWNLOAD_CONFIG")
+                .exists();
+    }
+
+    /**
+     * 查询配置信息
+     *
+     * @param dictKey 配置键
+     * @param clazz   类
+     * @return 配置信息
+     */
+    public <T> T queryOneConfig(String dictKey, Class<T> clazz) {
+        UserConfigInfoDO oneConfig = userConfigInfoManager
+                .lambdaQuery()
+                .eq(UserConfigInfoDO::getDicKey, dictKey)
                 .one();
-
-        // 如果没有找到配置信息，返回false，表示系统未配置
-        if (Objects.isNull(userConfigInfo)) {
-            return false;
+        if (Objects.isNull(oneConfig)) {
+            return null;
         }
-
-        // 解析找到的配置信息的值为布尔类型并返回，表示系统已配置
-        return Boolean.parseBoolean(userConfigInfo.getDicValue());
+        return ObjectMapperUtil.toObj(oneConfig.getDicValue(), clazz);
     }
 
 
     /**
      * 保存配置信息
      *
-     * @param configList 配置信息列表
+     * @param key   配置键
+     * @param value 配置值
      * @return 成功
      */
-    public boolean saveConfigList(List<UserConfigInfoDO> configList) {
-        userConfigInfoManager.saveBatch(configList);
+    public boolean saveConfig(String key, String value) {
+        UserConfigInfoDO userConfigInfoDO = new UserConfigInfoDO();
+        userConfigInfoDO.setDicKey(key);
+        userConfigInfoDO.setDicValue(value);
         return true;
     }
 }

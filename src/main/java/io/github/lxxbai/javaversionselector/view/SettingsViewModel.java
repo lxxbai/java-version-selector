@@ -1,47 +1,33 @@
 package io.github.lxxbai.javaversionselector.view;
 
 import io.github.lxxbai.javaversionselector.component.ModelProperty;
-import io.github.lxxbai.javaversionselector.datasource.entity.UserConfigInfoDO;
+import io.github.lxxbai.javaversionselector.model.DownloadConfig;
 import io.github.lxxbai.javaversionselector.service.SettingsService;
 import jakarta.annotation.Resource;
-import javafx.beans.property.*;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * @author lxxbai
+ */
 @Component
 public class SettingsViewModel {
 
     @Resource
     private SettingsService settingsService;
 
-    private final IntegerProperty parallelDownloadsProperty = new SimpleIntegerProperty();
-    private final StringProperty downloadPathProperty = new SimpleStringProperty();
-    private final StringProperty jdkPathProperty = new SimpleStringProperty();
+    private final ModelProperty<DownloadConfig> modelProperty = new ModelProperty<>();
 
-    private final ModelProperty<UserConfigInfoDO> modelProperty = new ModelProperty(UserConfigInfoDO.class);
-
-    private SimpleObjectProperty<UserConfigInfoDO> personProperty = new SimpleObjectProperty<>();
+    /**
+     * 加载配置
+     */
+    public void load() {
+        DownloadConfig downloadConfig = settingsService.queryOneConfig("downloadConfig", DownloadConfig.class);
+        modelProperty.setModel(downloadConfig);
+    }
 
     public void save() {
-        List<UserConfigInfoDO> configList = new ArrayList<>();
-        UserConfigInfoDO userConfigInfoDO = new UserConfigInfoDO();
-        configList.add(userConfigInfoDO);
-        settingsService.saveConfigList(configList);
+        DownloadConfig model = modelProperty.getModel();
+
+
     }
-
-
-    public IntegerProperty parallelDownloadsProperty() {
-        return parallelDownloadsProperty;
-    }
-
-    public StringProperty downloadPathProperty() {
-        return downloadPathProperty;
-    }
-
-    public StringProperty jdkPathProperty() {
-        return jdkPathProperty;
-    }
-
 }

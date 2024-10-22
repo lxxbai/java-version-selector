@@ -8,13 +8,15 @@ import jakarta.annotation.Resource;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.stage.DirectoryChooser;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 
+/**
+ * @author lxxbai
+ */
 @Component
 public class SettingsView {
 
@@ -32,9 +34,9 @@ public class SettingsView {
     @FXML
     public void initialize() {
         parallelDownloadsComboBox.getItems().addAll(1, 2, 3, 4, 5);
-        parallelDownloadsComboBox.valueProperty().bindBidirectional(settingsViewModel.parallelDownloadsProperty().asObject());
-        downloadPathField.textProperty().bindBidirectional(settingsViewModel.downloadPathProperty());
-        jdkPathField.textProperty().bindBidirectional(settingsViewModel.jdkPathProperty());
+//        parallelDownloadsComboBox.valueProperty().bindBidirectional(settingsViewModel.parallelDownloadsProperty().asObject());
+//        downloadPathField.textProperty().bindBidirectional(settingsViewModel.downloadPathProperty());
+//        jdkPathField.textProperty().bindBidirectional(settingsViewModel.jdkPathProperty());
     }
 
 

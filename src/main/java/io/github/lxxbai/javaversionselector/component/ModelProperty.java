@@ -3,7 +3,7 @@ package io.github.lxxbai.javaversionselector.component;
 import cn.hutool.core.lang.func.Func1;
 import cn.hutool.core.lang.func.LambdaUtil;
 import cn.hutool.core.util.ReflectUtil;
-import io.github.lxxbai.javaversionselector.common.util.FxPropertyUtil;
+import io.github.lxxbai.javaversionselector.common.factory.PropertyFactory;
 import javafx.beans.property.Property;
 
 import java.lang.reflect.Field;
@@ -11,13 +11,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * @author lxxbai
+ */
+@SuppressWarnings("unchecked")
 public class ModelProperty<T> {
 
+    /**
+     * model
+     */
     private T model;
 
+    /**
+     * 类
+     */
     private Class<T> clazz;
 
-    private final Map<Field, Property<?>> propertyMap = new HashMap<>();
+    /**
+     * 属性缓存
+     */
+    private final Map<Field, Property> propertyMap = new HashMap<>();
 
     public ModelProperty() {
     }
@@ -28,6 +41,27 @@ public class ModelProperty<T> {
     }
 
 
+    public void setModel(T model) {
+        this.model = model;
+        this.clazz = (Class<T>) model.getClass();
+        fullProperty();
+    }
+
+    public void fullProperty() {
+        if (propertyMap.isEmpty()) {
+            return;
+        }
+        propertyMap.forEach((field, property) -> {
+            Object fieldValue = ReflectUtil.getFieldValue(model, field);
+            property.setValue(fieldValue);
+        });
+    }
+
+    /**
+     * 获取model
+     *
+     * @return model
+     */
     public T getModel() {
         if (propertyMap.isEmpty()) {
             return model;
@@ -40,6 +74,13 @@ public class ModelProperty<T> {
         return model;
     }
 
+
+    /**
+     * 构建属性
+     *
+     * @param function 方法
+     * @return 属性
+     */
     public <P> Property<P> buildProperty(Func1<T, P> function) {
         // 获取属性类型
         String fieldName = LambdaUtil.getFieldName(function);
@@ -53,7 +94,7 @@ public class ModelProperty<T> {
         // 获取属性类型
         Class<P> type = (Class<P>) field.getType();
         //创建属性
-        Property<P> property = FxPropertyUtil.getProperty(type, fieldValue);
+        Property<P> property = PropertyFactory.buildProperty(type, fieldValue);
         propertyMap.put(field, property);
         return property;
     }
