@@ -2,13 +2,14 @@ package io.github.lxxbai.javaversionselector.component;
 
 import cn.hutool.core.lang.func.Func1;
 import cn.hutool.core.lang.func.LambdaUtil;
-import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import io.github.lxxbai.javaversionselector.common.factory.PropertyFactory;
+import io.github.lxxbai.javaversionselector.model.DownloadConfig;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -19,15 +20,16 @@ import java.util.Objects;
 @SuppressWarnings("unchecked")
 public class ModelProperty<T> {
 
+
     /**
      * model
      */
-    private T model;
+    private final ObjectProperty<T> model;
 
-    /**
-     * 类
+    /*
+     * model的class
      */
-    private final Class<T> clazz;
+    private Class<T> clazz;
 
     /**
      * 属性缓存
@@ -35,33 +37,38 @@ public class ModelProperty<T> {
     private final Map<Field, Property> propertyMap = new HashMap<>();
 
     public ModelProperty() {
-//        this.clazz = (Class<T>) ClassUtil.getTypeArgument(this.getClass());
-        this.clazz = (Class<T>) ClassUtil.getTypeArgument(this.getClass());
+        this.model = new SimpleObjectProperty<>();
+        addListener();
     }
 
-    public ModelProperty(T model) {
-        this.model = model;
-        this.clazz = (Class<T>) ClassUtil.getTypeArgument(this.getClass());
+    public ModelProperty(T value) {
+        this.model = new SimpleObjectProperty<>(value);
+        addListener();
     }
 
 
-    public void setModel(T model) {
-        if (Objects.isNull(model)) {
+    /**
+     * 添加model监听器
+     */
+    private void addListener() {
+        this.model.addListener((observable, oldValue, newValue) ->
+                propertyMap.forEach((field, property) -> {
+                    Object value = ReflectUtil.getFieldValue(newValue, field);
+                    property.setValue(value);
+                }));
+    }
+
+
+    /*
+     * 设置model
+     */
+    public void setModel(T value) {
+        if (Objects.isNull(value)) {
             return;
         }
-        this.model = model;
-        fullProperty();
+        this.model.setValue(value);
     }
 
-    public void fullProperty() {
-        if (propertyMap.isEmpty()) {
-            return;
-        }
-        propertyMap.forEach((field, property) -> {
-            Object fieldValue = ReflectUtil.getFieldValue(model, field);
-            property.setValue(fieldValue);
-        });
-    }
 
     /**
      * 获取model
@@ -70,14 +77,14 @@ public class ModelProperty<T> {
      */
     public T getModel() {
         if (propertyMap.isEmpty()) {
-            return model;
+            return model.get();
         }
-        if (Objects.isNull(model)) {
-            model = ReflectUtil.newInstance(clazz);
-        }
+        T result = Objects.isNull(model.get()) ? ReflectUtil.newInstance(clazz) : model.get();
+        //反射设置值，不会触发 属性监听器
         propertyMap.forEach((field, property) ->
-                ReflectUtil.setFieldValue(model, field, property.getValue()));
-        return model;
+                ReflectUtil.setFieldValue(result, field, property.getValue())
+        );
+        return result;
     }
 
 
@@ -90,15 +97,25 @@ public class ModelProperty<T> {
     public <P> Property<P> buildProperty(Func1<T, P> function) {
         // 获取属性类型
         String fieldName = LambdaUtil.getFieldName(function);
+        if (Objects.isNull(clazz)) {
+            this.clazz = LambdaUtil.getRealClass(function);
+        }
         //获取字段
         Field field = ReflectUtil.getField(clazz, fieldName);
-        //获取属性值
-        P fieldValue = Objects.isNull(model) ? null : (P) ReflectUtil.getFieldValue(model, field);
         // 获取属性类型
         Class<P> type = (Class<P>) field.getType();
         //创建属性
-        Property<P> property = PropertyFactory.buildProperty(type, fieldValue);
+        Property<P> property = PropertyFactory.buildProperty(type, null);
         propertyMap.put(field, property);
         return property;
+    }
+
+    public static void main(String[] args) {
+        ModelProperty<DownloadConfig> modelProperty = new ModelProperty<>();
+        Property<String> stringProperty = modelProperty.buildProperty(DownloadConfig::getDownloadPath);
+        Property<String> downloadPathField = new SimpleObjectProperty<>();
+        downloadPathField.bindBidirectional(stringProperty);
+        downloadPathField.setValue("123");
+        System.out.println(modelProperty.getModel());
     }
 }
