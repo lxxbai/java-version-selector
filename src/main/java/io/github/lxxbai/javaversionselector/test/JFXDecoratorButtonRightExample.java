@@ -1,14 +1,15 @@
 package io.github.lxxbai.javaversionselector.test;
 
 import com.jfoenix.controls.JFXDecorator;
+import com.jfoenix.svg.SVGGlyph;
+import io.github.lxxbai.javaversionselector.common.util.ResourceUtil;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class JFXDecoratorButtonRightExample extends Application {
@@ -30,8 +31,6 @@ public class JFXDecoratorButtonRightExample extends Application {
 
         // 4. 添加一个 Region 占位符，让按钮靠右对齐
         Region spacer = new Region();
-        // 让 spacer 占据所有可用空间
-        HBox.setHgrow(spacer, Priority.ALWAYS);
 
         // 5. 将 Label 和按钮添加到 HBox，并调整顺序
         titleBarContent.getChildren().addAll(titleLabel, spacer, customButton);
@@ -39,10 +38,14 @@ public class JFXDecoratorButtonRightExample extends Application {
         // 6. 使用 JFXDecorator 包装主内容，并设置自定义标题栏
         JFXDecorator decorator = new JFXDecorator(primaryStage, root, false, true, true);
         decorator.setCustomMaximize(true);  // 启用最大化功能
-        decorator.setGraphic(titleBarContent); // 将自定义标题栏放置到 JFXDecorator 中
-
+//        decorator.getChildren().add(customButton);
         // 7. 创建场景并显示
         Scene scene = new Scene(decorator, 600, 400);
+        scene.getStylesheets().addAll(
+                ResourceUtil.toExternalForm("css/jf-all.css")
+//                ,ResourceUtil.toExternalForm("css/jfoenix-main-demo.css")
+//                BootstrapFX.bootstrapFXStylesheet()
+        );
         primaryStage.setScene(scene);
         primaryStage.show();
     }

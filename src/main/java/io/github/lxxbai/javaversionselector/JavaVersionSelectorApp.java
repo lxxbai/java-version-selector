@@ -10,6 +10,7 @@ import io.github.lxxbai.javaversionselector.view.JVSMainView;
 import io.github.lxxbai.javaversionselector.view.SettingsView;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.Border;
 import javafx.stage.Stage;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -40,6 +41,7 @@ public class JavaVersionSelectorApp extends Application {
         // 启用最大化功能
         decorator.setCustomMaximize(true);
         decorator.setGraphic(new SVGGlyph(""));
+        decorator.setBorder(Border.EMPTY);
         Scene scene = new Scene(decorator);
         scene.getStylesheets().addAll(
                 ResourceUtil.toExternalForm("css/jf-all.css")
