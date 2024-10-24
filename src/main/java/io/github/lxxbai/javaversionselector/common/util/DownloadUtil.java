@@ -2,7 +2,7 @@ package io.github.lxxbai.javaversionselector.common.util;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
-import io.github.lxxbai.javaversionselector.component.DownloadProgress;
+import io.github.lxxbai.javaversionselector.component.fx.DownloadProgress;
 
 /**
  * @author lxxbai

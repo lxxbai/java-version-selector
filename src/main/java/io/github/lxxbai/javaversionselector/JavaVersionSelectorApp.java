@@ -2,6 +2,8 @@ package io.github.lxxbai.javaversionselector;
 
 import cn.hutool.extra.spring.EnableSpringUtil;
 import cn.hutool.extra.spring.SpringUtil;
+import com.jfoenix.controls.JFXDecorator;
+import com.jfoenix.svg.SVGGlyph;
 import io.github.lxxbai.javaversionselector.common.util.*;
 import io.github.lxxbai.javaversionselector.config.GlobalExceptionHandler;
 import io.github.lxxbai.javaversionselector.view.JVSMainView;
@@ -33,7 +35,12 @@ public class JavaVersionSelectorApp extends Application {
         stage.setTitle("Java Version Selector");
         // 设置图标
         stage.getIcons().add(ResourceUtil.toImage("pic/jv.png"));
-        Scene scene = new Scene(jVSMainView);
+        // 3. 使用 JFXDecorator 包装主内容和标题栏按钮
+        JFXDecorator decorator = new JFXDecorator(stage, jVSMainView);
+        // 启用最大化功能
+        decorator.setCustomMaximize(true);
+        decorator.setGraphic(new SVGGlyph(""));
+        Scene scene = new Scene(decorator);
         scene.getStylesheets().addAll(
                 ResourceUtil.toExternalForm("css/jf-all.css")
 //                ,ResourceUtil.toExternalForm("css/jfoenix-main-demo.css")

@@ -1,4 +1,4 @@
-package io.github.lxxbai.javaversionselector.component;
+package io.github.lxxbai.javaversionselector.component.fx;
 
 
 import cn.hutool.core.util.StrUtil;

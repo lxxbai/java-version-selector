@@ -2,12 +2,14 @@ package io.github.lxxbai.javaversionselector.view;
 
 import io.github.lxxbai.javaversionselector.common.Constants;
 import io.github.lxxbai.javaversionselector.common.util.ObjectMapperUtil;
-import io.github.lxxbai.javaversionselector.component.ModelProperty;
+import io.github.lxxbai.javaversionselector.component.fx.ModelProperty;
 import io.github.lxxbai.javaversionselector.model.DownloadConfig;
 import io.github.lxxbai.javaversionselector.service.SettingsService;
 import jakarta.annotation.Resource;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 /**
  * @author lxxbai
@@ -26,6 +28,10 @@ public class SettingsViewModel {
      */
     public void load() {
         DownloadConfig downloadConfig = settingsService.queryOneConfig(Constants.DOWNLOAD_CONFIG_KEY, DownloadConfig.class);
+        if (Objects.isNull(downloadConfig)) {
+            downloadConfig = new DownloadConfig();
+            downloadConfig.setParallelDownloads(2);
+        }
         modelProperty.setModel(downloadConfig);
     }
 

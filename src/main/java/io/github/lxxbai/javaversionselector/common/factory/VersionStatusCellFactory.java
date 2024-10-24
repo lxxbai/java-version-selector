@@ -2,7 +2,7 @@ package io.github.lxxbai.javaversionselector.common.factory;
 
 import io.github.lxxbai.javaversionselector.common.enums.VersionStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.DownloadUtil;
-import io.github.lxxbai.javaversionselector.component.DownloadProgress;
+import io.github.lxxbai.javaversionselector.component.fx.DownloadProgress;
 import io.github.lxxbai.javaversionselector.model.UserJavaVersion;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;

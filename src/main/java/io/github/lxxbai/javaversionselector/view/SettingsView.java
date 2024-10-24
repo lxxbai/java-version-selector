@@ -1,7 +1,6 @@
 package io.github.lxxbai.javaversionselector.view;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.validation.IntegerValidator;
 import com.jfoenix.validation.RequiredFieldValidator;
 import io.github.lxxbai.javaversionselector.common.util.FXMLLoaderUtil;
 import io.github.lxxbai.javaversionselector.common.util.StageUtil;
@@ -52,7 +51,6 @@ public class SettingsView {
         settingsViewModel.load();
     }
 
-
     @FXML
     private void chooseDownloadDirectory() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -72,7 +70,6 @@ public class SettingsView {
             jdkPathField.setText(selectedDirectory.getAbsolutePath());
         }
     }
-
 
     /**
      * 检查配置，如果没有配置则弹出设置窗口

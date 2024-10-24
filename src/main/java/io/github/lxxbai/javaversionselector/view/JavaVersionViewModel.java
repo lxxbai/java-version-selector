@@ -48,7 +48,7 @@ public class JavaVersionViewModel {
     @PostConstruct
     public void init() {
         //初始化数据
-        addAll(javaVersionManager.queryAllUserJavaVersion(false));
+       // addAll(javaVersionManager.queryAllUserJavaVersion(false));
     }
 
 
