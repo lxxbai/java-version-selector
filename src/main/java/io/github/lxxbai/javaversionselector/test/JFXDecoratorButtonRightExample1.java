@@ -2,7 +2,6 @@ package io.github.lxxbai.javaversionselector.test;
 
 import cn.hutool.core.util.ReflectUtil;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDecorator;
 import com.jfoenix.svg.SVGGlyph;
 import com.jfoenix.svg.SVGGlyphLoader;
 import io.github.lxxbai.javaversionselector.common.util.ResourceUtil;
@@ -11,11 +10,12 @@ import javafx.application.Application;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class JFXDecoratorButtonRightExample extends Application {
+public class JFXDecoratorButtonRightExample1 extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -23,31 +23,21 @@ public class JFXDecoratorButtonRightExample extends Application {
         BorderPane root = new BorderPane();
         Label content = new Label("This is the main content area.");
         root.setCenter(content);
-
-        // 2. 创建自定义按钮
-        JFXButton btnSettings = new JFXButton("Custom");
-        btnSettings.setOnAction(e -> System.out.println("Custom button clicked!"));
-
         // 6. 使用 JFXDecorator 包装主内容，并设置自定义标题栏
         LJFXDecorator decorator = new LJFXDecorator(primaryStage, root, false, true, true);
-        HBox buttonsContainer = (HBox) ReflectUtil.getFieldValue(decorator, "buttonsContainer");
-        SVGGlyph settings = SVGGlyphLoader.loadGlyph(ResourceUtil.getUrl("icons/settings.svg"));
+        // 2. 创建自定义按钮
+        JFXButton btnSettings = new JFXButton();
+        btnSettings.setOnAction(e -> System.out.println("Custom button clicked!"));
+        SVGGlyph settings = SVGGlyphLoader.loadGlyph(ResourceUtil.getUrl("icons/1-settings.svg"));
         settings.setFill(Color.WHITE);
-        settings.setSize(13, 13);
-        btnSettings = new JFXButton();
-        btnSettings.getStyleClass().add("jfx-decorator-button");
-        btnSettings.setCursor(Cursor.HAND);
+        settings.setSize(15, 15);
         btnSettings.setRipplerFill(Color.WHITE);
-        // btnSettings.setOnAction((action) -> maximize(resizeMin, resizeMax));
         btnSettings.setGraphic(settings);
-        buttonsContainer.getChildren().add(1, btnSettings);
-
+        decorator.addButton(btnSettings, 1);
         // 7. 创建场景并显示
         Scene scene = new Scene(decorator, 600, 400);
         scene.getStylesheets().addAll(
                 ResourceUtil.toExternalForm("css/jf-all.css")
-//                ,ResourceUtil.toExternalForm("css/jfoenix-main-demo.css")
-//                BootstrapFX.bootstrapFXStylesheet()
         );
         primaryStage.setScene(scene);
         primaryStage.show();

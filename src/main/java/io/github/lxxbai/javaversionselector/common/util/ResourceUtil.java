@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import java.io.InputStream;
 import java.net.URL;
 
 /**
@@ -26,6 +27,24 @@ public class ResourceUtil {
                 throw new RuntimeException("文件不存在");
             }
             return resource.getURL();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 获取资源
+     *
+     * @param path 路径
+     * @return URL
+     */
+    public static InputStream getInputStream(String path) {
+        try {
+            Resource resource = new ClassPathResource(path);
+            if (!resource.exists()) {
+                throw new RuntimeException("文件不存在");
+            }
+            return resource.getInputStream();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

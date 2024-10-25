@@ -2,15 +2,13 @@ package io.github.lxxbai.javaversionselector;
 
 import cn.hutool.extra.spring.EnableSpringUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import com.jfoenix.controls.JFXDecorator;
-import com.jfoenix.svg.SVGGlyph;
 import io.github.lxxbai.javaversionselector.common.util.*;
+import io.github.lxxbai.javaversionselector.component.fx.LJFXDecorator;
 import io.github.lxxbai.javaversionselector.config.GlobalExceptionHandler;
 import io.github.lxxbai.javaversionselector.view.JVSMainView;
 import io.github.lxxbai.javaversionselector.view.SettingsView;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.Border;
 import javafx.stage.Stage;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -28,20 +26,21 @@ public class JavaVersionSelectorApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        //获取设置页面
+        SettingsView settingsView = SpringUtil.getBean(SettingsView.class);
         //保存stage
         StageUtil.setPrimaryStage(stage);
         // 加载主页面
-        JVSMainView jVSMainView = new JVSMainView();
+        JVSMainView jvsMainView = new JVSMainView();
         // 设置标题
         stage.setTitle("Java Version Selector");
         // 设置图标
         stage.getIcons().add(ResourceUtil.toImage("pic/jv.png"));
-        // 3. 使用 JFXDecorator 包装主内容和标题栏按钮
-        JFXDecorator decorator = new JFXDecorator(stage, jVSMainView);
-        // 启用最大化功能
-        decorator.setCustomMaximize(true);
-        decorator.setGraphic(new SVGGlyph(""));
-        decorator.setBorder(Border.EMPTY);
+        // 使用 JFXDecorator 包装主内容和标题栏按钮
+        LJFXDecorator decorator = new LJFXDecorator(stage, jvsMainView);
+        // 创建自定义按钮
+        decorator.addButton(settingsView.buildConfigButton(), 1);
+        //添加设置按钮
         Scene scene = new Scene(decorator);
         scene.getStylesheets().addAll(
                 ResourceUtil.toExternalForm("css/jf-all.css")
@@ -62,7 +61,7 @@ public class JavaVersionSelectorApp extends Application {
             stage.hide();
         });
         // 检查配置
-        SpringUtil.getBean(SettingsView.class).checkConfig();
+        settingsView.checkConfig();
         stage.show();
     }
 
@@ -73,7 +72,7 @@ public class JavaVersionSelectorApp extends Application {
         AppInitUtil.initDb();
         //springboot加载
         SpringApplication.run(JavaVersionSelectorApp.class, savedArgs);
-        //初始化数据库
+        //初始化数据库 ,后面改成异步或者是springboot后置初始化
         AppInitUtil.initUserData();
     }
 
