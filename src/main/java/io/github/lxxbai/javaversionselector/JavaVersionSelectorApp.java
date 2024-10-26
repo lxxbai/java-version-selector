@@ -1,13 +1,14 @@
 package io.github.lxxbai.javaversionselector;
 
 import cn.hutool.extra.spring.EnableSpringUtil;
-import cn.hutool.extra.spring.SpringUtil;
 import io.github.lxxbai.javaversionselector.common.util.*;
 import io.github.lxxbai.javaversionselector.component.fx.LJFXDecorator;
 import io.github.lxxbai.javaversionselector.config.GlobalExceptionHandler;
+import io.github.lxxbai.javaversionselector.model.ViewResult;
 import io.github.lxxbai.javaversionselector.view.JVSMainView;
 import io.github.lxxbai.javaversionselector.view.SettingsView;
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.mybatis.spring.annotation.MapperScan;
@@ -26,8 +27,6 @@ public class JavaVersionSelectorApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        //获取设置页面
-        SettingsView settingsView = SpringUtil.getBean(SettingsView.class);
         //保存stage
         StageUtil.setPrimaryStage(stage);
         // 加载主页面
@@ -36,15 +35,15 @@ public class JavaVersionSelectorApp extends Application {
         stage.setTitle("Java Version Selector");
         // 设置图标
         stage.getIcons().add(ResourceUtil.toImage("pic/jv.png"));
+        // 加载配置
+        ViewResult<SettingsView, Node> settingsViewResult = FXMLLoaderUtil.loadFxView(SettingsView.class);
         // 使用 JFXDecorator 包装主内容和标题栏按钮
         LJFXDecorator decorator = new LJFXDecorator(stage, jvsMainView);
         // 创建自定义按钮
-        decorator.addButton(settingsView.buildConfigButton(), 1);
-        //添加设置按钮
+        decorator.addButton(settingsViewResult.getController().buildConfigButton(), 1);
         Scene scene = new Scene(decorator);
         scene.getStylesheets().addAll(
                 ResourceUtil.toExternalForm("css/jf-all.css")
-//                ,ResourceUtil.toExternalForm("css/jfoenix-main-demo.css")
 //                BootstrapFX.bootstrapFXStylesheet()
         );
         // 设置场景
@@ -60,8 +59,6 @@ public class JavaVersionSelectorApp extends Application {
             // 隐藏窗口
             stage.hide();
         });
-        // 检查配置
-        settingsView.checkConfig();
         stage.show();
     }
 

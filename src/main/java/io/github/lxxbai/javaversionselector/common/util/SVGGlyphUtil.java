@@ -24,7 +24,9 @@ public class SVGGlyphUtil {
     public static SVGGlyph loadGlyph(URL url) {
         String urlString = url.toString();
         String filename = urlString.substring(urlString.lastIndexOf('/') + 1);
-        return new SVGGlyph(-1, filename, extractSvgPath(IoUtil.read(url.openStream(), Charset.defaultCharset())), Color.BLACK);
+        return new SVGGlyph(-1, filename, extractSvgPath(IoUtil.read(url.openStream(),
+                Charset.defaultCharset())),
+                Color.BLACK);
     }
 
     private static String extractSvgPath(String svgString) {

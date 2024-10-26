@@ -67,7 +67,8 @@ public class SettingsService {
         if (exists) {
             userConfigInfoManager.lambdaUpdate()
                     .set(UserConfigInfoDO::getDicValue, value)
-                    .eq(UserConfigInfoDO::getDicKey, key);
+                    .eq(UserConfigInfoDO::getDicKey, key)
+                    .update();
         } else {
             UserConfigInfoDO userConfigInfoDO = new UserConfigInfoDO();
             userConfigInfoDO.setDicKey(key);

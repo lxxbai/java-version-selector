@@ -79,12 +79,7 @@ public class ModelProperty<T> {
         if (propertyMap.isEmpty()) {
             return model.get();
         }
-        T result = Objects.isNull(model.get()) ? ReflectUtil.newInstance(clazz) : model.get();
-        //反射设置值，不会触发 属性监听器
-        propertyMap.forEach((field, property) ->
-                ReflectUtil.setFieldValue(result, field, property.getValue())
-        );
-        return result;
+        return model.get();
     }
 
 
@@ -106,6 +101,10 @@ public class ModelProperty<T> {
         Class<P> type = (Class<P>) field.getType();
         //创建属性
         Property<P> property = PropertyFactory.buildProperty(type, null);
+        property.addListener((observable, oldValue, newValue) -> {
+            T result = Objects.isNull(model.get()) ? ReflectUtil.newInstance(clazz) : model.get();
+            ReflectUtil.setFieldValue(result, field, property.getValue());
+        });
         propertyMap.put(field, property);
         return property;
     }

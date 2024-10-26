@@ -3,22 +3,17 @@ package io.github.lxxbai.javaversionselector.view;
 import com.jfoenix.controls.*;
 import com.jfoenix.svg.SVGGlyph;
 import com.jfoenix.svg.SVGGlyphLoader;
-import com.jfoenix.validation.RequiredFieldValidator;
-import io.github.lxxbai.javaversionselector.common.util.FXMLLoaderUtil;
+import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
+import io.github.lxxbai.javaversionselector.common.util.JFXValidUtil;
 import io.github.lxxbai.javaversionselector.common.util.ResourceUtil;
 import io.github.lxxbai.javaversionselector.common.util.StageUtil;
 import io.github.lxxbai.javaversionselector.model.DownloadConfig;
-import io.github.lxxbai.javaversionselector.service.SettingsService;
 import jakarta.annotation.Resource;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
-import org.kordamp.ikonli.javafx.FontIcon;
-import org.kordamp.ikonli.materialdesign.MaterialDesign;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -26,19 +21,26 @@ import java.io.File;
 /**
  * @author lxxbai
  */
+@FXView(url = "view/settings.fxml")
 @Component
 public class SettingsView {
 
     @Resource
     private SettingsViewModel settingsViewModel;
-    @Resource
-    private SettingsService settingsService;
+
     @FXML
-    public JFXComboBox<Integer> parallelDownloadsComboBox;
+    private JFXComboBox<Integer> parallelDownloadsComboBox;
+
     @FXML
     private JFXTextField downloadPathField;
+
     @FXML
     private JFXTextField jdkPathField;
+
+    @FXML
+    private JFXDialogLayout diaLogLayout;
+
+    private JFXAlert<Void> jfxAlert;
 
     @FXML
     public void initialize() {
@@ -50,24 +52,11 @@ public class SettingsView {
                 .bindBidirectional(settingsViewModel.getModelProperty().buildProperty(DownloadConfig::getDownloadPath));
         jdkPathField.textProperty()
                 .bindBidirectional(settingsViewModel.getModelProperty().buildProperty(DownloadConfig::getJdkPathUrl));
-        // 初始化 Validator
-        RequiredFieldValidator validator = new RequiredFieldValidator();
-        // NOTE adding error class to text area is causing the cursor to disapper
-        validator.setMessage("Please type something!");
-        FontIcon warnIcon = new FontIcon(MaterialDesign.MDI_BARCODE);
-        warnIcon.getStyleClass().add("error");
-        validator.setIcon(warnIcon);
-        jdkPathField.getValidators().add(validator);
-        jdkPathField.focusedProperty().addListener((o, oldVal, newVal) ->
-        {
-            if (!newVal)
-            {
-                jdkPathField.validate();
-            }
-        });
-
-        //初始化数据
-        settingsViewModel.load();
+        //校验
+        JFXValidUtil.defaultValidator(downloadPathField, "请选择下载文件存放地址");
+        JFXValidUtil.defaultValidator(jdkPathField, "请选择JDK文件放置地址");
+        //检查配置
+        showSettings();
     }
 
     @FXML
@@ -97,7 +86,7 @@ public class SettingsView {
      */
     public JFXButton buildConfigButton() throws Exception {
         JFXButton btnSettings = new JFXButton();
-        btnSettings.setOnAction(e -> buildSettingsDialog(false));
+        btnSettings.setOnAction(e -> buildSettingsDialog(true));
         SVGGlyph svgGlyph = SVGGlyphLoader.loadGlyph(ResourceUtil.getUrl("icons/4-settings.svg"));
         svgGlyph.setFill(Color.WHITE);
         svgGlyph.setSize(15, 15);
@@ -108,42 +97,39 @@ public class SettingsView {
         return btnSettings;
     }
 
-
     /**
      * 构建设置弹框
      */
-    public void buildSettingsDialog(boolean initAlert) {
-        JFXDialogLayout content = new JFXDialogLayout();
-        content.setHeading(new Label("设置"));
-        // 未配置，或者首次配置，显示提示框
-        Node node = FXMLLoaderUtil.load("view/settings.fxml");
-        content.setBody(node);
-        // 添加关闭按钮
-        JFXButton saveButton = new JFXButton("保存");
-        content.setActions(saveButton);
-        JFXAlert<Void> alert = new JFXAlert<>(StageUtil.getPrimaryStage());
-        //保存数据并关闭
-        saveButton.setOnAction(e -> {
-            settingsViewModel.save();
-            alert.close();
-        });
-        alert.setOverlayClose(!initAlert);
-        alert.setContent(content);
-        alert.showAndWait();
+    public void buildSettingsDialog(boolean overlayClose) {
+        jfxAlert = new JFXAlert<>(StageUtil.getPrimaryStage());
+        jfxAlert.setContent(diaLogLayout);
+        //初始化数据
+        settingsViewModel.load();
+        jfxAlert.setOverlayClose(overlayClose);
+        jfxAlert.showAndWait();
     }
+
 
     /**
      * 检查配置，如果没有配置则弹出设置窗口
      */
-    public void checkConfig() {
+    public void showSettings() {
         //检查配置
         Platform.runLater(() -> {
             //检查是否有配置文件
-            boolean configured = settingsService.configured();
+            boolean configured = settingsViewModel.configured();
             if (configured) {
                 return;
             }
-            buildSettingsDialog(true);
+            buildSettingsDialog(false);
         });
+    }
+
+    @FXML
+    public void saveSettings() {
+        if (jdkPathField.validate() && downloadPathField.validate()) {
+            settingsViewModel.save();
+            jfxAlert.close();
+        }
     }
 }

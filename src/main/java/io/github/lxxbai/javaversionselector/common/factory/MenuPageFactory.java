@@ -11,7 +11,7 @@ public class MenuPageFactory {
     }
 
     public static MenuPage build(String menuName, String fxmlPath) {
-        Node content = FXMLLoaderUtil.load(fxmlPath);
+        Node content = FXMLLoaderUtil.loadWithSpring(fxmlPath);
         return new MenuPage(menuName, content);
     }
 }

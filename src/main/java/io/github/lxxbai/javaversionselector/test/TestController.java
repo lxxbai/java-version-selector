@@ -6,6 +6,7 @@ import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign.MaterialDesign;
 
@@ -23,7 +24,7 @@ public class TestController implements Initializable {
         RequiredFieldValidator validator = new RequiredFieldValidator();
         // NOTE adding error class to text area is causing the cursor to disapper
         validator.setMessage("Please type something!");
-        FontIcon warnIcon = new FontIcon(MaterialDesign.MDI_BARCODE);
+        FontIcon warnIcon = new FontIcon(FontAwesomeSolid.EXCLAMATION_TRIANGLE);
         warnIcon.getStyleClass().add("error");
         validator.setIcon(warnIcon);
         usernameField.getValidators().add(validator);
