@@ -18,6 +18,8 @@ public enum DownloadStatusEnum {
     DOWNLOADING("DOWNLOADING", "下载中"),
     //下载失败
     DOWNLOAD_FAILURE("DOWNLOAD_FAILURE", "下载失败"),
+    //下载暂停
+    DOWNLOAD_PAUSE("DOWNLOAD_PAUSE", "下载暂停"),
     //下载完成
     DOWNLOADED("DOWNLOADED", "已下载"),
     ;

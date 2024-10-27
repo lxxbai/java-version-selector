@@ -44,6 +44,8 @@ public class DownloadTask extends Task<Void> {
     public String getLocalPath(){
         return saveDir + "/" + fileName;
    }
+
+
     @Override
     protected Void call() throws Exception {
         URL url = new URL(downloadUrl);

@@ -26,7 +26,11 @@ public class DownloadProgress implements BaseNode {
      * 下载任务
      */
     @Getter
-    private final DownloadTask task;
+    private DownloadTask task;
+
+
+    // 创建进度条
+    private ProgressBar progressBar;
 
 
     /**
@@ -44,7 +48,7 @@ public class DownloadProgress implements BaseNode {
         node.setAlignment(Pos.CENTER);
         StackPane stackPane = new StackPane();
         // 创建进度条
-        ProgressBar progressBar = new JFXProgressBar();
+        progressBar = new JFXProgressBar();
         progressBar.setPrefWidth(width);
         progressBar.setPrefHeight(height);
         // 创建显示进度的标签
@@ -68,6 +72,14 @@ public class DownloadProgress implements BaseNode {
 
 
     /**
+     * 设置进度
+     * @param process 进度值
+     */
+    public void setProcess(double process) {
+        progressBar.setProgress(process);
+    }
+
+    /**
      * 启动任务执行
      * <p>
      * 本方法通过线程池调度给定的任务，实现异步执行
@@ -75,6 +87,9 @@ public class DownloadProgress implements BaseNode {
     public void start() {
         if (task.isRunning()) {
             return;
+        }
+        if (task.isCancelled()) {
+            this.task = new DownloadTask(task.getDownloadUrl(), task.getSaveDir(), task.getFileName());
         }
         ThreadPoolUtil.execute(task);
     }
