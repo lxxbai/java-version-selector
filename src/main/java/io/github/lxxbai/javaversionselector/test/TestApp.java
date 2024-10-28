@@ -9,6 +9,6 @@ import org.w3c.dom.NodeList;
 
 public class TestApp {
     public static void main(String[] args) throws Exception {
-        MainApp.main(args);
+        TrayIconExample.main(args);
     }
 }

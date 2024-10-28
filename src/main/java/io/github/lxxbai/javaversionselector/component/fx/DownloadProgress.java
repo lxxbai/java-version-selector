@@ -30,7 +30,7 @@ public class DownloadProgress implements BaseNode {
 
 
     // 创建进度条
-    private ProgressBar progressBar;
+    private final ProgressBar progressBar;
 
 
     /**

@@ -36,6 +36,21 @@ public class DownloadRecordDO extends VersionBaseDO {
     private String downloadUrl;
 
     /**
+     * 下载文件地址
+     */
+    private String downloadFileUrl;
+
+    /**
+     * jdk地址
+     */
+    private String jdkPathUrl;
+
+    /**
+     * 下载的进度
+     */
+    private Double downloadProcess;
+
+    /**
      * 创建时间
      */
     private String createdAt;

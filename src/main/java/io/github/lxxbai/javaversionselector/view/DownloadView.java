@@ -1,7 +1,7 @@
 package io.github.lxxbai.javaversionselector.view;
 
-import io.github.lxxbai.javaversionselector.common.factory.JavaVersionStatusFactory;
-import io.github.lxxbai.javaversionselector.model.JavaVersionVO;
+import io.github.lxxbai.javaversionselector.common.factory.JdkDownloadStatusFactory;
+import io.github.lxxbai.javaversionselector.model.DownloadVO;
 import jakarta.annotation.Resource;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXML;
@@ -19,23 +19,22 @@ public class DownloadView {
 
     @Resource
     private DownloadViewModel downloadViewModel;
-
     @FXML
-    private TableView<JavaVersionVO> tableView;
+    private TableView<DownloadVO> tableView;
     @FXML
-    private TableColumn<JavaVersionVO, String> vmVendor;
+    private TableColumn<DownloadVO, String> vmVendor;
     @FXML
-    private TableColumn<JavaVersionVO, String> mainVersion;
+    private TableColumn<DownloadVO, String> mainVersion;
     @FXML
-    private TableColumn<JavaVersionVO, String> javaVersion;
+    private TableColumn<DownloadVO, String> javaVersion;
     @FXML
-    private TableColumn<JavaVersionVO, String> fileName;
+    private TableColumn<DownloadVO, String> fileName;
     @FXML
-    private TableColumn<JavaVersionVO, String> fileSize;
+    private TableColumn<DownloadVO, String> fileSize;
     @FXML
-    private TableColumn<JavaVersionVO, String> action;
+    private TableColumn<DownloadVO, String> action;
     @FXML
-    private TableColumn<JavaVersionVO, String> status;
+    private TableColumn<DownloadVO, String> status;
 
     @FXML
     public void initialize() throws Exception {
@@ -53,7 +52,7 @@ public class DownloadView {
         javaVersion.setCellValueFactory(new PropertyValueFactory<>("javaVersion"));
         fileName.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         fileSize.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
-        action.setCellFactory(new JavaVersionStatusFactory());
-        //tableView.setItems(newJavaVersionViewModel.getJavaVersionList());
+        action.setCellFactory(new JdkDownloadStatusFactory());
+        tableView.setItems(downloadViewModel.getDownLoadList());
     }
 }
