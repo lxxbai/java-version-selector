@@ -38,6 +38,11 @@ public class DownloadService {
             vo.setFileSize(record.getFileSize());
             vo.setDownloadUrl(record.getDownloadUrl());
             vo.setDownloadStatus(DownloadStatusEnum.getByStatus(record.getDownloadStatus()));
+            vo.setDownloadProgress(record.getDownloadProgress());
+            vo.setJdkPathUrl(record.getJdkPathUrl());
+            vo.setCreatedAt(record.getCreatedAt());
+            vo.setDownloadEndAt(record.getDownloadEndAt());
+            vo.setDownloadFileUrl(record.getDownloadFileUrl());
             return vo;
         }).sorted(Comparator.comparing(DownloadVO::getCreatedAt).thenComparing((p1) ->
                 p1.getDownloadStatus().equals(DownloadStatusEnum.DOWNLOADING) ? -1 : 0

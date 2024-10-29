@@ -65,10 +65,16 @@ public class DownloadVO {
     /**
      * 下载的进度
      */
-    private Double downloadProcess;
+    private Double downloadProgress;
 
     /**
      * 创建时间
      */
     private String createdAt;
+
+
+    /**
+     * 下载完成时间
+     */
+    private String downloadEndAt;
 }

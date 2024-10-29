@@ -1,23 +1,21 @@
+
 package io.github.lxxbai.javaversionselector.common.factory;
 
-import cn.hutool.core.util.StrUtil;
+import com.jfoenix.controls.JFXButton;
 import io.github.lxxbai.javaversionselector.common.enums.DownloadStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.DialogUtils;
-import io.github.lxxbai.javaversionselector.common.util.DownloadUtil;
 import io.github.lxxbai.javaversionselector.component.fx.DownloadProgress;
 import io.github.lxxbai.javaversionselector.model.DownloadVO;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
 
-import java.util.Objects;
-
 /**
- * 进度条
+ * 操作
  *
  * @author lxxbai
  */
-public class JdkDownloadStatusFactory implements Callback<TableColumn<DownloadVO, String>, TableCell<DownloadVO, String>> {
+public class JdkDownloadActionFactory implements Callback<TableColumn<DownloadVO, String>, TableCell<DownloadVO, String>> {
 
     @Override
     public TableCell<DownloadVO, String> call(TableColumn<DownloadVO, String> tableColumn) {
@@ -33,18 +31,13 @@ public class JdkDownloadStatusFactory implements Callback<TableColumn<DownloadVO
                 // 获取当前行数据
                 DownloadVO downloadVO = getTableView().getItems().get(getIndex());
                 DownloadStatusEnum downloadStatus = downloadVO.getDownloadStatus();
+                //开始下载按钮，暂停按钮，文件位置按钮，删除按钮
+
+                JFXButton filePathButton = new JFXButton();
+//                filePathButton.setGraphic();
+
                 switch (downloadStatus) {
                     case DOWNLOADING, DOWNLOAD_PAUSE -> {
-                        DownloadProgress downloadProgress = DownloadUtil.get(downloadVO.getJavaVersion());
-                        if (Objects.isNull(downloadProgress)) {
-                            downloadProgress = buildDownloadProgressBar(downloadVO);
-                        }
-                        if (StrUtil.equals(downloadStatus.getStatus(), DownloadStatusEnum.DOWNLOADING.getStatus())) {
-                            downloadProgress.start();
-                        } else {
-                            downloadProgress.setProgress(downloadVO.getDownloadProgress());
-                        }
-                        setGraphic(downloadProgress.getContent());
                     }
                     case DOWNLOAD_FAILURE -> setText("下载失败");
                     case DOWNLOADED -> setText("已下载");

@@ -53,6 +53,7 @@ public class DownloadView {
         fileName.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         fileSize.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
         action.setCellFactory(new JdkDownloadStatusFactory());
+//        status.setCellFactory();
         tableView.setItems(downloadViewModel.getDownLoadList());
     }
 }

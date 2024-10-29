@@ -75,7 +75,7 @@ public class DownloadProgress implements BaseNode {
      * 设置进度
      * @param process 进度值
      */
-    public void setProcess(double process) {
+    public void setProgress(double process) {
         progressBar.setProgress(process);
     }
 

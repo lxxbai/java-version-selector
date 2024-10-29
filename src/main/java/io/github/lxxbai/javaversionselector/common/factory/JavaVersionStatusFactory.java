@@ -2,6 +2,7 @@ package io.github.lxxbai.javaversionselector.common.factory;
 
 import com.jfoenix.controls.JFXButton;
 import io.github.lxxbai.javaversionselector.common.enums.DownloadStatusEnum;
+import io.github.lxxbai.javaversionselector.common.util.JFXButtonUtil;
 import io.github.lxxbai.javaversionselector.model.JavaVersionVO;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -30,11 +31,10 @@ public class JavaVersionStatusFactory implements Callback<TableColumn<JavaVersio
                 JavaVersionVO javaVersionVO = getTableView().getItems().get(getIndex());
                 DownloadStatusEnum downloadStatus = javaVersionVO.getDownloadStatus();
                 HBox hBox = new HBox();
-                JFXButton downloadButton = new JFXButton();
+                JFXButton downloadButton = JFXButtonUtil.buildSvgButton("icons/download-solid.svg");
                 hBox.getChildren().addAll(downloadButton);
                 switch (downloadStatus) {
-                    case NO_DOWNLOADING,DOWNLOAD_FAILURE -> {
-                        downloadButton.setText("下载");
+                    case NO_DOWNLOADING, DOWNLOAD_FAILURE -> {
                         downloadButton.setOnAction(event -> {
                             //发送下载事件
                         });
