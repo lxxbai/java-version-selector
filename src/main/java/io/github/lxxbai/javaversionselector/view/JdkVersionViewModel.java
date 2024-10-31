@@ -1,7 +1,7 @@
 package io.github.lxxbai.javaversionselector.view;
 
 import io.github.lxxbai.javaversionselector.common.enums.VmVendorEnum;
-import io.github.lxxbai.javaversionselector.model.JavaVersionVO;
+import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import io.github.lxxbai.javaversionselector.service.JavaVersionService;
 import jakarta.annotation.Resource;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,7 +21,7 @@ import java.util.List;
  * @author lxxbai
  */
 @Component
-public class NewJavaVersionViewModel {
+public class JdkVersionViewModel {
 
     @Resource
     private JavaVersionService javaVersionService;
@@ -34,7 +34,7 @@ public class NewJavaVersionViewModel {
     private final StringProperty filterVmVendor = new SimpleStringProperty();
 
 
-    private final ObservableList<JavaVersionVO> javaVersionList = FXCollections.observableArrayList();
+    private final ObservableList<JdkVersionVO> javaVersionList = FXCollections.observableArrayList();
 
     private final ObservableList<String> vmVendorList = FXCollections.observableArrayList();
 
@@ -58,7 +58,7 @@ public class NewJavaVersionViewModel {
         String javaVersionValue = filterJavaVersion.getValue();
         String mainVersionValue = filterMainVersion.getValue();
         String vmVendorValue = filterVmVendor.getValue();
-        List<JavaVersionVO> filterVersions = javaVersionService.filter(vmVendorValue, mainVersionValue, javaVersionValue);
+        List<JdkVersionVO> filterVersions = javaVersionService.filter(vmVendorValue, mainVersionValue, javaVersionValue);
         javaVersionList.clear();
         javaVersionList.addAll(filterVersions);
     }
@@ -68,7 +68,7 @@ public class NewJavaVersionViewModel {
      *
      * @return 所有版本信息
      */
-    public ObservableList<JavaVersionVO> getJavaVersionList() {
+    public ObservableList<JdkVersionVO> getJavaVersionList() {
         javaVersionList.addAll(javaVersionService.queryAll(false));
         return javaVersionList;
     }
@@ -80,7 +80,7 @@ public class NewJavaVersionViewModel {
      */
     public ObservableList<String> getMainVersionList() {
         mainVersionList.clear();
-        List<String> list = javaVersionList.stream().map(JavaVersionVO::getMainVersion)
+        List<String> list = javaVersionList.stream().map(JdkVersionVO::getMainVersion)
                 .distinct().sorted(Comparator.comparing((String x) ->
                         Integer.parseInt(x.replace("JDK", ""))).reversed())
                 .toList();

@@ -4,10 +4,12 @@ package io.github.lxxbai.javaversionselector.common.factory;
 import com.jfoenix.controls.JFXButton;
 import io.github.lxxbai.javaversionselector.common.enums.DownloadStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.DialogUtils;
-import io.github.lxxbai.javaversionselector.component.fx.DownloadProgress;
+import io.github.lxxbai.javaversionselector.common.util.JFXButtonUtil;
+import io.github.lxxbai.javaversionselector.component.DownloadProgress;
 import io.github.lxxbai.javaversionselector.model.DownloadVO;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
 /**
@@ -32,16 +34,23 @@ public class JdkDownloadActionFactory implements Callback<TableColumn<DownloadVO
                 DownloadVO downloadVO = getTableView().getItems().get(getIndex());
                 DownloadStatusEnum downloadStatus = downloadVO.getDownloadStatus();
                 //开始下载按钮，暂停按钮，文件位置按钮，删除按钮
-
-                JFXButton filePathButton = new JFXButton();
-//                filePathButton.setGraphic();
-
+                HBox hBox = new HBox();
+                JFXButton filePathButton = JFXButtonUtil.buildSvgButton("svg/folder-regular.svg");
+                JFXButton deleteButton = JFXButtonUtil.buildSvgButton("svg/trash-solid.svg");
                 switch (downloadStatus) {
-                    case DOWNLOADING, DOWNLOAD_PAUSE -> {
+                    case DOWNLOADING -> {
+                        //暂停按钮
+                        JFXButton pauseButton = JFXButtonUtil.buildSvgButton("svg/pause-solid.svg");
+                        hBox.getChildren().addAll(pauseButton, filePathButton, deleteButton);
                     }
-                    case DOWNLOAD_FAILURE -> setText("下载失败");
-                    case DOWNLOADED -> setText("已下载");
+                    case DOWNLOAD_PAUSE -> {
+                        //开始下载按钮
+                        JFXButton startButton = JFXButtonUtil.buildSvgButton("svg/play-solid.svg");
+                        hBox.getChildren().addAll(startButton, filePathButton, deleteButton);
+                    }
+                    case DOWNLOAD_FAILURE, DOWNLOADED -> hBox.getChildren().addAll(filePathButton, deleteButton);
                 }
+                setGraphic(hBox);
             }
         };
     }

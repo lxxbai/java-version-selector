@@ -3,8 +3,8 @@ package io.github.lxxbai.javaversionselector.common.util;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.system.SystemUtil;
 import io.github.lxxbai.javaversionselector.common.Constants;
-import io.github.lxxbai.javaversionselector.manager.JavaVersionManager1;
-import io.github.lxxbai.javaversionselector.manager.UserJavaVersionManager;
+import io.github.lxxbai.javaversionselector.manager.JdkVersionManager;
+import io.github.lxxbai.javaversionselector.manager.UserJdkVersionManager;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,9 +23,9 @@ public class AppInitUtil {
      */
     public static void initUserData() {
         //初始化全部Java版本
-        SpringUtil.getBean(JavaVersionManager1.class).refresh();
+        SpringUtil.getBean(JdkVersionManager.class).refresh();
         // 初始化用户已安装的Java版本
-        SpringUtil.getBean(UserJavaVersionManager.class).initInstalledUserJdk();
+        SpringUtil.getBean(UserJdkVersionManager.class).initInstalledUserJdk();
     }
 
 

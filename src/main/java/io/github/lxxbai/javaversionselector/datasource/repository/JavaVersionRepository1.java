@@ -4,7 +4,7 @@ package io.github.lxxbai.javaversionselector.datasource.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.lxxbai.javaversionselector.common.Constants;
 import io.github.lxxbai.javaversionselector.common.util.HttpUtil;
-import io.github.lxxbai.javaversionselector.datasource.entity.JavaVersionDO1;
+import io.github.lxxbai.javaversionselector.datasource.entity.JdkVersionDO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,10 +15,10 @@ import java.util.List;
  * @author lxxbai
  */
 @Repository
-public class JavaVersionRepository1 extends InMemoryRepository<JavaVersionDO1> {
+public class JavaVersionRepository1 extends InMemoryRepository<JdkVersionDO> {
 
     @Override
-    List<JavaVersionDO1> init() {
+    List<JdkVersionDO> init() {
         // 获取对应操作系统的版本列表
         return refresh(Constants.VERSIONS_URL);
     }
@@ -28,7 +28,7 @@ public class JavaVersionRepository1 extends InMemoryRepository<JavaVersionDO1> {
      *
      * @return java版本列表
      */
-    public List<JavaVersionDO1> refresh() {
+    public List<JdkVersionDO> refresh() {
         return init();
     }
 
@@ -37,7 +37,7 @@ public class JavaVersionRepository1 extends InMemoryRepository<JavaVersionDO1> {
      *
      * @return java版本列表
      */
-    public List<JavaVersionDO1> refresh(String url) {
+    public List<JdkVersionDO> refresh(String url) {
         return HttpUtil.get(url, new TypeReference<>() {
         });
     }

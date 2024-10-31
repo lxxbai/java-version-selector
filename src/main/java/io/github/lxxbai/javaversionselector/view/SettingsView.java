@@ -2,7 +2,6 @@ package io.github.lxxbai.javaversionselector.view;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.svg.SVGGlyph;
-import com.jfoenix.svg.SVGGlyphLoader;
 import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
 import io.github.lxxbai.javaversionselector.common.util.JFXValidUtil;
 import io.github.lxxbai.javaversionselector.common.util.ResourceUtil;
@@ -89,8 +88,7 @@ public class SettingsView {
         JFXButton btnSettings = new JFXButton();
         btnSettings.setOnAction(e -> buildSettingsDialog(true));
         //加载图标
-        //SVGGlyph svgGlyph = SVGGlyphLoader.loadGlyph(ResourceUtil.getUrl("icons/4-settings.svg"));
-        SVGGlyph svgGlyph =  SVGGlyphUtil.loadGlyph(ResourceUtil.getUrl("icons/4-settings.svg"));
+        SVGGlyph svgGlyph =  SVGGlyphUtil.loadGlyph(ResourceUtil.getUrl("svg/settings.svg"));
         svgGlyph.setFill(Color.WHITE);
         svgGlyph.setSize(15, 15);
         btnSettings.getStyleClass().add("jfx-decorator-button");

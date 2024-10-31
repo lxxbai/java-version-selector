@@ -9,8 +9,8 @@ import io.github.lxxbai.javaversionselector.common.enums.SourceEnum;
 import io.github.lxxbai.javaversionselector.common.enums.VersionStatusEnum;
 import io.github.lxxbai.javaversionselector.common.enums.VmVendorEnum;
 import io.github.lxxbai.javaversionselector.common.util.JdkPropertiesUtil;
-import io.github.lxxbai.javaversionselector.datasource.entity.UserJavaVersionDO1;
-import io.github.lxxbai.javaversionselector.datasource.mapper.UserJavaVersionMapper;
+import io.github.lxxbai.javaversionselector.datasource.entity.UserJdkVersionDO;
+import io.github.lxxbai.javaversionselector.datasource.mapper.UserJdkVersionMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -23,7 +23,7 @@ import java.util.Objects;
  * @author lxxbai
  */
 @Component
-public class UserJavaVersionManager extends ServiceImpl<UserJavaVersionMapper, UserJavaVersionDO1> {
+public class UserJdkVersionManager extends ServiceImpl<UserJdkVersionMapper, UserJdkVersionDO> {
 
 
     /**
@@ -51,7 +51,7 @@ public class UserJavaVersionManager extends ServiceImpl<UserJavaVersionMapper, U
         String vendor = jvmProperties.get("java.vm.vendor");
         Integer mainVersionInt = MapUtil.getInt(jvmProperties, "java.class.version");
         String mainVersion = Objects.isNull(mainVersionInt) ? "未知" : "JDK" + (mainVersionInt - 44);
-        UserJavaVersionDO1 userJavaVersionDO = new UserJavaVersionDO1();
+        UserJdkVersionDO userJavaVersionDO = new UserJdkVersionDO();
         userJavaVersionDO.setLocalHomePath(javaHome);
         userJavaVersionDO.setStatus(VersionStatusEnum.INSTALLED.getStatus());
         userJavaVersionDO.setCurrent(true);
@@ -61,7 +61,7 @@ public class UserJavaVersionManager extends ServiceImpl<UserJavaVersionMapper, U
         userJavaVersionDO.setJavaVersion(javaVersion);
         //查询是否存在
         boolean exists = lambdaQuery()
-                .eq(UserJavaVersionDO1::getUkVersion, userJavaVersionDO.getUkVersion())
+                .eq(UserJdkVersionDO::getUkVersion, userJavaVersionDO.getUkVersion())
                 .exists();
         if (exists) {
             return;

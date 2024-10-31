@@ -1,4 +1,4 @@
-package io.github.lxxbai.javaversionselector.component.fx;
+package io.github.lxxbai.javaversionselector.component;
 
 import cn.hutool.core.lang.func.Func1;
 import cn.hutool.core.lang.func.LambdaUtil;

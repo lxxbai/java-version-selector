@@ -21,7 +21,8 @@ public class JFXButtonUtil {
         //btnSettings.setOnAction(e -> buildSettingsDialog(true));
         //加载图标
         SVGGlyph svgGlyph = SVGGlyphUtil.loadGlyph(ResourceUtil.getUrl(path));
-        svgGlyph.setFill(Color.BLACK);
+        //derive(#d1e9ec, -20%)
+        svgGlyph.setFill(Color.BURLYWOOD);
         svgGlyph.setSize(15, 15);
         btnSettings.getStyleClass().add("jfx-decorator-button");
         btnSettings.setCursor(Cursor.HAND);

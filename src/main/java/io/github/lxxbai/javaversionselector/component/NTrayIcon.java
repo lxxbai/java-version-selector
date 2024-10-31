@@ -1,4 +1,4 @@
-package io.github.lxxbai.javaversionselector.component.fx;
+package io.github.lxxbai.javaversionselector.component;
 
 import javafx.application.Platform;
 import javafx.scene.Scene;

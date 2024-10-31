@@ -4,7 +4,7 @@ import io.github.lxxbai.javaversionselector.common.enums.VersionActionEnum;
 import io.github.lxxbai.javaversionselector.common.enums.VersionStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.DialogUtils;
 import io.github.lxxbai.javaversionselector.common.util.DownloadUtil;
-import io.github.lxxbai.javaversionselector.component.fx.DownloadProgress;
+import io.github.lxxbai.javaversionselector.component.DownloadProgress;
 import io.github.lxxbai.javaversionselector.event.StatusChangeEvent;
 import io.github.lxxbai.javaversionselector.model.UserJavaVersion;
 import io.github.lxxbai.javaversionselector.state.context.VersionContext;

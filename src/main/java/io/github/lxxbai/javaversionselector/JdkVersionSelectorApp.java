@@ -2,7 +2,7 @@ package io.github.lxxbai.javaversionselector;
 
 import cn.hutool.extra.spring.EnableSpringUtil;
 import io.github.lxxbai.javaversionselector.common.util.*;
-import io.github.lxxbai.javaversionselector.component.fx.LJFXDecorator;
+import io.github.lxxbai.javaversionselector.component.LJFXDecorator;
 import io.github.lxxbai.javaversionselector.config.GlobalExceptionHandler;
 import io.github.lxxbai.javaversionselector.model.ViewResult;
 import io.github.lxxbai.javaversionselector.view.JVSMainView;
@@ -21,7 +21,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan(basePackages = "io.github.lxxbai.javaversionselector.datasource.mapper")
 @EnableSpringUtil
 @SpringBootApplication(scanBasePackages = "io.github.lxxbai.javaversionselector")
-public class JavaVersionSelectorApp extends Application {
+public class JdkVersionSelectorApp extends Application {
 
     private static String[] savedArgs = new String[0];
 
@@ -32,7 +32,7 @@ public class JavaVersionSelectorApp extends Application {
         // 加载主页面
         JVSMainView jvsMainView = new JVSMainView();
         // 设置标题
-        stage.setTitle("Java Version Selector");
+        stage.setTitle("Jdk Version Selector");
         // 设置图标
         stage.getIcons().add(ResourceUtil.toImage("pic/jv.png"));
         // 加载配置
@@ -68,7 +68,7 @@ public class JavaVersionSelectorApp extends Application {
         // 初始化
         AppInitUtil.initDb();
         //springboot加载
-        SpringApplication.run(JavaVersionSelectorApp.class, savedArgs);
+        SpringApplication.run(JdkVersionSelectorApp.class, savedArgs);
         //初始化数据库 ,后面改成异步或者是springboot后置初始化
         AppInitUtil.initUserData();
     }

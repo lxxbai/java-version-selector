@@ -2,7 +2,7 @@ package io.github.lxxbai.javaversionselector.view;
 
 import io.github.lxxbai.javaversionselector.common.Constants;
 import io.github.lxxbai.javaversionselector.common.util.ObjectMapperUtil;
-import io.github.lxxbai.javaversionselector.component.fx.ModelProperty;
+import io.github.lxxbai.javaversionselector.component.ModelProperty;
 import io.github.lxxbai.javaversionselector.model.DownloadConfig;
 import io.github.lxxbai.javaversionselector.service.SettingsService;
 import jakarta.annotation.Resource;

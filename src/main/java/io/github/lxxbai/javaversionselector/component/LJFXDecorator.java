@@ -1,5 +1,5 @@
 
-package io.github.lxxbai.javaversionselector.component.fx;
+package io.github.lxxbai.javaversionselector.component;
 
 import cn.hutool.core.util.ReflectUtil;
 import com.jfoenix.controls.JFXDecorator;

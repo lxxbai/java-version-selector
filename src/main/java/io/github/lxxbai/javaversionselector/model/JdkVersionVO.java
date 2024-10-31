@@ -7,7 +7,7 @@ import lombok.Data;
  * @author lxxbai
  */
 @Data
-public class JavaVersionVO {
+public class JdkVersionVO {
 
     /**
      * 供应商  oracle jdk or openjdk or other

@@ -4,7 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import io.github.lxxbai.javaversionselector.common.enums.DownloadStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.DialogUtils;
 import io.github.lxxbai.javaversionselector.common.util.DownloadUtil;
-import io.github.lxxbai.javaversionselector.component.fx.DownloadProgress;
+import io.github.lxxbai.javaversionselector.component.DownloadProgress;
 import io.github.lxxbai.javaversionselector.model.DownloadVO;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;

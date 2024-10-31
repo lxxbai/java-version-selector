@@ -12,8 +12,8 @@ import lombok.Data;
  * @author lxxbai
  */
 @Data
-@TableName("T_USER_JAVA_VERSION")
-public class UserJavaVersionDO1 extends VersionBaseDO {
+@TableName("T_USER_JDK_VERSION")
+public class UserJdkVersionDO extends VersionBaseDO {
 
     /**
      * 本地java_home路径

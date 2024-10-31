@@ -9,9 +9,9 @@ import lombok.Data;
  *
  * @author lxxbai
  */
-@TableName("T_JAVA_VERSION")
+@TableName("T_JDK_VERSION")
 @Data
-public class JavaVersionDO1 extends VersionBaseDO {
+public class JdkVersionDO extends VersionBaseDO {
 
     /**
      * 发布日期

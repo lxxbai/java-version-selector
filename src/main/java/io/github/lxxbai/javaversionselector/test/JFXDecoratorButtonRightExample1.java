@@ -1,17 +1,14 @@
 package io.github.lxxbai.javaversionselector.test;
 
-import cn.hutool.core.util.ReflectUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.svg.SVGGlyph;
 import com.jfoenix.svg.SVGGlyphLoader;
 import io.github.lxxbai.javaversionselector.common.util.ResourceUtil;
-import io.github.lxxbai.javaversionselector.component.fx.LJFXDecorator;
+import io.github.lxxbai.javaversionselector.component.LJFXDecorator;
 import javafx.application.Application;
-import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -28,7 +25,7 @@ public class JFXDecoratorButtonRightExample1 extends Application {
         // 2. 创建自定义按钮
         JFXButton btnSettings = new JFXButton();
         btnSettings.setOnAction(e -> System.out.println("Custom button clicked!"));
-        SVGGlyph settings = SVGGlyphLoader.loadGlyph(ResourceUtil.getUrl("icons/1-settings.svg"));
+        SVGGlyph settings = SVGGlyphLoader.loadGlyph(ResourceUtil.getUrl("svg/1-settings.svg"));
         settings.setFill(Color.WHITE);
         settings.setSize(15, 15);
         btnSettings.setRipplerFill(Color.WHITE);

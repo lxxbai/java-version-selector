@@ -1,5 +1,6 @@
 package io.github.lxxbai.javaversionselector.view;
 
+import io.github.lxxbai.javaversionselector.common.factory.JdkDownloadActionFactory;
 import io.github.lxxbai.javaversionselector.common.factory.JdkDownloadStatusFactory;
 import io.github.lxxbai.javaversionselector.model.DownloadVO;
 import jakarta.annotation.Resource;
@@ -53,7 +54,7 @@ public class DownloadView {
         fileName.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         fileSize.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
         action.setCellFactory(new JdkDownloadStatusFactory());
-//        status.setCellFactory();
+        status.setCellFactory(new JdkDownloadActionFactory());
         tableView.setItems(downloadViewModel.getDownLoadList());
     }
 }

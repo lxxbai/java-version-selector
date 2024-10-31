@@ -2,11 +2,10 @@ package io.github.lxxbai.javaversionselector.test;
 
 import cn.hutool.core.util.ReflectUtil;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDecorator;
 import com.jfoenix.svg.SVGGlyph;
 import com.jfoenix.svg.SVGGlyphLoader;
 import io.github.lxxbai.javaversionselector.common.util.ResourceUtil;
-import io.github.lxxbai.javaversionselector.component.fx.LJFXDecorator;
+import io.github.lxxbai.javaversionselector.component.LJFXDecorator;
 import javafx.application.Application;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -31,7 +30,7 @@ public class JFXDecoratorButtonRightExample extends Application {
         // 6. 使用 JFXDecorator 包装主内容，并设置自定义标题栏
         LJFXDecorator decorator = new LJFXDecorator(primaryStage, root, false, true, true);
         HBox buttonsContainer = (HBox) ReflectUtil.getFieldValue(decorator, "buttonsContainer");
-        SVGGlyph settings = SVGGlyphLoader.loadGlyph(ResourceUtil.getUrl("icons/settings.svg"));
+        SVGGlyph settings = SVGGlyphLoader.loadGlyph(ResourceUtil.getUrl("svg/settings.svg"));
         settings.setFill(Color.WHITE);
         settings.setSize(13, 13);
         btnSettings = new JFXButton();
