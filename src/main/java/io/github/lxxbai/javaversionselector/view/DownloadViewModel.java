@@ -1,6 +1,7 @@
 package io.github.lxxbai.javaversionselector.view;
 
 import io.github.lxxbai.javaversionselector.model.DownloadVO;
+import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import io.github.lxxbai.javaversionselector.service.DownloadService;
 import jakarta.annotation.Resource;
 import javafx.collections.FXCollections;
@@ -28,5 +29,23 @@ public class DownloadViewModel {
     public ObservableList<DownloadVO> getDownLoadList() {
         downLoadList.addAll(downloadService.queryAll());
         return downLoadList;
+    }
+
+    /**
+     * 获取所有下载信息
+     */
+    public void refresh() {
+        downLoadList.clear();
+        downLoadList.addAll(downloadService.queryAll());
+    }
+
+    /**
+     * 下载
+     *
+     * @param vo 版本信息
+     */
+    public void download(JdkVersionVO vo) {
+        downloadService.addDownloadRecord(vo);
+        refresh();
     }
 }

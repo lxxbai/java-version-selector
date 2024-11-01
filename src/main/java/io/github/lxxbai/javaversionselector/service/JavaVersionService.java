@@ -77,7 +77,7 @@ public class JavaVersionService {
                 vo.setDownloadStatus(DownloadStatusEnum.getByStatus(recordMap.get(v.getUkVersion()).getDownloadStatus()));
                 return vo;
             }
-            vo.setDownloadStatus(DownloadStatusEnum.NO_DOWNLOADING);
+            vo.setDownloadStatus(DownloadStatusEnum.NO_DOWNLOADED);
             return vo;
         }).toList();
     }

@@ -1,13 +1,10 @@
 package io.github.lxxbai.javaversionselector.service;
 
 import io.github.lxxbai.javaversionselector.common.Constants;
-import io.github.lxxbai.javaversionselector.common.util.ObjectMapperUtil;
 import io.github.lxxbai.javaversionselector.datasource.entity.UserConfigInfoDO;
 import io.github.lxxbai.javaversionselector.manager.UserConfigInfoManager;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 /**
  * @author lxxbai
@@ -40,14 +37,7 @@ public class SettingsService {
      * @return 配置信息
      */
     public <T> T queryOneConfig(String dictKey, Class<T> clazz) {
-        UserConfigInfoDO oneConfig = userConfigInfoManager
-                .lambdaQuery()
-                .eq(UserConfigInfoDO::getDicKey, dictKey)
-                .one();
-        if (Objects.isNull(oneConfig)) {
-            return null;
-        }
-        return ObjectMapperUtil.toObj(oneConfig.getDicValue(), clazz);
+        return userConfigInfoManager.queryOneConfig(dictKey, clazz);
     }
 
 

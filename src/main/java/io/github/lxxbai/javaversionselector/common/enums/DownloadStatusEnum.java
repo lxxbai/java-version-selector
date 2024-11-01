@@ -13,7 +13,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum DownloadStatusEnum {
     //未下载
-    NO_DOWNLOADING("NO_DOWNLOADING", "未下载"),
+    NO_DOWNLOADED("NO_DOWNLOADED", "未下载"),
     //下载中
     DOWNLOADING("DOWNLOADING", "下载中"),
     //下载失败
@@ -39,6 +39,6 @@ public enum DownloadStatusEnum {
                 return downloadStatusEnum;
             }
         }
-        return NO_DOWNLOADING;
+        return NO_DOWNLOADED;
     }
 }

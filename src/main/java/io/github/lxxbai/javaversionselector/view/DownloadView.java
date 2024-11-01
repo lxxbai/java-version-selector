@@ -44,17 +44,17 @@ public class DownloadView {
         vmVendor.prefWidthProperty().bind(width.multiply(.1));
         mainVersion.prefWidthProperty().bind(width.multiply(.1));
         javaVersion.prefWidthProperty().bind(width.multiply(.1));
-        fileName.prefWidthProperty().bind(width.multiply(.3));
+        fileName.prefWidthProperty().bind(width.multiply(.2));
         fileSize.prefWidthProperty().bind(width.multiply(.15));
-        action.prefWidthProperty().bind(width.multiply(.1));
+        action.prefWidthProperty().bind(width.multiply(.2));
         status.prefWidthProperty().bind(width.multiply(.15));
         vmVendor.setCellValueFactory(new PropertyValueFactory<>("vmVendor"));
         mainVersion.setCellValueFactory(new PropertyValueFactory<>("mainVersion"));
         javaVersion.setCellValueFactory(new PropertyValueFactory<>("javaVersion"));
         fileName.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         fileSize.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
-        action.setCellFactory(new JdkDownloadStatusFactory());
-        status.setCellFactory(new JdkDownloadActionFactory());
+        status.setCellFactory(new JdkDownloadStatusFactory());
+        action.setCellFactory(new JdkDownloadActionFactory());
         tableView.setItems(downloadViewModel.getDownLoadList());
     }
 }

@@ -5,7 +5,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import io.github.lxxbai.javaversionselector.common.enums.DownloadStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.JFXButtonUtil;
-import io.github.lxxbai.javaversionselector.component.cell.TableColumCellFactory;
+import io.github.lxxbai.javaversionselector.component.cell.GraphicTableCellFactory;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import jakarta.annotation.Resource;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -23,6 +23,8 @@ import org.springframework.stereotype.Component;
 public class JdkVersionView {
     @Resource
     private JdkVersionViewModel jdkVersionViewModel;
+    @Resource
+    private DownloadViewModel downloadViewModel;
     @FXML
     private JFXTextField filterJavaVersion;
     @FXML
@@ -85,32 +87,26 @@ public class JdkVersionView {
      *
      * @return 表格列工厂
      */
-    private TableColumCellFactory<JdkVersionVO, String> getTableColumCellFactory() {
-        TableColumCellFactory<JdkVersionVO, String> factory = new TableColumCellFactory<>();
-        factory.withGraphicFunction(vo -> {
+    private GraphicTableCellFactory<JdkVersionVO, String> getTableColumCellFactory() {
+        //设置单元格工厂
+        return GraphicTableCellFactory.withGraphicFunc(vo -> {
             DownloadStatusEnum downloadStatus = vo.getDownloadStatus();
             JFXButton downloadButton = new JFXButton();
             switch (downloadStatus) {
-                case NO_DOWNLOADING, DOWNLOAD_FAILURE -> {
-                    downloadButton = JFXButtonUtil.buildSvgButton("svg/download-solid.svg");
+                case NO_DOWNLOADED, DOWNLOAD_FAILURE, DOWNLOADED -> {
+                    downloadButton = JFXButtonUtil.buildSvgButton("svg/circle-down-regular.svg");
                     downloadButton.setOnAction(event -> {
-                        //查询是否已经下载
-                        //发送下载事件
-                        //jdkVersionViewModel.download(vo);
+                        //下载
+                        downloadViewModel.download(vo);
                     });
                 }
                 case DOWNLOADING -> {
-                    downloadButton.setText("下载中");
-                    downloadButton.setDisable(true);
-                }
-                case DOWNLOADED -> {
-                    downloadButton.setText("已下载");
+                    downloadButton = JFXButtonUtil.buildDynamicButton("pic/downloading.gif");
                     downloadButton.setDisable(true);
                 }
             }
             return downloadButton;
         });
-        return factory;
     }
 
     @FXML

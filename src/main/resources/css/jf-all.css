@@ -1,12 +1,24 @@
 /* 可以为所有控件设置相同规则 */
 *:focused {
     -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
+    -fx-faint-focus-color: transparent;/*边框颜色*/
 }
 /*选中后的颜色修改*/
 *:selected {
-    -fx-background-color: rgba(227, 153, 226, 0.97);
+    -fx-background-color: rgb(239, 242, 245);
 }
+
+.table-row-cell:selected .text {
+    -fx-fill: black; /* 选中行的字体颜色 */
+}
+.table-row-cell:empty {
+    -fx-background-color: transparent; /* 无数据行的背景颜色 */
+}
+
+.table-view .table-cell {
+    -fx-border-color: transparent; /* 单元格边框颜色 */
+}
+
 
 /*******************************************************************************
 *                                                                              *

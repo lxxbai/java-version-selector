@@ -3,6 +3,8 @@ package io.github.lxxbai.javaversionselector.common.util;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.svg.SVGGlyph;
 import javafx.scene.Cursor;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 /**
@@ -28,6 +30,23 @@ public class JFXButtonUtil {
         btnSettings.setCursor(Cursor.HAND);
         btnSettings.setRipplerFill(Color.WHITE);
         btnSettings.setGraphic(svgGlyph);
+        return btnSettings;
+    }
+
+    /**
+     * 构建动态图标按钮
+     *
+     * @return JFXButton
+     */
+    public static JFXButton buildDynamicButton(String path) {
+        JFXButton btnSettings = new JFXButton();
+        Image image = ResourceUtil.toImage(path);
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(20);
+        imageView.setFitWidth(20);
+        btnSettings.setCursor(Cursor.HAND);
+        btnSettings.setRipplerFill(Color.WHITE);
+        btnSettings.setGraphic(btnSettings);
         return btnSettings;
     }
 }
