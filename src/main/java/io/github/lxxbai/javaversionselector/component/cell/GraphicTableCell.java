@@ -2,6 +2,7 @@
 
 package io.github.lxxbai.javaversionselector.component.cell;
 
+import io.github.lxxbai.javaversionselector.component.bo.CellDataBO;
 import javafx.scene.Node;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -18,13 +19,13 @@ public class GraphicTableCell<S, T> extends TableCell<S, T> {
     /**
      * 构造函数
      */
-    private final Function<S, Node> graphicFunc;
+    private final Function<CellDataBO<S>, Node> graphicFunc;
 
-    public GraphicTableCell(Function<S, Node> graphicFunc) {
+    public GraphicTableCell(Function<CellDataBO<S>, Node> graphicFunc) {
         this.graphicFunc = graphicFunc;
     }
 
-    public static <S, T> Callback<TableColumn<S, T>, TableCell<S, T>> forTableColumn(Function<S, Node> graphicFunc) {
+    public static <S, T> Callback<TableColumn<S, T>, TableCell<S, T>> forTableColumn(Function<CellDataBO<S>, Node> graphicFunc) {
         return list -> new GraphicTableCell<>(graphicFunc);
     }
 
@@ -37,7 +38,10 @@ public class GraphicTableCell<S, T> extends TableCell<S, T> {
         } else {
             S s = getTableView().getItems().get(getIndex());
             setText(null);
-            Node graphic = graphicFunc.apply(s);
+            CellDataBO<S> cellData = new CellDataBO<>();
+            cellData.setData(s);
+            cellData.setIndex(getIndex());
+            Node graphic = graphicFunc.apply(cellData);
             setGraphic(graphic);
         }
     }

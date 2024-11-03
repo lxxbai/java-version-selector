@@ -5,6 +5,8 @@ import cn.hutool.core.util.StrUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXProgressBar;
 import io.github.lxxbai.javaversionselector.common.util.ThreadPoolUtil;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -18,7 +20,7 @@ import lombok.Getter;
  *
  * @author lxxbai
  */
-public class DownloadProgress implements BaseNode {
+public class DownloadProgressBar implements BaseNode {
 
     private final HBox node;
 
@@ -41,7 +43,7 @@ public class DownloadProgress implements BaseNode {
      * @param downloadUrl 下载地址
      * @param saveDir     保存目录
      */
-    public DownloadProgress(int width, int height, String downloadUrl, String saveDir, String detailDesc) {
+    public DownloadProgressBar(int width, int height, String downloadUrl, String saveDir, String detailDesc) {
         String fileName = downloadUrl.substring(downloadUrl.lastIndexOf("/") + 1);
         fileName = StrUtil.isBlank(fileName) ? "unknown.zip" : fileName;
         this.node = new HBox();
@@ -73,10 +75,12 @@ public class DownloadProgress implements BaseNode {
 
     /**
      * 设置进度
-     * @param process 进度值
+     *
+     * @param downloadedBytes 已下载
+     * @param totalBytes      总字节数
      */
-    public void setProgress(double process) {
-        progressBar.setProgress(process);
+    public void updateProgress(double downloadedBytes, long totalBytes) {
+        task.updateProgress(downloadedBytes, totalBytes);
     }
 
     /**
@@ -88,10 +92,39 @@ public class DownloadProgress implements BaseNode {
         if (task.isRunning()) {
             return;
         }
+        ThreadPoolUtil.execute(task);
+    }
+
+    /**
+     * 启动任务执行
+     * <p>
+     * 本方法通过线程池调度给定的任务，实现异步执行
+     */
+    public void reStart() {
+        if (task.isRunning()) {
+            return;
+        }
         if (task.isCancelled()) {
             this.task = new DownloadTask(task.getDownloadUrl(), task.getSaveDir(), task.getFileName());
         }
         ThreadPoolUtil.execute(task);
+    }
+
+
+    public void setOnSucceeded(EventHandler<WorkerStateEvent> eventHandler) {
+        task.setOnSucceeded(eventHandler);
+    }
+
+    public void setOnFailed(EventHandler<WorkerStateEvent> eventHandler) {
+        task.setOnFailed(eventHandler);
+    }
+
+    public void setOnCancelled(EventHandler<WorkerStateEvent> eventHandler) {
+        task.setOnCancelled(eventHandler);
+    }
+
+    public boolean isRunning() {
+        return task.isRunning();
     }
 
     /**

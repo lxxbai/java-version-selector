@@ -3,7 +3,7 @@ package io.github.lxxbai.javaversionselector.view;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import io.github.lxxbai.javaversionselector.common.enums.DownloadStatusEnum;
+import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.JFXButtonUtil;
 import io.github.lxxbai.javaversionselector.component.cell.GraphicTableCellFactory;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
@@ -24,7 +24,7 @@ public class JdkVersionView {
     @Resource
     private JdkVersionViewModel jdkVersionViewModel;
     @Resource
-    private DownloadViewModel downloadViewModel;
+    private InstallViewModel installViewModel;
     @FXML
     private JFXTextField filterJavaVersion;
     @FXML
@@ -89,15 +89,18 @@ public class JdkVersionView {
      */
     private GraphicTableCellFactory<JdkVersionVO, String> getTableColumCellFactory() {
         //设置单元格工厂
-        return GraphicTableCellFactory.withGraphicFunc(vo -> {
-            DownloadStatusEnum downloadStatus = vo.getDownloadStatus();
+        return GraphicTableCellFactory.withGraphicFunc(cellData -> {
+            JdkVersionVO vo = cellData.getData();
+            InstallStatusEnum downloadStatus = vo.getInstallStatus();
             JFXButton downloadButton = new JFXButton();
             switch (downloadStatus) {
                 case NO_DOWNLOADED, DOWNLOAD_FAILURE, DOWNLOADED -> {
                     downloadButton = JFXButtonUtil.buildSvgButton("svg/circle-down-regular.svg");
                     downloadButton.setOnAction(event -> {
                         //下载
-                        downloadViewModel.download(vo);
+                        installViewModel.download(vo);
+                        //修改成下载中
+                        jdkVersionViewModel.changeStatus(cellData.getIndex(), InstallStatusEnum.DOWNLOADING);
                     });
                 }
                 case DOWNLOADING -> {

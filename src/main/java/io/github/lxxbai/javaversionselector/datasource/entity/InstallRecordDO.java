@@ -7,8 +7,8 @@ import lombok.Data;
  * @author lxxbai
  */
 @Data
-@TableName("T_DOWNLOAD_RECORD")
-public class DownloadRecordDO extends VersionBaseDO {
+@TableName("T_INSTALL_RECORD")
+public class InstallRecordDO extends VersionBaseDO {
 
     /**
      * 文件名称

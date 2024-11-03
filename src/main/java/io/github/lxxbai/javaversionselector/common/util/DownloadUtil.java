@@ -2,7 +2,7 @@ package io.github.lxxbai.javaversionselector.common.util;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
-import io.github.lxxbai.javaversionselector.component.DownloadProgress;
+import io.github.lxxbai.javaversionselector.component.DownloadProgressBar;
 
 /**
  * @author lxxbai
@@ -10,13 +10,13 @@ import io.github.lxxbai.javaversionselector.component.DownloadProgress;
 public class DownloadUtil {
 
 
-    private static final Cache<String, DownloadProgress> LRU_CACHE = CacheUtil.newLRUCache(100);
+    private static final Cache<String, DownloadProgressBar> LRU_CACHE = CacheUtil.newLRUCache(100);
 
-    public static void put(String version, DownloadProgress downloadProgress) {
-        LRU_CACHE.put(version, downloadProgress);
+    public static void put(String version, DownloadProgressBar downloadProgressBar) {
+        LRU_CACHE.put(version, downloadProgressBar);
     }
 
-    public static DownloadProgress get(String version) {
+    public static DownloadProgressBar get(String version) {
         return LRU_CACHE.get(version);
     }
 

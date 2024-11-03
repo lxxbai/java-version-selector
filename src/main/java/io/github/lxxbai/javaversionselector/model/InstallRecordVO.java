@@ -1,13 +1,17 @@
 package io.github.lxxbai.javaversionselector.model;
 
-import io.github.lxxbai.javaversionselector.common.enums.DownloadStatusEnum;
+import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
+import io.github.lxxbai.javaversionselector.component.DownloadProgressBar;
 import lombok.Data;
 
 /**
  * @author lxxbai
  */
 @Data
-public class DownloadVO {
+public class InstallRecordVO {
+
+
+    private Integer id;
 
     /**
      * 供应商  oracle jdk or openjdk or other
@@ -58,9 +62,9 @@ public class DownloadVO {
     private String jdkPathUrl;
 
     /**
-     * 下载状态
+     * 安装状态
      */
-    private DownloadStatusEnum downloadStatus;
+    private InstallStatusEnum downloadStatus;
 
     /**
      * 下载的进度
@@ -77,4 +81,7 @@ public class DownloadVO {
      * 下载完成时间
      */
     private String downloadEndAt;
+
+
+    private DownloadProgressBar downloadProgressBar;
 }

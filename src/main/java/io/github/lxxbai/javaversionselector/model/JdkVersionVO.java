@@ -1,6 +1,6 @@
 package io.github.lxxbai.javaversionselector.model;
 
-import io.github.lxxbai.javaversionselector.common.enums.DownloadStatusEnum;
+import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import lombok.Data;
 
 /**
@@ -64,5 +64,5 @@ public class JdkVersionVO {
     /**
      * 下载状态
      */
-    private DownloadStatusEnum downloadStatus;
+    private InstallStatusEnum installStatus;
 }

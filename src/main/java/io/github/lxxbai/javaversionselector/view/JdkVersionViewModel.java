@@ -1,5 +1,6 @@
 package io.github.lxxbai.javaversionselector.view;
 
+import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.common.enums.VmVendorEnum;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import io.github.lxxbai.javaversionselector.service.JavaVersionService;
@@ -99,10 +100,37 @@ public class JdkVersionViewModel {
         return vmVendorList;
     }
 
+    /**
+     * 更新表格数据
+     *
+     * @param index        下标
+     * @param jdkVersionVO 版本信息
+     */
+    private void refreshColumn(int index, JdkVersionVO jdkVersionVO) {
+        this.javaVersionList.set(index, jdkVersionVO);
+    }
+
+
+    /**
+     * 重置过滤
+     */
     public void resetFilter() {
         //过滤的值
         filterJavaVersion.set(null);
         filterMainVersion.set(null);
         filterVmVendor.setValue(null);
+    }
+
+
+    /**
+     * 更新状态
+     *
+     * @param index      下标
+     * @param statusEnum 状态
+     */
+    public void changeStatus(int index, InstallStatusEnum statusEnum) {
+        JdkVersionVO vo = javaVersionList.get(index);
+        vo.setInstallStatus(statusEnum);
+        refreshColumn(index, vo);
     }
 }

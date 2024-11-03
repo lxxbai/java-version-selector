@@ -1,13 +1,13 @@
 package io.github.lxxbai.javaversionselector.service;
 
 import cn.hutool.core.collection.CollUtil;
-import io.github.lxxbai.javaversionselector.common.enums.DownloadStatusEnum;
+import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.ObjectMapperUtil;
 import io.github.lxxbai.javaversionselector.common.util.StringUtil;
-import io.github.lxxbai.javaversionselector.datasource.entity.DownloadRecordDO;
+import io.github.lxxbai.javaversionselector.datasource.entity.InstallRecordDO;
 import io.github.lxxbai.javaversionselector.datasource.entity.JdkVersionDO;
 import io.github.lxxbai.javaversionselector.datasource.entity.UserJdkVersionDO;
-import io.github.lxxbai.javaversionselector.manager.DownloadRecordManager;
+import io.github.lxxbai.javaversionselector.manager.InstallRecordManager;
 import io.github.lxxbai.javaversionselector.manager.JdkVersionManager;
 import io.github.lxxbai.javaversionselector.manager.UserJdkVersionManager;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
@@ -28,7 +28,7 @@ public class JavaVersionService {
     private JdkVersionManager jdkVersionManager;
 
     @Resource
-    private DownloadRecordManager downloadRecordManager;
+    private InstallRecordManager installRecordManager;
 
     @Resource
     private UserJdkVersionManager userJdkVersionManager;
@@ -47,10 +47,10 @@ public class JavaVersionService {
         //获取所有版本信息
         List<JdkVersionDO> javaVersionList = jdkVersionManager.list();
         System.out.println(ObjectMapperUtil.toJsonString(javaVersionList));
-        //获取用户下载的信息
-        List<DownloadRecordDO> downloadRecordList = downloadRecordManager.list();
+        //获取用户下载的信息 todo 后面只查询不是安装完成的记录
+        List<InstallRecordDO> installRecordList = installRecordManager.list();
         //转map
-        Map<String, DownloadRecordDO> recordMap = CollUtil.toMap(downloadRecordList, new HashMap<>(), DownloadRecordDO::getUkVersion);
+        Map<String, InstallRecordDO> recordMap = CollUtil.toMap(installRecordList, new HashMap<>(), InstallRecordDO::getUkVersion);
         //获取用户版本信息
         List<UserJdkVersionDO> userJavaVersionList = userJdkVersionManager.list();
         //转map
@@ -70,14 +70,14 @@ public class JavaVersionService {
             vo.setDownloadUrl(v.getDownloadUrl());
             //下载状态
             if (userJavaVersionMap.containsKey(v.getUkVersion())) {
-                vo.setDownloadStatus(DownloadStatusEnum.DOWNLOADED);
+                vo.setInstallStatus(InstallStatusEnum.DOWNLOADED);
                 return vo;
             }
             if (recordMap.containsKey(v.getUkVersion())) {
-                vo.setDownloadStatus(DownloadStatusEnum.getByStatus(recordMap.get(v.getUkVersion()).getDownloadStatus()));
+                vo.setInstallStatus(InstallStatusEnum.getByStatus(recordMap.get(v.getUkVersion()).getDownloadStatus()));
                 return vo;
             }
-            vo.setDownloadStatus(DownloadStatusEnum.NO_DOWNLOADED);
+            vo.setInstallStatus(InstallStatusEnum.NO_DOWNLOADED);
             return vo;
         }).toList();
     }

@@ -4,6 +4,7 @@ import javafx.concurrent.Task;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -41,9 +42,9 @@ public class DownloadTask extends Task<Void> {
     }
 
 
-    public String getLocalPath(){
-        return saveDir + "/" + fileName;
-   }
+    public String getLocalPath() {
+        return saveDir + File.separator + fileName;
+    }
 
 
     @Override
@@ -108,5 +109,16 @@ public class DownloadTask extends Task<Void> {
     @Override
     protected void setException(Throwable t) {
         log.error("下载异常：", t);
+    }
+
+    /**
+     * 启动任务执行
+     * <p>
+     * 本方法通过线程池调度给定的任务，实现异步执行
+     */
+    public void updateProgress(double downloadedBytes, long totalBytes) {
+        double progress = downloadedBytes / totalBytes;
+        super.updateProgress(downloadedBytes, totalBytes);
+        super.updateMessage(String.format("%.2f%%", progress * 100));
     }
 }

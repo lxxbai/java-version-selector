@@ -2,6 +2,7 @@
 
 package io.github.lxxbai.javaversionselector.component.cell;
 
+import io.github.lxxbai.javaversionselector.component.bo.CellDataBO;
 import javafx.scene.Node;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -18,17 +19,17 @@ public class GraphicTableCellFactory<S, T> implements Callback<TableColumn<S, T>
     /**
      * 构造函数
      */
-    private final Function<S, Node> graphicFunc;
+    private final Function<CellDataBO<S>, Node> graphicFunc;
 
-    private GraphicTableCellFactory(Function<S, Node> graphicFunc) {
+    private GraphicTableCellFactory(Function<CellDataBO<S>, Node> graphicFunc) {
         this.graphicFunc = graphicFunc;
     }
 
     /**
      * 设置列表项图标
      */
-    public static <S, T> GraphicTableCellFactory<S, T> withGraphicFunc(Function<S, Node> graphicFunction) {
-        return new GraphicTableCellFactory<>(graphicFunction);
+    public static <S, T> GraphicTableCellFactory<S, T> withGraphicFunc(Function<CellDataBO<S>, Node> graphicFunc) {
+        return new GraphicTableCellFactory<>(graphicFunc);
     }
 
     @Override

@@ -2,11 +2,9 @@
 package io.github.lxxbai.javaversionselector.common.factory;
 
 import com.jfoenix.controls.JFXButton;
-import io.github.lxxbai.javaversionselector.common.enums.DownloadStatusEnum;
-import io.github.lxxbai.javaversionselector.common.util.DialogUtils;
+import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.JFXButtonUtil;
-import io.github.lxxbai.javaversionselector.component.DownloadProgress;
-import io.github.lxxbai.javaversionselector.model.DownloadVO;
+import io.github.lxxbai.javaversionselector.model.InstallRecordVO;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.HBox;
@@ -17,10 +15,10 @@ import javafx.util.Callback;
  *
  * @author lxxbai
  */
-public class JdkDownloadActionFactory implements Callback<TableColumn<DownloadVO, String>, TableCell<DownloadVO, String>> {
+public class JdkDownloadActionFactory implements Callback<TableColumn<InstallRecordVO, String>, TableCell<InstallRecordVO, String>> {
 
     @Override
-    public TableCell<DownloadVO, String> call(TableColumn<DownloadVO, String> tableColumn) {
+    public TableCell<InstallRecordVO, String> call(TableColumn<InstallRecordVO, String> tableColumn) {
         return new TableCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -31,8 +29,8 @@ public class JdkDownloadActionFactory implements Callback<TableColumn<DownloadVO
                     return;
                 }
                 // 获取当前行数据
-                DownloadVO downloadVO = getTableView().getItems().get(getIndex());
-                DownloadStatusEnum downloadStatus = downloadVO.getDownloadStatus();
+                InstallRecordVO downloadVO = getTableView().getItems().get(getIndex());
+                InstallStatusEnum downloadStatus = downloadVO.getDownloadStatus();
                 //开始下载按钮，暂停按钮，文件位置按钮，删除按钮
                 HBox hBox = new HBox();
                 JFXButton filePathButton = JFXButtonUtil.buildSvgButton("svg/folder-regular.svg");
@@ -54,32 +52,4 @@ public class JdkDownloadActionFactory implements Callback<TableColumn<DownloadVO
             }
         };
     }
-
-
-    /**
-     * 构建下载进度条
-     *
-     * @param downloadVO 版本信息
-     * @return 下载进度条
-     */
-    private DownloadProgress buildDownloadProgressBar(DownloadVO downloadVO) {
-        //获取下载地址
-        DownloadProgress downloadProgress = new DownloadProgress(100, 30,
-                downloadVO.getDownloadUrl(), downloadVO.getDownloadFileUrl(), "下载");
-        //失败
-        downloadProgress.getTask().setOnFailed(event -> {
-            DialogUtils.showErrorDialog("下载失败", "下载失败", "下载失败");
-            //applicationContext.publishEvent(new StatusChangeEvent(version, VersionActionEnum.FAILURE));
-        });
-        //下载成功
-        downloadProgress.getTask().setOnSucceeded(event -> {
-            //applicationContext.publishEvent(new StatusChangeEvent(version, VersionActionEnum.SUCCESS))
-        });
-        //当做暂停
-        downloadProgress.getTask().setOnCancelled(event -> {
-            //applicationContext.publishEvent(new StatusChangeEvent(version, VersionActionEnum.CANCEL))
-        });
-        return downloadProgress;
-    }
-
 }

@@ -103,6 +103,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
+        <!--状态机-->
         <dependency>
             <groupId>com.alibaba.cola</groupId>
             <artifactId>cola-component-statemachine</artifactId>
@@ -136,12 +137,6 @@
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-fontawesome5-pack</artifactId>
             <version>12.3.1</version>
-        </dependency>
-        <!-- 任务栏 -->
-        <dependency>
-            <groupId>com.dustinredmond.fxtrayicon</groupId>
-            <artifactId>FXTrayIcon</artifactId>
-            <version>4.2.0</version>
         </dependency>
 
     </dependencies>

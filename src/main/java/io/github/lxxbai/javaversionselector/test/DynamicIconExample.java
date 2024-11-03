@@ -23,6 +23,7 @@ public class DynamicIconExample extends Application {
         root.getChildren().add(button);
 
         Scene scene = new Scene(root, 300, 200);
+        MySystemTray.getInstance(primaryStage);
 
         primaryStage.setTitle("动态图标示例");
         primaryStage.setScene(scene);
