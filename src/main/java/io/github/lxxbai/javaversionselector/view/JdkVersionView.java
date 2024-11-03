@@ -15,6 +15,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 
 /**
  * @author lxxbai
@@ -88,25 +90,22 @@ public class JdkVersionView {
      * @return 表格列工厂
      */
     private GraphicTableCellFactory<JdkVersionVO, String> getTableColumCellFactory() {
-        //设置单元格工厂
+        //设置单元格工厂,只有不是安装中的时候才显示下载按钮
         return GraphicTableCellFactory.withGraphicFunc(cellData -> {
             JdkVersionVO vo = cellData.getData();
             InstallStatusEnum downloadStatus = vo.getInstallStatus();
-            JFXButton downloadButton = new JFXButton();
-            switch (downloadStatus) {
-                case NO_DOWNLOADED, DOWNLOAD_FAILURE, DOWNLOADED -> {
-                    downloadButton = JFXButtonUtil.buildSvgButton("svg/circle-down-regular.svg");
-                    downloadButton.setOnAction(event -> {
-                        //下载
-                        installViewModel.download(vo);
-                        //修改成下载中
-                        jdkVersionViewModel.changeStatus(cellData.getIndex(), InstallStatusEnum.DOWNLOADING);
-                    });
-                }
-                case DOWNLOADING -> {
-                    downloadButton = JFXButtonUtil.buildDynamicButton("pic/downloading.gif");
-                    downloadButton.setDisable(true);
-                }
+            JFXButton downloadButton;
+            if (Objects.requireNonNull(downloadStatus) == InstallStatusEnum.DOWNLOADING) {
+                downloadButton = JFXButtonUtil.buildDynamicButton("pic/downloading.gif");
+                downloadButton.setDisable(true);
+            } else {
+                downloadButton = JFXButtonUtil.buildSvgButton("svg/circle-down-regular.svg");
+                downloadButton.setOnAction(event -> {
+                    //下载
+                    installViewModel.download(vo);
+                    //修改成下载中
+                    jdkVersionViewModel.changeStatus(cellData.getIndex(), InstallStatusEnum.DOWNLOADING);
+                });
             }
             return downloadButton;
         });

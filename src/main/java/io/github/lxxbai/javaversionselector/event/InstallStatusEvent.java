@@ -1,6 +1,6 @@
 package io.github.lxxbai.javaversionselector.event;
 
-import io.github.lxxbai.javaversionselector.common.enums.VersionActionEnum;
+import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class InstallStatusEvent {
 
-    private String version;
+    private String ukVersion;
 
-    private VersionActionEnum versionAction;
+    private InstallStatusEnum currentStatus;
 }
