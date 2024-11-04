@@ -5,8 +5,11 @@ import com.jfoenix.controls.JFXTooltip;
 import com.jfoenix.svg.SVGGlyph;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
@@ -41,6 +44,27 @@ public class JFXButtonUtil {
      *
      * @return JFXButton
      */
+    public static Node buildSvgHBox(String path, String tooltipStr) {
+        HBox hBox = new HBox();
+        //加载图标
+        SVGGlyph svgGlyph = SVGGlyphUtil.loadGlyph(ResourceUtil.getUrl(path));
+        //derive(#d1e9ec, -20%)
+        svgGlyph.setFill(Color.BURLYWOOD);
+        svgGlyph.setSize(15, 15);
+        JFXTooltip tooltip = new JFXTooltip(tooltipStr);
+        tooltip.setShowDelay(Duration.millis(100));
+        // 或者直接设置样式
+        tooltip.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7); -fx-text-fill: white;");
+        hBox.getChildren().addAll(svgGlyph, new Label(tooltipStr));
+        JFXTooltip.install(hBox, tooltip, Pos.CENTER_RIGHT);
+        return hBox;
+    }
+
+    /**
+     * 构建自定义按钮
+     *
+     * @return JFXButton
+     */
     public static JFXButton buildSvgButton(String path, String tooltipStr) {
         JFXButton btnSettings = new JFXButton();
         //加载图标
@@ -68,9 +92,8 @@ public class JFXButtonUtil {
         JFXButton btnSettings = new JFXButton();
         Image image = ResourceUtil.toImage(path);
         ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(20);
-        imageView.setFitWidth(20);
-        btnSettings.setCursor(Cursor.HAND);
+        imageView.setFitHeight(15);
+        imageView.setFitWidth(15);
         btnSettings.setRipplerFill(Color.WHITE);
         btnSettings.setGraphic(imageView);
         return btnSettings;

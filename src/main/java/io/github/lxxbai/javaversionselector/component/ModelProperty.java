@@ -3,8 +3,7 @@ package io.github.lxxbai.javaversionselector.component;
 import cn.hutool.core.lang.func.Func1;
 import cn.hutool.core.lang.func.LambdaUtil;
 import cn.hutool.core.util.ReflectUtil;
-import io.github.lxxbai.javaversionselector.common.factory.PropertyFactory;
-import io.github.lxxbai.javaversionselector.model.DownloadConfig;
+import io.github.lxxbai.javaversionselector.component.factory.PropertyFactory;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
@@ -107,14 +106,5 @@ public class ModelProperty<T> {
         });
         propertyMap.put(field, property);
         return property;
-    }
-
-    public static void main(String[] args) {
-        ModelProperty<DownloadConfig> modelProperty = new ModelProperty<>();
-        Property<String> stringProperty = modelProperty.buildProperty(DownloadConfig::getDownloadPath);
-        Property<String> downloadPathField = new SimpleObjectProperty<>();
-        downloadPathField.bindBidirectional(stringProperty);
-        downloadPathField.setValue("123");
-        System.out.println(modelProperty.getModel());
     }
 }

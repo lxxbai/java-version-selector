@@ -1,8 +1,8 @@
 package io.github.lxxbai.javaversionselector.view;
 
 import com.jfoenix.controls.JFXListView;
-import io.github.lxxbai.javaversionselector.common.factory.MenuCellFactory;
-import io.github.lxxbai.javaversionselector.common.factory.MenuPageFactory;
+import io.github.lxxbai.javaversionselector.component.menu.MenuCellFactory;
+import io.github.lxxbai.javaversionselector.component.menu.MenuPageFactory;
 import io.github.lxxbai.javaversionselector.model.MenuPage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;

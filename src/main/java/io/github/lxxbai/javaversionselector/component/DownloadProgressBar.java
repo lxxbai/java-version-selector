@@ -35,6 +35,9 @@ public class DownloadProgressBar implements BaseNode {
     private final ProgressBar progressBar;
 
 
+    private Label progressLabel;
+
+
     /**
      * 构造方法
      *
@@ -54,7 +57,7 @@ public class DownloadProgressBar implements BaseNode {
         progressBar.setPrefWidth(width);
         progressBar.setPrefHeight(height);
         // 创建显示进度的标签
-        Label progressLabel = new Label("0%");
+        progressLabel = new Label("0%");
         progressLabel.setStyle("-fx-text-fill: #0b0a0a; -fx-font-size: " + (height - 2) + "px;");
         // 将标签放在进度条上
         stackPane.getChildren().addAll(progressBar, progressLabel);
@@ -92,24 +95,27 @@ public class DownloadProgressBar implements BaseNode {
         if (task.isRunning()) {
             return;
         }
-        ThreadPoolUtil.execute(task);
-    }
-
-    /**
-     * 启动任务执行
-     * <p>
-     * 本方法通过线程池调度给定的任务，实现异步执行
-     */
-    public void reStart() {
-        if (task.isRunning()) {
-            return;
-        }
         if (task.isCancelled()) {
-            this.task = new DownloadTask(task.getDownloadUrl(), task.getSaveDir(), task.getFileName());
+            unbind();
+            DownloadTask newTask = new DownloadTask(task.getDownloadUrl(), task.getSaveDir(), task.getFileName());
+            bind(this.task, newTask);
+            this.task = newTask;
         }
         ThreadPoolUtil.execute(task);
     }
 
+    private void unbind() {
+        progressBar.progressProperty().unbind();
+        progressLabel.textProperty().unbind();
+    }
+
+    private void bind(DownloadTask oldTask, DownloadTask newTask) {
+        progressBar.progressProperty().bind(newTask.progressProperty());
+        progressLabel.textProperty().bind(newTask.messageProperty());
+        newTask.setOnFailed(oldTask.getOnFailed());
+        newTask.setOnSucceeded(oldTask.getOnSucceeded());
+        newTask.setOnCancelled(oldTask.getOnCancelled());
+    }
 
     public void setOnSucceeded(EventHandler<WorkerStateEvent> eventHandler) {
         task.setOnSucceeded(eventHandler);
@@ -121,10 +127,6 @@ public class DownloadProgressBar implements BaseNode {
 
     public void setOnCancelled(EventHandler<WorkerStateEvent> eventHandler) {
         task.setOnCancelled(eventHandler);
-    }
-
-    public boolean isRunning() {
-        return task.isRunning();
     }
 
     /**

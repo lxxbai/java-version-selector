@@ -18,6 +18,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
+/**
+ * @author lxxbai
+ */
 @Slf4j
 @Getter
 public class DownloadTask extends Task<Void> {
@@ -33,7 +36,7 @@ public class DownloadTask extends Task<Void> {
      */
     private static final int BUFFER_SIZE = 1024;
 
-    private volatile boolean cancelled = false;
+    protected volatile boolean cancelled = false;
 
     public DownloadTask(String downloadUrl, String saveDir, String fileName) {
         this.downloadUrl = downloadUrl;
@@ -93,6 +96,10 @@ public class DownloadTask extends Task<Void> {
                 updateProgress(totalBytesRead, contentLength);
                 updateMessage(String.format("%.2f%%", progress * 100));
             }
+        }
+        if (cancelled) {
+            // 确保任务被取消
+            cancel(true);
         }
         return null;
     }

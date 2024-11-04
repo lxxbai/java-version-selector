@@ -2,14 +2,9 @@ package io.github.lxxbai.javaversionselector.service;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.URLUtil;
 import io.github.lxxbai.javaversionselector.common.Constants;
 import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.common.exception.ClientException;
-import io.github.lxxbai.javaversionselector.common.util.AlertUtil;
-import io.github.lxxbai.javaversionselector.common.util.DownloadUtil;
-import io.github.lxxbai.javaversionselector.common.util.StageUtil;
-import io.github.lxxbai.javaversionselector.component.DownloadProgressBar;
 import io.github.lxxbai.javaversionselector.datasource.entity.InstallRecordDO;
 import io.github.lxxbai.javaversionselector.manager.InstallRecordManager;
 import io.github.lxxbai.javaversionselector.manager.UserConfigInfoManager;
@@ -20,7 +15,6 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -56,6 +50,9 @@ public class InstallService {
         if (Objects.isNull(downloadConfig)) {
             throw new ClientException("下载配置不存在");
         }
+        //创建下载路径
+        FileUtil.mkdir(downloadConfig.getDownloadPath());
+        FileUtil.mkdir(downloadConfig.getJdkPathUrl());
         InstallRecordDO record = new InstallRecordDO();
         record.setFileName(jdkVersionVO.getFileName());
         record.setFileSize(jdkVersionVO.getFileSize());
@@ -63,7 +60,8 @@ public class InstallService {
         record.setDownloadStatus(InstallStatusEnum.DOWNLOADING.getStatus());
         record.setDownloadUrl(jdkVersionVO.getDownloadUrl());
         record.setDownloadFileUrl(downloadConfig.getDownloadPath());
-        record.setJdkPathUrl(downloadConfig.getJdkPathUrl().concat(File.separator).concat(jdkVersionVO.getFileName()));
+        //判断文件是否已经存在
+        record.setJdkPathUrl(buildFileName(downloadConfig.getDownloadPath(), jdkVersionVO.getFileName(), 0));
         record.setDownloadProgress(0.0D);
         record.setCreatedAt(DateUtil.now());
         record.setVmVendor(jdkVersionVO.getVmVendor());
@@ -71,6 +69,26 @@ public class InstallService {
         record.setJavaVersion(jdkVersionVO.getJavaVersion());
         record.setUkVersion(jdkVersionVO.getUkVersion());
         installRecordManager.save(record);
+    }
+
+    /**
+     * 构建文件名
+     *
+     * @param downPath 下载路径
+     * @param fileName 文件名
+     * @param times    次数
+     * @return 文件名
+     */
+    private String buildFileName(String downPath, String fileName, int times) {
+        String url = downPath.concat(File.separator).concat(fileName);
+        if (times > 0) {
+            url = url.concat("(%d)".formatted(times));
+        }
+        if (FileUtil.exist(url)) {
+            return buildFileName(downPath, fileName, times + 1);
+        } else {
+            return url;
+        }
     }
 
 
@@ -92,7 +110,7 @@ public class InstallService {
             vo.setFileName(record.getFileName());
             vo.setFileSize(record.getFileSize());
             vo.setDownloadUrl(record.getDownloadUrl());
-            vo.setDownloadStatus(InstallStatusEnum.getByStatus(record.getDownloadStatus()));
+            vo.setInstallStatus(InstallStatusEnum.getByStatus(record.getDownloadStatus()));
             vo.setDownloadProgress(record.getDownloadProgress());
             vo.setJdkPathUrl(record.getJdkPathUrl());
             vo.setCreatedAt(record.getCreatedAt());
@@ -100,11 +118,9 @@ public class InstallService {
             vo.setDownloadFileUrl(record.getDownloadFileUrl());
             return vo;
         }).sorted(Comparator.comparing(InstallRecordVO::getCreatedAt).thenComparing((p1) ->
-                p1.getDownloadStatus().equals(InstallStatusEnum.DOWNLOADING) ? -1 : 0
+                p1.getInstallStatus().equals(InstallStatusEnum.DOWNLOADING) ? -1 : 0
         )).toList();
     }
-
-
 
 
     /**
@@ -114,10 +130,19 @@ public class InstallService {
      */
     public void updateDownloadStatus(InstallRecordVO installRecord) {
         InstallRecordDO record = installRecordManager.getById(installRecord.getId());
-        record.setDownloadStatus(installRecord.getDownloadStatus().getStatus());
-        if (installRecord.getDownloadStatus().equals(InstallStatusEnum.DOWNLOADED)) {
+        record.setDownloadStatus(installRecord.getInstallStatus().getStatus());
+        if (installRecord.getInstallStatus().equals(InstallStatusEnum.DOWNLOADED)) {
             record.setDownloadEndAt(DateUtil.now());
         }
         installRecordManager.updateById(record);
+    }
+
+    /**
+     * 更新下载状态
+     *
+     * @param id id
+     */
+    public void deleteRecord(Integer id) {
+        installRecordManager.removeById(id);
     }
 }

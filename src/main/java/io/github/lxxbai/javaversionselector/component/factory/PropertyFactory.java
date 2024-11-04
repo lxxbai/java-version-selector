@@ -1,4 +1,4 @@
-package io.github.lxxbai.javaversionselector.common.factory;
+package io.github.lxxbai.javaversionselector.component.factory;
 
 import cn.hutool.core.util.StrUtil;
 import javafx.beans.property.*;

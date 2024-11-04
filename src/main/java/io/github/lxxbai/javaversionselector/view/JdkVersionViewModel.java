@@ -2,6 +2,7 @@ package io.github.lxxbai.javaversionselector.view;
 
 import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.common.enums.VmVendorEnum;
+import io.github.lxxbai.javaversionselector.event.InstallStatusEvent;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import io.github.lxxbai.javaversionselector.service.JavaVersionService;
 import jakarta.annotation.Resource;
@@ -10,6 +11,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -132,5 +134,16 @@ public class JdkVersionViewModel {
         JdkVersionVO vo = javaVersionList.get(index);
         vo.setInstallStatus(statusEnum);
         refreshColumn(index, vo);
+    }
+
+
+    @EventListener(value = InstallStatusEvent.class)
+    public void changeStatus(InstallStatusEvent installStatusEvent) {
+        String ukVersion = installStatusEvent.getUkVersion();
+        for (int i = 0; i < javaVersionList.size(); i++) {
+            if (javaVersionList.get(i).getUkVersion().equals(ukVersion)) {
+                changeStatus(i, installStatusEvent.getInstallStatus());
+            }
+        }
     }
 }

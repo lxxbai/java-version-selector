@@ -77,7 +77,7 @@ public class JdkVersionView {
         releaseDate.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
         fileName.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         fileSize.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
-        action.setCellFactory(getTableColumCellFactory());
+        action.setCellFactory(buildActionCellFactory());
         tableView.setItems(jdkVersionViewModel.getJavaVersionList());
         filterVmVendor.setItems(jdkVersionViewModel.getVmVendorList());
         filterMainVersion.setItems(jdkVersionViewModel.getMainVersionList());
@@ -89,7 +89,7 @@ public class JdkVersionView {
      *
      * @return 表格列工厂
      */
-    private GraphicTableCellFactory<JdkVersionVO, String> getTableColumCellFactory() {
+    private GraphicTableCellFactory<JdkVersionVO, String> buildActionCellFactory() {
         //设置单元格工厂,只有不是安装中的时候才显示下载按钮
         return GraphicTableCellFactory.withGraphicFunc(cellData -> {
             JdkVersionVO vo = cellData.getData();

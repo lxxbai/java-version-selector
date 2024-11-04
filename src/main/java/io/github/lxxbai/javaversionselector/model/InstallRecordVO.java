@@ -42,6 +42,11 @@ public class InstallRecordVO {
     private String fileName;
 
     /**
+     * 文件类型
+     */
+    private String fileType;
+
+    /**
      * 文件大小
      */
     private String fileSize;
@@ -64,7 +69,7 @@ public class InstallRecordVO {
     /**
      * 安装状态
      */
-    private InstallStatusEnum downloadStatus;
+    private InstallStatusEnum installStatus;
 
     /**
      * 下载的进度

@@ -13,5 +13,5 @@ public class InstallStatusEvent {
 
     private String ukVersion;
 
-    private InstallStatusEnum currentStatus;
+    private InstallStatusEnum installStatus;
 }

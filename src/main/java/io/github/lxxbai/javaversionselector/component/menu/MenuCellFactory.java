@@ -1,4 +1,4 @@
-package io.github.lxxbai.javaversionselector.common.factory;
+package io.github.lxxbai.javaversionselector.component.menu;
 
 import io.github.lxxbai.javaversionselector.model.MenuPage;
 import javafx.scene.control.ListCell;

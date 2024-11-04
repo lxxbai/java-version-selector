@@ -3,10 +3,12 @@ package io.github.lxxbai.javaversionselector.test;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTooltip;
 import com.jfoenix.svg.SVGGlyph;
+import io.github.lxxbai.javaversionselector.common.util.JFXButtonUtil;
 import io.github.lxxbai.javaversionselector.common.util.ResourceUtil;
 import io.github.lxxbai.javaversionselector.common.util.SVGGlyphUtil;
 import javafx.application.Application;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
@@ -19,22 +21,11 @@ public class ButtonBarExample extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Button btnSettings = new Button("测试");
-        //加载图标
-//        SVGGlyph svgGlyph = SVGGlyphUtil.loadGlyph(ResourceUtil.getUrl(path));
-        //derive(#d1e9ec, -20%)
-//        svgGlyph.setFill(Color.BURLYWOOD);
-//        svgGlyph.setSize(15, 15);
-        btnSettings.setCursor(Cursor.HAND);
-//        btnSettings.setGraphic(svgGlyph);
-        btnSettings.setTooltip(new JFXTooltip("有问题"));
-
+        Node node = JFXButtonUtil.buildSvgHBox("svg/trash-solid.svg", "测试");
         // 创建一个 VBox 容器
-        VBox vBox = new VBox(btnSettings);
-
+        VBox vBox = new VBox(node);
         // 创建场景
         Scene scene = new Scene(vBox, 300, 200);
-
         // 设置舞台
         primaryStage.setTitle("ButtonBar Example");
         primaryStage.setScene(scene);
