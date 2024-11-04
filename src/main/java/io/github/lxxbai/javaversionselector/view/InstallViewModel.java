@@ -228,6 +228,8 @@ public class InstallViewModel {
             installRecordVO.setInstallStatus(InstallStatusEnum.DOWNLOADED);
             //修改状态
             changeStatus(installRecordVO);
+            //安装
+            install(installRecordVO);
         });
         //当做暂停
         downloadProgressBar.setOnCancelled(event -> {

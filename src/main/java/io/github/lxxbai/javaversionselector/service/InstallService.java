@@ -107,6 +107,7 @@ public class InstallService {
             vo.setMainVersion(record.getMainVersion());
             vo.setJavaVersion(record.getJavaVersion());
             vo.setUkVersion(record.getUkVersion());
+            vo.setFileType(record.getFileType());
             vo.setFileName(record.getFileName());
             vo.setFileSize(record.getFileSize());
             vo.setDownloadUrl(record.getDownloadUrl());
