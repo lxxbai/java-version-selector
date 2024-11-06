@@ -69,7 +69,7 @@ public class InstallViewModel {
                     //判断是否已经开始
                     downloadProgressBar.start();
                 }
-                long downloadBytes = FileUtil.size(new File(vo.getJdkPathUrl()));
+                long downloadBytes = FileUtil.size(new File(vo.getJdkPackageUrl()));
                 try {
                     URL url = new URL(vo.getDownloadUrl());
                     long contentLength = URLUtil.getContentLength(url);
@@ -146,8 +146,8 @@ public class InstallViewModel {
     public void deleteRecord(int index, InstallRecordVO installRecordVO) {
         installService.deleteRecord(installRecordVO.getId());
         //移除
-        if (FileUtil.exist(installRecordVO.getJdkPathUrl())) {
-            FileUtil.del(installRecordVO.getJdkPathUrl());
+        if (FileUtil.exist(installRecordVO.getJdkPackageUrl())) {
+            FileUtil.del(installRecordVO.getJdkPackageUrl());
         }
         this.downLoadList.remove(index);
     }
@@ -160,8 +160,7 @@ public class InstallViewModel {
      */
     public void install(InstallRecordVO installRecordVO) {
         installRecordVO.setInstallStatus(InstallStatusEnum.INSTALLING);
-        installService.updateDownloadStatus(installRecordVO);
-        refresh();
+        changeStatus(installRecordVO);
         //执行解压等操作,需要异步
         ThreadPoolUtil.execute(() -> {
             if (StrUtil.equalsIgnoreCase(installRecordVO.getFileType(), "zip")) {
@@ -179,14 +178,17 @@ public class InstallViewModel {
      */
     private void zipInstall(InstallRecordVO installRecordVO) {
         try {
-            File zipFile = ZipUtil.unzip(installRecordVO.getDownloadFileUrl(), installRecordVO.getJdkPathUrl());
+            File zipFile = ZipUtil.unzip(installRecordVO.getJdkPackageUrl(), installRecordVO.getInstalledFolder());
             //设置解压路径
             String javaHomePath = JdkUtil.getJavaHomePath(zipFile);
+            installRecordVO.setInstalledJavaHome(javaHomePath);
+            installRecordVO.setInstallStatus(InstallStatusEnum.INSTALLED);
+            //发送事件,通知已安装
             PublishUtil.publishEvent(new InstallEndEvent(javaHomePath, installRecordVO));
         } catch (Exception e) {
             installRecordVO.setInstallStatus(InstallStatusEnum.INSTALLED_FAILURE);
-            changeStatus(installRecordVO);
         }
+        changeStatus(installRecordVO);
     }
 
     /**
@@ -195,7 +197,7 @@ public class InstallViewModel {
      * @param installRecordVO 版本信息
      */
     private void exeInstall(InstallRecordVO installRecordVO) {
-        Process exec = RuntimeUtil.exec(installRecordVO.getDownloadFileUrl());
+        Process exec = RuntimeUtil.exec(installRecordVO.getJdkPackageUrl());
         try {
             int i = exec.waitFor();
             installRecordVO.setInstallStatus(i == 0 ? InstallStatusEnum.INSTALLED : InstallStatusEnum.INSTALLED_FAILURE);
@@ -215,7 +217,7 @@ public class InstallViewModel {
     private DownloadProgressBar buildDownloadProgressBar(InstallRecordVO installRecordVO) {
         //获取下载地址
         DownloadProgressBar downloadProgressBar = new DownloadProgressBar(80, 2,
-                installRecordVO.getDownloadUrl(), installRecordVO.getDownloadFileUrl(), "");
+                installRecordVO.getDownloadUrl(), installRecordVO.getDownloadFileFolder(), "");
         //失败
         downloadProgressBar.setOnFailed(event -> {
             AlertUtil.showInfo(StageUtil.getPrimaryStage(), "下载失败", "下载失败", "下载失败");
@@ -226,8 +228,6 @@ public class InstallViewModel {
         //下载成功
         downloadProgressBar.setOnSucceeded(event -> {
             installRecordVO.setInstallStatus(InstallStatusEnum.DOWNLOADED);
-            //修改状态
-            changeStatus(installRecordVO);
             //安装
             install(installRecordVO);
         });

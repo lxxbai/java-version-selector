@@ -57,14 +57,27 @@ public class InstallRecordVO {
     private String downloadUrl;
 
     /**
-     * 下载文件地址
+     * DOWNLOAD_FILE_FOLDERS
+     * 下载文件存放文件夹
      */
-    private String downloadFileUrl;
+    private String downloadFileFolder;
 
     /**
-     * jdk地址
+     * JDK_PACKAGE_URL
+     * jdk安装包地址
      */
-    private String jdkPathUrl;
+    private String jdkPackageUrl;
+
+    /**
+     * 安装文件夹
+     */
+    private String installedFolder;
+
+    /**
+     * INSTALLED_JAVA_HOME
+     * jdk安装成功后的home路径
+     */
+    private String installedJavaHome;
 
     /**
      * 安装状态

@@ -36,14 +36,24 @@ public class InstallRecordDO extends VersionBaseDO {
     private String downloadUrl;
 
     /**
-     * 下载文件地址
+     * 下载文件存放文件夹
      */
-    private String downloadFileUrl;
+    private String downloadFileFolder;
 
     /**
-     * jdk地址
+     * jdk安装包地址
      */
-    private String jdkPathUrl;
+    private String jdkPackageUrl;
+
+    /**
+     * 安装文件夹
+     */
+    private String installedFolder;
+
+    /**
+     * jdk安装成功后的home路径
+     */
+    private String installedJavaHome;
 
     /**
      * 下载的进度

@@ -138,7 +138,8 @@ public class InstallView {
                     JFXButton installButton = buildInstallButton(installRecordVO);
                     hBox.getChildren().addAll(installButton, filePathButton, deleteButton);
                 }
-                case INSTALLING, INSTALLED -> hBox.getChildren().addAll(filePathButton, deleteButton);
+                case INSTALLING -> hBox.getChildren().addAll(filePathButton);
+                case INSTALLED -> hBox.getChildren().addAll(filePathButton, deleteButton);
             }
             return hBox;
         });
@@ -155,7 +156,7 @@ public class InstallView {
         JFXButton filePathButton = JFXButtonUtil.buildSvgButton("svg/folder-regular.svg", "打开文件地址");
         filePathButton.setOnAction(event -> {
             try {
-                Desktop.getDesktop().open(new File(installRecordVO.getDownloadFileUrl()));
+                Desktop.getDesktop().open(new File(installRecordVO.getDownloadFileFolder()));
             } catch (Exception e) {
                 AlertUtil.showError(StageUtil.getPrimaryStage(), "打开文件失败", "打开文件失败", "文件不存在!");
             }
@@ -235,11 +236,11 @@ public class InstallView {
      * @return JFXButton
      */
     private JFXButton buildInstallButton(InstallRecordVO installRecordVO) {
-        JFXButton retryButton = JFXButtonUtil.buildSvgButton("svg/install-solid.svg", "安装");
-        retryButton.setOnAction(event -> {
-            installRecordVO.setInstallStatus(InstallStatusEnum.DOWNLOADING);
+        JFXButton installButton = JFXButtonUtil.buildSvgButton("svg/install-solid.svg", "安装");
+        installButton.setOnAction(event -> {
+            installRecordVO.setInstallStatus(InstallStatusEnum.INSTALLING);
             installViewModel.install(installRecordVO);
         });
-        return retryButton;
+        return installButton;
     }
 }

@@ -59,9 +59,10 @@ public class InstallService {
         record.setFileType(jdkVersionVO.getFileType());
         record.setDownloadStatus(InstallStatusEnum.DOWNLOADING.getStatus());
         record.setDownloadUrl(jdkVersionVO.getDownloadUrl());
-        record.setDownloadFileUrl(downloadConfig.getDownloadPath());
+        record.setDownloadFileFolder(downloadConfig.getDownloadPath());
+        record.setInstalledFolder(downloadConfig.getJdkPathUrl());
         //判断文件是否已经存在
-        record.setJdkPathUrl(buildFileName(downloadConfig.getDownloadPath(), jdkVersionVO.getFileName(), 0));
+        record.setJdkPackageUrl(buildFileName(downloadConfig.getDownloadPath(), jdkVersionVO.getFileName(), 0));
         record.setDownloadProgress(0.0D);
         record.setCreatedAt(DateUtil.now());
         record.setVmVendor(jdkVersionVO.getVmVendor());
@@ -113,10 +114,12 @@ public class InstallService {
             vo.setDownloadUrl(record.getDownloadUrl());
             vo.setInstallStatus(InstallStatusEnum.getByStatus(record.getDownloadStatus()));
             vo.setDownloadProgress(record.getDownloadProgress());
-            vo.setJdkPathUrl(record.getJdkPathUrl());
+            vo.setJdkPackageUrl(record.getJdkPackageUrl());
             vo.setCreatedAt(record.getCreatedAt());
             vo.setDownloadEndAt(record.getDownloadEndAt());
-            vo.setDownloadFileUrl(record.getDownloadFileUrl());
+            vo.setDownloadFileFolder(record.getDownloadFileFolder());
+            vo.setInstalledFolder(record.getInstalledFolder());
+            vo.setInstalledJavaHome(record.getInstalledJavaHome());
             return vo;
         }).sorted(Comparator.comparing(InstallRecordVO::getCreatedAt).thenComparing((p1) ->
                 p1.getInstallStatus().equals(InstallStatusEnum.DOWNLOADING) ? -1 : 0
@@ -134,6 +137,9 @@ public class InstallService {
         record.setDownloadStatus(installRecord.getInstallStatus().getStatus());
         if (installRecord.getInstallStatus().equals(InstallStatusEnum.DOWNLOADED)) {
             record.setDownloadEndAt(DateUtil.now());
+        }
+        if (installRecord.getInstallStatus().equals(InstallStatusEnum.INSTALLED)) {
+            record.setInstalledJavaHome(installRecord.getInstalledJavaHome());
         }
         installRecordManager.updateById(record);
     }
