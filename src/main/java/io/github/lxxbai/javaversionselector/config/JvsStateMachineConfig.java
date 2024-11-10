@@ -3,10 +3,10 @@ package io.github.lxxbai.javaversionselector.config;
 import com.alibaba.cola.statemachine.StateMachine;
 import com.alibaba.cola.statemachine.builder.StateMachineBuilder;
 import com.alibaba.cola.statemachine.builder.StateMachineBuilderFactory;
-import io.github.lxxbai.javaversionselector.common.enums.VersionActionEnum;
-import io.github.lxxbai.javaversionselector.common.enums.VersionStatusEnum;
-import io.github.lxxbai.javaversionselector.state.action.AbstractVersionHandler;
-import io.github.lxxbai.javaversionselector.state.context.VersionContext;
+import io.github.lxxbai.javaversionselector.common.enums.ActionEnum;
+import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
+import io.github.lxxbai.javaversionselector.state.action.AbstractInstallHandler;
+import io.github.lxxbai.javaversionselector.state.context.InstallContext;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,11 +22,11 @@ import java.util.List;
 public class JvsStateMachineConfig {
 
     @Resource
-    private List<AbstractVersionHandler> handlers;
+    private List<AbstractInstallHandler> handlers;
 
     @Bean
-    public StateMachine<VersionStatusEnum, VersionActionEnum, VersionContext> jvsStateMachine() {
-        StateMachineBuilder<VersionStatusEnum, VersionActionEnum, VersionContext> builder = StateMachineBuilderFactory.create();
+    public StateMachine<InstallStatusEnum, ActionEnum, InstallContext> jvsStateMachine() {
+        StateMachineBuilder<InstallStatusEnum, ActionEnum, InstallContext> builder = StateMachineBuilderFactory.create();
         handlers.forEach(handler -> {
             //是否多个状态
             boolean moreFrom = handler.moreFrom();
@@ -35,7 +35,6 @@ public class JvsStateMachineConfig {
                         .fromAmong(handler.froms())
                         .to(handler.to())
                         .on(handler.event())
-
                         .when(handler)
                         .perform(handler);
             } else {

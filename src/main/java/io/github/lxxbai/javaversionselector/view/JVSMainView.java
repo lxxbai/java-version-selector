@@ -1,8 +1,8 @@
 package io.github.lxxbai.javaversionselector.view;
 
 import com.jfoenix.controls.JFXListView;
-import io.github.lxxbai.javaversionselector.common.factory.MenuCellFactory;
-import io.github.lxxbai.javaversionselector.common.factory.MenuPageFactory;
+import io.github.lxxbai.javaversionselector.component.menu.MenuCellFactory;
+import io.github.lxxbai.javaversionselector.component.menu.MenuPageFactory;
 import io.github.lxxbai.javaversionselector.model.MenuPage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -37,10 +37,11 @@ public class JVSMainView extends GridPane {
         //设置菜单的工厂
         listView.setCellFactory(new MenuCellFactory());
         //首页
-        MenuPage homePage = MenuPageFactory.build("Java版本", "view/home.fxml");
+        MenuPage homePage = MenuPageFactory.build("Jdk版本", "view/java_version.fxml");
         //下载
+        MenuPage downloadPage = MenuPageFactory.build("进度", "view/install_record.fxml");
         //配置
-        listView.getItems().addAll(homePage);
+        listView.getItems().addAll(homePage,downloadPage);
         //左边菜单
         pane = new StackPane();
         GridPane.setHgrow(pane, Priority.ALWAYS);

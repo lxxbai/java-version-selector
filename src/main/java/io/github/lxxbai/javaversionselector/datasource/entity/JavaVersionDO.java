@@ -4,7 +4,7 @@ package io.github.lxxbai.javaversionselector.datasource.entity;
 import lombok.Data;
 
 /**
- * 数据源结果对象
+ * java版本信息
  *
  * @author lxxbai
  */
@@ -17,7 +17,7 @@ public class JavaVersionDO {
     private String version;
 
     /**
-     * 版本类型  oracle jdk or openjdk
+     * 版本类型  oracle jdk or openjdk or other
      */
     private String versionType;
 
@@ -27,9 +27,9 @@ public class JavaVersionDO {
     private String mainVersion;
 
     /**
-     * 详情版本
+     * 版本
      */
-    private String detailVersion;
+    private String javaVersion;
 
     /**
      * 发布日期
@@ -37,12 +37,12 @@ public class JavaVersionDO {
     private String releaseDate;
 
     /**
-     * 下载地址
+     * 是否可直接下载
      */
-    private String downloadUrl;
+    private boolean canDownload;
 
     /**
-     * windows 64位下载地址
+     * 下载/跳转下载地址
      */
-    private String x64WindowsDownloadUrl;
+    private String downloadUrl;
 }

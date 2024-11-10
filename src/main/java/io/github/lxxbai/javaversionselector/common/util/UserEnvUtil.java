@@ -57,10 +57,8 @@ public class UserEnvUtil {
      * 异步更新注册表信息
      */
     public static void updateUserEnv(String envName, String newEnvValue) {
-        ThreadPoolUtil.execute(() -> {
-            // 使用RuntimeUtil封装的执行命令行字符串的方法，拼接删除命令
-            RuntimeUtil.execForStr("cmd /c reg delete " + USER_ENV_PATH + " /v " + envName + " /f");
-            RuntimeUtil.execForStr("cmd /c setx " + envName + " \"" + newEnvValue + "\"");
-        });
+        // 使用RuntimeUtil封装的执行命令行字符串的方法，拼接删除命令
+        RuntimeUtil.execForStr("cmd /c reg delete " + USER_ENV_PATH + " /v " + envName + " /f");
+        RuntimeUtil.execForStr("cmd /c setx " + envName + " \"" + newEnvValue + "\"");
     }
 }

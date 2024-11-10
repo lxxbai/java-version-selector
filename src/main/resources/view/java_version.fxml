@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.github.lxxbai.javaversionselector.view.JdkVersionView"
+            stylesheets="@../css/styles.css">
+    <stylesheets>
+    </stylesheets>
+    <top>
+        <VBox>
+            <HBox spacing="5.0" BorderPane.alignment="CENTER" style="-fx-background-color: white;">
+                <JFXComboBox fx:id="filterVmVendor" promptText="供应商" labelFloat="true"/>
+                <JFXComboBox fx:id="filterMainVersion" promptText="主版本" labelFloat="true"/>
+                <JFXTextField fx:id="filterJavaVersion" promptText="版本" labelFloat="true"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <JFXButton alignment="CENTER_RIGHT" onAction="#resetFilter" text="重置"
+                           HBox.hgrow="NEVER" styleClass="custom-shadow-button"/>
+                <JFXButton alignment="CENTER_RIGHT" onAction="#onUpdateDataButtonClick" text="更新数据"
+                           HBox.hgrow="NEVER" styleClass="custom-shadow-button"/>
+                <padding>
+                    <Insets bottom="10.0" left="10" right="10.0" top="10"/>
+                </padding>
+            </HBox>
+        </VBox>
+    </top>
+    <center>
+        <TableView fx:id="tableView" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="vmVendor" reorderable="false" resizable="false" sortable="false" text="供应商"/>
+                <TableColumn fx:id="mainVersion" reorderable="false" resizable="false" sortable="false" text="主版本"/>
+                <TableColumn fx:id="javaVersion" reorderable="false" resizable="false" sortable="false" text="版本"/>
+                <TableColumn fx:id="releaseDate" reorderable="false" resizable="false" sortable="false" text="发布日期"/>
+                <TableColumn fx:id="fileName" reorderable="false" resizable="false" sortable="false" text="文件名"/>
+                <TableColumn fx:id="fileSize" reorderable="false" resizable="false" sortable="false" text="文件大小"/>
+                <TableColumn fx:id="action" reorderable="false" resizable="false" sortable="false" text="操作"/>
+            </columns>
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+        </TableView>
+    </center>
+</BorderPane>

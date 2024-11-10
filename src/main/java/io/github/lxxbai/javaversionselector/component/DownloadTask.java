@@ -17,13 +17,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
+/**
+ * @author lxxbai
+ */
 @Slf4j
 @Getter
 public class DownloadTask extends Task<Void> {
 
     private final String downloadUrl;
-
-    private final String saveDir;
 
     private final String fileName;
 
@@ -32,24 +33,25 @@ public class DownloadTask extends Task<Void> {
      */
     private static final int BUFFER_SIZE = 1024;
 
-    private volatile boolean cancelled = false;
+    protected volatile boolean cancelled = false;
 
-    public DownloadTask(String downloadUrl, String saveDir, String fileName) {
+    public DownloadTask(String downloadUrl, String fileName) {
         this.downloadUrl = downloadUrl;
-        this.saveDir = saveDir;
         this.fileName = fileName;
     }
 
 
-    public String getLocalPath(){
-        return saveDir + "/" + fileName;
-   }
+    public String getLocalPath() {
+        return fileName;
+    }
+
+
     @Override
     protected Void call() throws Exception {
         URL url = new URL(downloadUrl);
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         // 校验文件是否存在并获取长度
-        Path outputPath = Paths.get(saveDir, fileName);
+        Path outputPath = Paths.get(fileName);
         long downloadedBytes = Files.exists(outputPath) ? Files.size(outputPath) : 0;
         // 计算文件大小
         long contentLength = httpConn.getContentLength();
@@ -91,6 +93,10 @@ public class DownloadTask extends Task<Void> {
                 updateMessage(String.format("%.2f%%", progress * 100));
             }
         }
+        if (cancelled) {
+            // 确保任务被取消
+            cancel(true);
+        }
         return null;
     }
 
@@ -106,5 +112,16 @@ public class DownloadTask extends Task<Void> {
     @Override
     protected void setException(Throwable t) {
         log.error("下载异常：", t);
+    }
+
+    /**
+     * 启动任务执行
+     * <p>
+     * 本方法通过线程池调度给定的任务，实现异步执行
+     */
+    public void updateProgress(double downloadedBytes, long totalBytes) {
+        double progress = downloadedBytes / totalBytes;
+        super.updateProgress(downloadedBytes, totalBytes);
+        super.updateMessage(String.format("%.2f%%", progress * 100));
     }
 }

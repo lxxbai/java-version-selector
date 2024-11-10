@@ -3,7 +3,7 @@ package io.github.lxxbai.javaversionselector.state.action;
 import io.github.lxxbai.javaversionselector.common.enums.VersionActionEnum;
 import io.github.lxxbai.javaversionselector.common.enums.VersionStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.DownloadUtil;
-import io.github.lxxbai.javaversionselector.component.DownloadProgress;
+import io.github.lxxbai.javaversionselector.component.DownloadProgressBar;
 import io.github.lxxbai.javaversionselector.state.context.VersionContext;
 import org.springframework.stereotype.Component;
 
@@ -35,9 +35,9 @@ public class DownloadCancelHandler extends AbstractVersionHandler {
     @Override
     public void execute(VersionStatusEnum from, VersionStatusEnum to, VersionActionEnum event, VersionContext context) {
         //取消下载
-        DownloadProgress downloadProgress = DownloadUtil.get(context.getVersion());
-        if (Objects.nonNull(downloadProgress)) {
-            downloadProgress.cancel();
+        DownloadProgressBar downloadProgressBar = DownloadUtil.get(context.getVersion());
+        if (Objects.nonNull(downloadProgressBar)) {
+            downloadProgressBar.cancel();
         }
         //移除下载进度条
         DownloadUtil.remove(context.getVersion());
