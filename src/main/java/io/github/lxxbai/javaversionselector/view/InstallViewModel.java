@@ -45,7 +45,6 @@ public class InstallViewModel {
      * @return 所有版本信息
      */
     public ObservableList<InstallRecordVO> getDownLoadList() {
-        downLoadList.addAll(queryAll());
         downLoadList.addListener((ListChangeListener<InstallRecordVO>) change -> {
             while (change.next()) {
                 if (change.wasAdded()) {
@@ -54,6 +53,7 @@ public class InstallViewModel {
                 }
             }
         });
+        downLoadList.addAll(queryAll());
         return downLoadList;
     }
 
@@ -84,8 +84,6 @@ public class InstallViewModel {
             // 构建下载进度条
             downloadProgressBar = buildDownloadProgressBar(vo);
             LocalCacheUtil.putDownloadCache(vo.getUkVersion(), downloadProgressBar);
-            //判断是否已经开始
-            downloadProgressBar.start();
         }
         if (InstallStatusEnum.DOWNLOADING.equals(vo.getInstallStatus())) {
             //判断是否已经开始
@@ -212,14 +210,6 @@ public class InstallViewModel {
     public void install(InstallRecordVO installRecordVO) {
         installRecordVO.setInstallStatus(InstallStatusEnum.INSTALLING);
         changeStatus(installRecordVO);
-        //执行解压等操作,需要异步
-        ThreadPoolUtil.execute(() -> {
-            if (StrUtil.equalsIgnoreCase(installRecordVO.getFileType(), "zip")) {
-                zipInstall(installRecordVO);
-            } else {
-                exeInstall(installRecordVO);
-            }
-        });
     }
 
     /**
@@ -268,7 +258,7 @@ public class InstallViewModel {
     private Task<Void> buildInstallTask(InstallRecordVO vo) {
         return new Task<>() {
             @Override
-            protected Void call() throws Exception {
+            protected Void call() {
                 if (StrUtil.equalsIgnoreCase(vo.getFileType(), "zip")) {
                     zipInstall(vo);
                 } else {

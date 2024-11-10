@@ -21,9 +21,9 @@ public class ButtonBarExample extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Node node = JFXButtonUtil.buildSvgHBox("svg/trash-solid.svg", "测试");
+        JFXButton jfxButton = JFXButtonUtil.buildDynamicButton("svg/scan.svg");
         // 创建一个 VBox 容器
-        VBox vBox = new VBox(node);
+        VBox vBox = new VBox(jfxButton);
         // 创建场景
         Scene scene = new Scene(vBox, 300, 200);
         // 设置舞台

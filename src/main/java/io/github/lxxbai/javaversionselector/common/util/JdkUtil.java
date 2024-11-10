@@ -1,5 +1,8 @@
 package io.github.lxxbai.javaversionselector.common.util;
 
+import cn.hutool.core.util.RuntimeUtil;
+import cn.hutool.core.util.StrUtil;
+
 import java.io.File;
 
 /**
@@ -46,5 +49,20 @@ public class JdkUtil {
         File libDir = new File(directory, "lib");
         File includeDir = new File(directory, "include");
         return binDir.exists() && libDir.exists() && includeDir.exists();
+    }
+
+    /**
+     * 判断是否是JDK目录
+     *
+     * @param homePath 目录
+     * @return 是否是JDK目录
+     */
+    public static Boolean isJdk(File homePath) {
+        try { // 执行命令并捕获输出
+            String result = RuntimeUtil.execForStr(homePath + "\\bin\\java", "-version");
+            return StrUtil.contains(result, "java version");
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

@@ -5,5 +5,5 @@ import javafx.scene.Node;
 public interface BaseNode {
 
 
-    public Node getContent();
+    Node getContent();
 }

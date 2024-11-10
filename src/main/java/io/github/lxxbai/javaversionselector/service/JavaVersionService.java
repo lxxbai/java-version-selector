@@ -47,7 +47,7 @@ public class JavaVersionService {
         //获取所有版本信息
         List<JdkVersionDO> javaVersionList = jdkVersionManager.list();
         System.out.println(ObjectMapperUtil.toJsonString(javaVersionList));
-        //获取用户下载的信息 todo 后面只查询不是安装完成的记录
+        //获取用户下载的信息
         List<InstallRecordDO> installRecordList = installRecordManager.list();
         //转map
         Map<String, InstallRecordDO> recordMap = CollUtil.toMap(installRecordList, new HashMap<>(), InstallRecordDO::getUkVersion);
@@ -98,6 +98,6 @@ public class JavaVersionService {
         // 过滤条件：虚拟机供应商、主要版本和Java版本任意一个为空或相等
         return jdkVersionVOList.stream().filter(v -> StringUtil.isBlankOrEqual(vmVendor, v.getVmVendor())
                 && StringUtil.isBlankOrEqual(mainVersion, v.getMainVersion())
-                && StringUtil.isBlankOrEqual(javaVersion, v.getJavaVersion())).toList();
+                && StringUtil.isBlankOrLike(javaVersion, v.getJavaVersion())).toList();
     }
 }

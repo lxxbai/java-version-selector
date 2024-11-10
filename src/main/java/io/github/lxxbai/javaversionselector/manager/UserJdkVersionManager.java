@@ -5,8 +5,8 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.system.SystemUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.github.lxxbai.javaversionselector.common.Constants;
+import io.github.lxxbai.javaversionselector.common.enums.ApplyStatusEnum;
 import io.github.lxxbai.javaversionselector.common.enums.SourceEnum;
-import io.github.lxxbai.javaversionselector.common.enums.VersionStatusEnum;
 import io.github.lxxbai.javaversionselector.common.enums.VmVendorEnum;
 import io.github.lxxbai.javaversionselector.common.util.JdkPropertiesUtil;
 import io.github.lxxbai.javaversionselector.datasource.entity.UserJdkVersionDO;
@@ -53,20 +53,25 @@ public class UserJdkVersionManager extends ServiceImpl<UserJdkVersionMapper, Use
         String mainVersion = Objects.isNull(mainVersionInt) ? "未知" : "JDK" + (mainVersionInt - 44);
         UserJdkVersionDO userJavaVersionDO = new UserJdkVersionDO();
         userJavaVersionDO.setLocalHomePath(javaHome);
-        userJavaVersionDO.setStatus(VersionStatusEnum.INSTALLED.getStatus());
+        userJavaVersionDO.setStatus(ApplyStatusEnum.CURRENT.getStatus());
         userJavaVersionDO.setCurrent(true);
         userJavaVersionDO.setSource(SourceEnum.LOCAL.getCode());
         userJavaVersionDO.setVmVendor(VmVendorEnum.getByVmVendor(vendor).getCode());
         userJavaVersionDO.setMainVersion(mainVersion);
         userJavaVersionDO.setJavaVersion(javaVersion);
+        //修改其他的为未应用
+        lambdaUpdate()
+                .eq(UserJdkVersionDO::getStatus, ApplyStatusEnum.CURRENT.getStatus())
+                .set(UserJdkVersionDO::getStatus, ApplyStatusEnum.NOT_APPLY.getStatus())
+                .update();
         //查询是否存在
-        boolean exists = lambdaQuery()
+        UserJdkVersionDO existJdk = lambdaQuery()
                 .eq(UserJdkVersionDO::getUkVersion, userJavaVersionDO.getUkVersion())
-                .exists();
-        if (exists) {
-            return;
+                .one();
+        if (Objects.nonNull(existJdk)) {
+            //替换成当前
+            userJavaVersionDO.setId(existJdk.getId());
         }
-        //不存在,保存数据
-        this.save(userJavaVersionDO);
+        this.saveOrUpdate(userJavaVersionDO);
     }
 }

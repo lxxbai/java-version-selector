@@ -1,0 +1,36 @@
+package io.github.lxxbai.javaversionselector.service;
+
+import io.github.lxxbai.javaversionselector.common.enums.ApplyStatusEnum;
+import io.github.lxxbai.javaversionselector.datasource.entity.UserJdkVersionDO;
+import io.github.lxxbai.javaversionselector.manager.UserJdkVersionManager;
+import io.github.lxxbai.javaversionselector.model.UserJdkVersionVO;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ * 用户版本管理服务
+ *
+ * @author lxxbai
+ */
+@Service
+public class UserJdkVersionService {
+
+    @Resource
+    private UserJdkVersionManager userJdkVersionManager;
+
+    public List<UserJdkVersionVO> queryAll() {
+        List<UserJdkVersionDO> jdkList = userJdkVersionManager.list();
+        return jdkList.stream().map(v -> {
+            UserJdkVersionVO vo = new UserJdkVersionVO();
+            vo.setVmVendor(v.getVmVendor());
+            vo.setMainVersion(v.getMainVersion());
+            vo.setJavaVersion(v.getJavaVersion());
+            vo.setUkVersion(v.getUkVersion());
+            vo.setLocalHomePath(v.getLocalHomePath());
+            vo.setStatus(ApplyStatusEnum.valueOf(v.getStatus()));
+            return vo;
+        }).toList();
+    }
+}

@@ -85,14 +85,15 @@ public class InstallService {
      * @return 文件名
      */
     private String buildFileName(String downPath, String fileName, int times) {
+        String newFileName = fileName;
         if (times > 0) {
-            fileName = StrUtil.replaceLast(fileName, ".", "(" + times + ").");
+            newFileName = StrUtil.replaceLast(fileName, ".", "(" + times + ").");
         }
-        String url = downPath.concat(File.separator).concat(fileName);
+        String url = downPath.concat(File.separator).concat(newFileName);
         if (FileUtil.exist(url)) {
             return buildFileName(downPath, fileName, times + 1);
         } else {
-            return fileName;
+            return newFileName;
         }
     }
 

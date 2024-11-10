@@ -40,7 +40,9 @@ public class JdkVersionSelectorApp extends Application {
         // 使用 JFXDecorator 包装主内容和标题栏按钮
         LJFXDecorator decorator = new LJFXDecorator(stage, jvsMainView);
         // 创建自定义按钮
-        decorator.addButton(settingsViewResult.getController().buildConfigButton(), 1);
+        // 创建自定义按钮
+        decorator.addButton(JFXButtonUtil.buildScanSvgButton("svg/java-solid.svg", "扫描本地JDK"), 1);
+        decorator.addButton(settingsViewResult.getController().buildConfigButton(), 2);
         Scene scene = new Scene(decorator);
         scene.getStylesheets().addAll(
                 ResourceUtil.toExternalForm("css/jf-all.css")

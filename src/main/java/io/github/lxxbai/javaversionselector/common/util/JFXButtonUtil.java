@@ -59,7 +59,6 @@ public class JFXButtonUtil {
         JFXTooltip.install(hBox, tooltip, Pos.CENTER_RIGHT);
         return hBox;
     }
-
     /**
      * 构建自定义按钮
      *
@@ -77,6 +76,29 @@ public class JFXButtonUtil {
         btnSettings.setGraphic(svgGlyph);
         JFXTooltip tooltip = new JFXTooltip(tooltipStr);
         tooltip.setShowDelay(Duration.millis(100));
+        // 或者直接设置样式
+        tooltip.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7); -fx-text-fill: white;");
+        JFXTooltip.install(btnSettings, tooltip, Pos.CENTER_RIGHT);
+        return btnSettings;
+    }
+
+    /**
+     * 构建自定义按钮
+     *
+     * @return JFXButton
+     */
+    public static JFXButton buildScanSvgButton(String path, String tooltipStr) {
+        JFXButton btnSettings = new JFXButton();
+        //加载图标
+        SVGGlyph svgGlyph = SVGGlyphUtil.loadGlyph(ResourceUtil.getUrl(path));
+        //derive(#d1e9ec, -20%)
+        svgGlyph.setFill(Color.BLACK);
+        svgGlyph.setSize(20, 20);
+        btnSettings.setCursor(Cursor.HAND);
+        btnSettings.setRipplerFill(Color.WHITE);
+        btnSettings.setGraphic(svgGlyph);
+        JFXTooltip tooltip = new JFXTooltip(tooltipStr);
+        tooltip.setShowDelay(Duration.millis(50));
         // 或者直接设置样式
         tooltip.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7); -fx-text-fill: white;");
         JFXTooltip.install(btnSettings, tooltip, Pos.CENTER_RIGHT);

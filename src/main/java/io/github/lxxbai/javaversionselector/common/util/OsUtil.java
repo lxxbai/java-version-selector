@@ -43,4 +43,8 @@ public class OsUtil {
             throw new RuntimeException("不支持的操作系统");
         }
     }
+
+    public static boolean isWindows() {
+        return OS_INFO.isWindows();
+    }
 }

@@ -4,12 +4,14 @@ package io.github.lxxbai.javaversionselector.view;
 import com.jfoenix.controls.JFXButton;
 import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.AlertUtil;
+import io.github.lxxbai.javaversionselector.common.util.DesktopUtil;
 import io.github.lxxbai.javaversionselector.common.util.JFXButtonUtil;
 import io.github.lxxbai.javaversionselector.common.util.StageUtil;
 import io.github.lxxbai.javaversionselector.component.DownloadProgressBar;
 import io.github.lxxbai.javaversionselector.component.cell.GraphicTableCellFactory;
 import io.github.lxxbai.javaversionselector.model.InstallRecordVO;
 import jakarta.annotation.Resource;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -18,7 +20,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import org.springframework.stereotype.Component;
 
-import java.awt.*;
 import java.io.File;
 import java.util.Objects;
 
@@ -96,6 +97,9 @@ public class InstallView {
                 case INSTALLED -> {
                     return JFXButtonUtil.buildSvgHBox("svg/check-solid.svg", "安装完成");
                 }
+                case INSTALLED_FAILURE -> {
+                    return JFXButtonUtil.buildSvgHBox("svg/warn.svg", "安装失败");
+                }
                 default -> {
                     return null;
                 }
@@ -154,13 +158,14 @@ public class InstallView {
      */
     private JFXButton buildFilePathButton(InstallRecordVO installRecordVO) {
         JFXButton filePathButton = JFXButtonUtil.buildSvgButton("svg/folder-regular.svg", "打开文件地址");
-        filePathButton.setOnAction(event -> {
-            try {
-                Desktop.getDesktop().open(new File(installRecordVO.getDownloadFileFolder()));
-            } catch (Exception e) {
-                AlertUtil.showError(StageUtil.getPrimaryStage(), "打开文件失败", "打开文件失败", "文件不存在!");
-            }
-        });
+        filePathButton.setOnAction(event ->
+                Platform.runLater(() -> {
+                    try {
+                        DesktopUtil.openFileDirectory(new File(installRecordVO.getJdkPackageUrl()));
+                    } catch (Exception e) {
+                        AlertUtil.showError(StageUtil.getPrimaryStage(), "打开文件失败", "打开文件失败", "文件不存在!");
+                    }
+                }));
         return filePathButton;
     }
 

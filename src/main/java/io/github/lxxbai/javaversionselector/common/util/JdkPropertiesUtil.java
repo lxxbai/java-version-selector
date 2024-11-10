@@ -38,9 +38,4 @@ public class JdkPropertiesUtil {
         }
         return propertiesMap;
     }
-
-    public static void main(String[] args) {
-        String property = System.getProperty("java.home");
-        System.out.println(property);
-    }
 }

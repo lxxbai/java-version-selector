@@ -34,7 +34,7 @@ public class DownloadProgressBar implements BaseNode {
     private final ProgressBar progressBar;
 
 
-    private Label progressLabel;
+    private final Label progressLabel;
 
 
     /**

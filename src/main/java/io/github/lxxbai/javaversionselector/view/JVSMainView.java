@@ -40,8 +40,10 @@ public class JVSMainView extends GridPane {
         MenuPage homePage = MenuPageFactory.build("Jdk版本", "view/java_version.fxml");
         //下载
         MenuPage downloadPage = MenuPageFactory.build("进度", "view/install_record.fxml");
+        //下载
+        MenuPage myPage = MenuPageFactory.build("我的", "view/my_jdk.fxml");
         //配置
-        listView.getItems().addAll(homePage,downloadPage);
+        listView.getItems().addAll(homePage, downloadPage,myPage);
         //左边菜单
         pane = new StackPane();
         GridPane.setHgrow(pane, Priority.ALWAYS);
