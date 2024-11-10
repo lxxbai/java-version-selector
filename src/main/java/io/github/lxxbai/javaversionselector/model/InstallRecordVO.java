@@ -1,5 +1,6 @@
 package io.github.lxxbai.javaversionselector.model;
 
+import cn.hutool.crypto.SecureUtil;
 import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.component.DownloadProgressBar;
 import lombok.Data;
@@ -102,4 +103,14 @@ public class InstallRecordVO {
 
 
     private DownloadProgressBar downloadProgressBar;
+
+    private Runnable installTask;
+
+
+    private String ukInstallCode;
+
+
+    public String getUkInstallCode() {
+        return SecureUtil.md5(this.ukVersion + jdkPackageUrl);
+    }
 }

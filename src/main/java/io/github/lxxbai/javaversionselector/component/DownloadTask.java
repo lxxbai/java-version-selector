@@ -4,7 +4,6 @@ import javafx.concurrent.Task;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -27,8 +26,6 @@ public class DownloadTask extends Task<Void> {
 
     private final String downloadUrl;
 
-    private final String saveDir;
-
     private final String fileName;
 
     /**
@@ -38,15 +35,14 @@ public class DownloadTask extends Task<Void> {
 
     protected volatile boolean cancelled = false;
 
-    public DownloadTask(String downloadUrl, String saveDir, String fileName) {
+    public DownloadTask(String downloadUrl, String fileName) {
         this.downloadUrl = downloadUrl;
-        this.saveDir = saveDir;
         this.fileName = fileName;
     }
 
 
     public String getLocalPath() {
-        return saveDir + File.separator + fileName;
+        return fileName;
     }
 
 
@@ -55,7 +51,7 @@ public class DownloadTask extends Task<Void> {
         URL url = new URL(downloadUrl);
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         // 校验文件是否存在并获取长度
-        Path outputPath = Paths.get(saveDir, fileName);
+        Path outputPath = Paths.get(fileName);
         long downloadedBytes = Files.exists(outputPath) ? Files.size(outputPath) : 0;
         // 计算文件大小
         long contentLength = httpConn.getContentLength();

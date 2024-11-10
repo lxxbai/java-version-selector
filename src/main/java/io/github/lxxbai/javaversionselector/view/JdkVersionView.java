@@ -100,12 +100,8 @@ public class JdkVersionView {
                 downloadButton.setDisable(true);
             } else {
                 downloadButton = JFXButtonUtil.buildSvgButton("svg/circle-down-regular.svg");
-                downloadButton.setOnAction(event -> {
-                    //下载
-                    installViewModel.download(vo);
-                    //修改成下载中
-                    jdkVersionViewModel.changeStatus(cellData.getIndex(), InstallStatusEnum.DOWNLOADING);
-                });
+                //下载
+                downloadButton.setOnAction(event -> installViewModel.download(vo));
             }
             return downloadButton;
         });

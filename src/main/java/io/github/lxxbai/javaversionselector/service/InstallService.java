@@ -2,6 +2,7 @@ package io.github.lxxbai.javaversionselector.service;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import io.github.lxxbai.javaversionselector.common.Constants;
 import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.common.exception.ClientException;
@@ -37,14 +38,14 @@ public class InstallService {
      *
      * @param jdkVersionVO 版本信息
      */
-    public void addDownloadRecord(JdkVersionVO jdkVersionVO) {
+    public InstallRecordVO addDownloadRecord(JdkVersionVO jdkVersionVO) {
         //先查询是否已经存在，存在则更新，不存在则插入
         boolean exists = installRecordManager.lambdaQuery()
                 .eq(InstallRecordDO::getUkVersion, jdkVersionVO.getUkVersion())
                 .eq(InstallRecordDO::getDownloadStatus, InstallStatusEnum.DOWNLOADING.getStatus())
                 .exists();
         if (exists) {
-            return;
+            return null;
         }
         DownloadConfig downloadConfig = userConfigInfoManager.queryOneConfig(Constants.DOWNLOAD_CONFIG_KEY, DownloadConfig.class);
         if (Objects.isNull(downloadConfig)) {
@@ -53,8 +54,10 @@ public class InstallService {
         //创建下载路径
         FileUtil.mkdir(downloadConfig.getDownloadPath());
         FileUtil.mkdir(downloadConfig.getJdkPathUrl());
+        //构建名称
+        String fileName = buildFileName(downloadConfig.getDownloadPath(), jdkVersionVO.getFileName(), 0);
         InstallRecordDO record = new InstallRecordDO();
-        record.setFileName(jdkVersionVO.getFileName());
+        record.setFileName(fileName);
         record.setFileSize(jdkVersionVO.getFileSize());
         record.setFileType(jdkVersionVO.getFileType());
         record.setDownloadStatus(InstallStatusEnum.DOWNLOADING.getStatus());
@@ -62,7 +65,7 @@ public class InstallService {
         record.setDownloadFileFolder(downloadConfig.getDownloadPath());
         record.setInstalledFolder(downloadConfig.getJdkPathUrl());
         //判断文件是否已经存在
-        record.setJdkPackageUrl(buildFileName(downloadConfig.getDownloadPath(), jdkVersionVO.getFileName(), 0));
+        record.setJdkPackageUrl(downloadConfig.getDownloadPath().concat(File.separator).concat(fileName));
         record.setDownloadProgress(0.0D);
         record.setCreatedAt(DateUtil.now());
         record.setVmVendor(jdkVersionVO.getVmVendor());
@@ -70,6 +73,7 @@ public class InstallService {
         record.setJavaVersion(jdkVersionVO.getJavaVersion());
         record.setUkVersion(jdkVersionVO.getUkVersion());
         installRecordManager.save(record);
+        return converter(record);
     }
 
     /**
@@ -81,17 +85,16 @@ public class InstallService {
      * @return 文件名
      */
     private String buildFileName(String downPath, String fileName, int times) {
-        String url = downPath.concat(File.separator).concat(fileName);
         if (times > 0) {
-            url = url.concat("(%d)".formatted(times));
+            fileName = StrUtil.replaceLast(fileName, ".", "(" + times + ").");
         }
+        String url = downPath.concat(File.separator).concat(fileName);
         if (FileUtil.exist(url)) {
             return buildFileName(downPath, fileName, times + 1);
         } else {
-            return url;
+            return fileName;
         }
     }
-
 
     /**
      * 查询所有下载数据
@@ -101,29 +104,38 @@ public class InstallService {
     public List<InstallRecordVO> queryAll() {
         List<InstallRecordDO> list = installRecordManager.lambdaQuery().list();
         //数据转换，下载中的排在前面
-        return list.stream().map(record -> {
-            InstallRecordVO vo = new InstallRecordVO();
-            vo.setId(record.getId());
-            vo.setVmVendor(record.getVmVendor());
-            vo.setMainVersion(record.getMainVersion());
-            vo.setJavaVersion(record.getJavaVersion());
-            vo.setUkVersion(record.getUkVersion());
-            vo.setFileType(record.getFileType());
-            vo.setFileName(record.getFileName());
-            vo.setFileSize(record.getFileSize());
-            vo.setDownloadUrl(record.getDownloadUrl());
-            vo.setInstallStatus(InstallStatusEnum.getByStatus(record.getDownloadStatus()));
-            vo.setDownloadProgress(record.getDownloadProgress());
-            vo.setJdkPackageUrl(record.getJdkPackageUrl());
-            vo.setCreatedAt(record.getCreatedAt());
-            vo.setDownloadEndAt(record.getDownloadEndAt());
-            vo.setDownloadFileFolder(record.getDownloadFileFolder());
-            vo.setInstalledFolder(record.getInstalledFolder());
-            vo.setInstalledJavaHome(record.getInstalledJavaHome());
-            return vo;
-        }).sorted(Comparator.comparing(InstallRecordVO::getCreatedAt).thenComparing((p1) ->
-                p1.getInstallStatus().equals(InstallStatusEnum.DOWNLOADING) ? -1 : 0
-        )).toList();
+        return list.stream().map(this::converter)
+                .sorted(Comparator.comparing(InstallRecordVO::getCreatedAt).thenComparing((p1) ->
+                        p1.getInstallStatus().equals(InstallStatusEnum.DOWNLOADING) ? -1 : 0
+                )).toList();
+    }
+
+    /**
+     * 数据转换
+     *
+     * @param record 记录
+     * @return 转换后的数据
+     */
+    private InstallRecordVO converter(InstallRecordDO record) {
+        InstallRecordVO vo = new InstallRecordVO();
+        vo.setId(record.getId());
+        vo.setVmVendor(record.getVmVendor());
+        vo.setMainVersion(record.getMainVersion());
+        vo.setJavaVersion(record.getJavaVersion());
+        vo.setUkVersion(record.getUkVersion());
+        vo.setFileType(record.getFileType());
+        vo.setFileName(record.getFileName());
+        vo.setFileSize(record.getFileSize());
+        vo.setDownloadUrl(record.getDownloadUrl());
+        vo.setInstallStatus(InstallStatusEnum.getByStatus(record.getDownloadStatus()));
+        vo.setDownloadProgress(record.getDownloadProgress());
+        vo.setJdkPackageUrl(record.getJdkPackageUrl());
+        vo.setCreatedAt(record.getCreatedAt());
+        vo.setDownloadEndAt(record.getDownloadEndAt());
+        vo.setDownloadFileFolder(record.getDownloadFileFolder());
+        vo.setInstalledFolder(record.getInstalledFolder());
+        vo.setInstalledJavaHome(record.getInstalledJavaHome());
+        return vo;
     }
 
 

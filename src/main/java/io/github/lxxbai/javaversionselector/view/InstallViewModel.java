@@ -15,7 +15,9 @@ import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import io.github.lxxbai.javaversionselector.service.InstallService;
 import jakarta.annotation.Resource;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -44,7 +46,80 @@ public class InstallViewModel {
      */
     public ObservableList<InstallRecordVO> getDownLoadList() {
         downLoadList.addAll(queryAll());
+        downLoadList.addListener((ListChangeListener<InstallRecordVO>) change -> {
+            while (change.next()) {
+                if (change.wasAdded()) {
+                    List<? extends InstallRecordVO> addedSubList = change.getAddedSubList();
+                    addedSubList.forEach(this::dealInstallProcess);
+                }
+            }
+        });
         return downLoadList;
+    }
+
+
+    /**
+     * 处理安装进度
+     *
+     * @param vo 版本信息
+     */
+    private void dealInstallProcess(InstallRecordVO vo) {
+        InstallStatusEnum installStatus = vo.getInstallStatus();
+        switch (installStatus) {
+            //下载
+            case DOWNLOADING, DOWNLOAD_PAUSE -> dealDownloadProgressBar(vo);
+            //安装
+            case INSTALLING -> dealInstallingProcess(vo);
+        }
+    }
+
+    /**
+     * 构建下载进度条
+     *
+     * @param vo 版本信息
+     */
+    private void dealDownloadProgressBar(InstallRecordVO vo) {
+        DownloadProgressBar downloadProgressBar = LocalCacheUtil.getDownloadCache(vo.getUkInstallCode());
+        if (Objects.isNull(downloadProgressBar)) {
+            // 构建下载进度条
+            downloadProgressBar = buildDownloadProgressBar(vo);
+            LocalCacheUtil.putDownloadCache(vo.getUkVersion(), downloadProgressBar);
+            //判断是否已经开始
+            downloadProgressBar.start();
+        }
+        if (InstallStatusEnum.DOWNLOADING.equals(vo.getInstallStatus())) {
+            //判断是否已经开始
+            downloadProgressBar.start();
+        } else {
+            long downloadBytes = FileUtil.size(new File(vo.getJdkPackageUrl()));
+            try {
+                URL url = new URL(vo.getDownloadUrl());
+                long contentLength = URLUtil.getContentLength(url);
+                downloadProgressBar.updateProgress(downloadBytes, contentLength);
+            } catch (Exception e) {
+                downloadProgressBar.updateProgress(0, 1);
+            }
+        }
+        vo.setDownloadProgressBar(downloadProgressBar);
+    }
+
+
+    /**
+     * 构建安装进度条
+     *
+     * @param installRecordVO 版本信息
+     */
+    private void dealInstallingProcess(InstallRecordVO installRecordVO) {
+        Task<Void> task = LocalCacheUtil.getInstallingCache(installRecordVO.getUkInstallCode());
+        if (Objects.isNull(task)) {
+            task = buildInstallTask(installRecordVO);
+        }
+        installRecordVO.setInstallTask(task);
+        if (task.isRunning()) {
+            return;
+        }
+        //启动
+        ThreadPoolUtil.execute(task);
     }
 
 
@@ -54,38 +129,7 @@ public class InstallViewModel {
      * @return 所有版本信息
      */
     public List<InstallRecordVO> queryAll() {
-        List<InstallRecordVO> installRecordList = installService.queryAll();
-        //添加进度信息
-        installRecordList.forEach(vo -> {
-            //下载中的
-            if (InstallStatusEnum.DOWNLOADING.equals(vo.getInstallStatus()) || InstallStatusEnum.DOWNLOAD_PAUSE.equals(vo.getInstallStatus())) {
-                DownloadProgressBar downloadProgressBar = DownloadUtil.get(vo.getUkVersion());
-                if (Objects.isNull(downloadProgressBar)) {
-                    // 构建下载进度条
-                    downloadProgressBar = buildDownloadProgressBar(vo);
-                    DownloadUtil.put(vo.getUkVersion(), downloadProgressBar);
-                }
-                if (InstallStatusEnum.DOWNLOADING.equals(vo.getInstallStatus())) {
-                    //判断是否已经开始
-                    downloadProgressBar.start();
-                }
-                long downloadBytes = FileUtil.size(new File(vo.getJdkPackageUrl()));
-                try {
-                    URL url = new URL(vo.getDownloadUrl());
-                    long contentLength = URLUtil.getContentLength(url);
-                    downloadProgressBar.updateProgress(downloadBytes, contentLength);
-                } catch (Exception e) {
-                    downloadProgressBar.updateProgress(0, 1);
-                }
-                vo.setDownloadProgressBar(downloadProgressBar);
-            } else {
-                //移除
-                vo.setDownloadProgressBar(null);
-                DownloadUtil.remove(vo.getUkVersion());
-            }
-        });
-        //添加进度等信息
-        return installRecordList;
+        return installService.queryAll();
     }
 
     /**
@@ -102,8 +146,8 @@ public class InstallViewModel {
      * @param vo 版本信息
      */
     public void download(JdkVersionVO vo) {
-        installService.addDownloadRecord(vo);
-        refresh();
+        InstallRecordVO installRecordVO = installService.addDownloadRecord(vo);
+        downLoadList.add(0, installRecordVO);
     }
 
     /**
@@ -113,10 +157,17 @@ public class InstallViewModel {
      */
     public void changeStatus(InstallRecordVO installRecordVO) {
         installService.updateDownloadStatus(installRecordVO);
-        refresh();
+        for (int i = 0; i < downLoadList.size(); i++) {
+            InstallRecordVO curVo = downLoadList.get(i);
+            if (StrUtil.equals(curVo.getUkInstallCode(), installRecordVO.getUkInstallCode())) {
+                refreshColumn(i, installRecordVO);
+                break;
+            }
+        }
         //发送事件
         PublishUtil.publishEvent(new InstallStatusEvent(installRecordVO.getUkVersion(), installRecordVO.getInstallStatus()));
     }
+
 
     /**
      * 修改状态
@@ -197,6 +248,7 @@ public class InstallViewModel {
      * @param installRecordVO 版本信息
      */
     private void exeInstall(InstallRecordVO installRecordVO) {
+        //校验是否安装成功 todo
         Process exec = RuntimeUtil.exec(installRecordVO.getJdkPackageUrl());
         try {
             int i = exec.waitFor();
@@ -209,6 +261,26 @@ public class InstallViewModel {
 
 
     /**
+     * 构建安装任务
+     *
+     * @param vo 版本信息
+     */
+    private Task<Void> buildInstallTask(InstallRecordVO vo) {
+        return new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                if (StrUtil.equalsIgnoreCase(vo.getFileType(), "zip")) {
+                    zipInstall(vo);
+                } else {
+                    exeInstall(vo);
+                }
+                return null;
+            }
+        };
+    }
+
+
+    /**
      * 构建下载进度条
      *
      * @param installRecordVO 版本信息
@@ -217,7 +289,7 @@ public class InstallViewModel {
     private DownloadProgressBar buildDownloadProgressBar(InstallRecordVO installRecordVO) {
         //获取下载地址
         DownloadProgressBar downloadProgressBar = new DownloadProgressBar(80, 2,
-                installRecordVO.getDownloadUrl(), installRecordVO.getDownloadFileFolder(), "");
+                installRecordVO.getDownloadUrl(), installRecordVO.getJdkPackageUrl(), "");
         //失败
         downloadProgressBar.setOnFailed(event -> {
             AlertUtil.showInfo(StageUtil.getPrimaryStage(), "下载失败", "下载失败", "下载失败");

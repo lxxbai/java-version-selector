@@ -1,7 +1,6 @@
 package io.github.lxxbai.javaversionselector.component;
 
 
-import cn.hutool.core.util.StrUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXProgressBar;
 import io.github.lxxbai.javaversionselector.common.util.ThreadPoolUtil;
@@ -44,11 +43,9 @@ public class DownloadProgressBar implements BaseNode {
      * @param width       进度条宽度
      * @param height      进度条高度
      * @param downloadUrl 下载地址
-     * @param saveDir     保存目录
+     * @param fileName    文件名称
      */
-    public DownloadProgressBar(int width, int height, String downloadUrl, String saveDir, String detailDesc) {
-        String fileName = downloadUrl.substring(downloadUrl.lastIndexOf("/") + 1);
-        fileName = StrUtil.isBlank(fileName) ? "unknown.zip" : fileName;
+    public DownloadProgressBar(int width, int height, String downloadUrl, String fileName, String detailDesc) {
         this.node = new HBox();
         node.setAlignment(Pos.CENTER);
         StackPane stackPane = new StackPane();
@@ -70,7 +67,7 @@ public class DownloadProgressBar implements BaseNode {
         // 将标签放在进度条下方居中显示
         node.getChildren().addAll(jfxButton, stackPane);
         //创建一个下载任务
-        this.task = new DownloadTask(downloadUrl, saveDir, fileName);
+        this.task = new DownloadTask(downloadUrl, fileName);
         progressBar.progressProperty().bind(task.progressProperty());
         progressLabel.textProperty().bind(task.messageProperty());
     }
@@ -97,7 +94,7 @@ public class DownloadProgressBar implements BaseNode {
         }
         if (task.isCancelled()) {
             unbind();
-            DownloadTask newTask = new DownloadTask(task.getDownloadUrl(), task.getSaveDir(), task.getFileName());
+            DownloadTask newTask = new DownloadTask(task.getDownloadUrl(), task.getFileName());
             bind(this.task, newTask);
             this.task = newTask;
         }
