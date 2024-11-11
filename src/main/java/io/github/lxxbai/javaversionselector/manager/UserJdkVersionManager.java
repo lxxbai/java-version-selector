@@ -41,8 +41,22 @@ public class UserJdkVersionManager extends ServiceImpl<UserJdkVersionMapper, Use
      * @param javaHome javaHome
      */
     public void saveLocalInstalledJdk(String javaHome) {
+        buildUserJdk(javaHome);
+    }
+
+    /**
+     * 构建用户版本
+     *
+     * @param javaHome javaHome
+     */
+    public void buildUserJdk(String javaHome) {
         if (StrUtil.isBlank(javaHome)) {
             return;
+        }
+        boolean current = false;
+        String currentJavaHome = SystemUtil.get(Constants.STR_JAVA_HOME);
+        if (StrUtil.equals(currentJavaHome, javaHome)) {
+            current = true;
         }
         // 获取JVM属性
         Map<String, String> jvmProperties = JdkPropertiesUtil.getJvmProperties(javaHome);
@@ -53,20 +67,23 @@ public class UserJdkVersionManager extends ServiceImpl<UserJdkVersionMapper, Use
         String mainVersion = Objects.isNull(mainVersionInt) ? "未知" : "JDK" + (mainVersionInt - 44);
         UserJdkVersionDO userJavaVersionDO = new UserJdkVersionDO();
         userJavaVersionDO.setLocalHomePath(javaHome);
-        userJavaVersionDO.setStatus(ApplyStatusEnum.CURRENT.getStatus());
+        userJavaVersionDO.setStatus(current ? ApplyStatusEnum.CURRENT.getStatus() : ApplyStatusEnum.NOT_APPLY.getStatus());
         userJavaVersionDO.setCurrent(true);
         userJavaVersionDO.setSource(SourceEnum.LOCAL.getCode());
         userJavaVersionDO.setVmVendor(VmVendorEnum.getByVmVendor(vendor).getCode());
         userJavaVersionDO.setMainVersion(mainVersion);
         userJavaVersionDO.setJavaVersion(javaVersion);
-        //修改其他的为未应用
-        lambdaUpdate()
-                .eq(UserJdkVersionDO::getStatus, ApplyStatusEnum.CURRENT.getStatus())
-                .set(UserJdkVersionDO::getStatus, ApplyStatusEnum.NOT_APPLY.getStatus())
-                .update();
+        if (current) {
+            //修改其他的为未应用
+            lambdaUpdate()
+                    .eq(UserJdkVersionDO::getStatus, ApplyStatusEnum.CURRENT.getStatus())
+                    .set(UserJdkVersionDO::getStatus, ApplyStatusEnum.NOT_APPLY.getStatus())
+                    .update();
+        }
         //查询是否存在
         UserJdkVersionDO existJdk = lambdaQuery()
                 .eq(UserJdkVersionDO::getUkVersion, userJavaVersionDO.getUkVersion())
+                .eq(UserJdkVersionDO::getLocalHomePath, userJavaVersionDO.getLocalHomePath())
                 .one();
         if (Objects.nonNull(existJdk)) {
             //替换成当前

@@ -25,6 +25,7 @@ public class UserJdkViewModel {
 
     /**
      * 刷新用户已安装的jdk列表
+     *
      * @return 用户已安装的jdk列表
      */
     public ObservableList<UserJdkVersionVO> getJdkList() {
@@ -32,5 +33,10 @@ public class UserJdkViewModel {
         jdkList.clear();
         jdkList.addAll(myList);
         return jdkList;
+    }
+
+    public void refresh() {
+        jdkList.clear();
+        jdkList.addAll(userJdkVersionService.queryAll());
     }
 }

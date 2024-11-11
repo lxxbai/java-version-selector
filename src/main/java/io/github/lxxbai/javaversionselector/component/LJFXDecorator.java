@@ -18,6 +18,7 @@ import javafx.stage.Stage;
  */
 public class LJFXDecorator extends JFXDecorator {
 
+
     private final HBox newButtonsContainer;
 
 

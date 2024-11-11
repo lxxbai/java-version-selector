@@ -44,6 +44,13 @@ public class TrayUtil {
         } catch (AWTException e) {
             throw new ClientException("System_error", "窗口显示失败");
         }
+        // 设置窗口关闭事件
+        primaryStage.setOnCloseRequest(event -> {
+            // 取消关闭事件
+            event.consume();
+            // 隐藏窗口
+            primaryStage.hide();
+        });
     }
 
     private static MouseAdapter buildMouseListener(Stage stage) {

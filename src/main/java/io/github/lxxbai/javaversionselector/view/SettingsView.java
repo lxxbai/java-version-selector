@@ -84,11 +84,11 @@ public class SettingsView {
      *
      * @return JFXButton
      */
-    public JFXButton buildConfigButton() throws Exception {
+    public JFXButton buildConfigButton() {
         JFXButton btnSettings = new JFXButton();
         btnSettings.setOnAction(e -> buildSettingsDialog(true));
         //加载图标
-        SVGGlyph svgGlyph =  SVGGlyphUtil.loadGlyph(ResourceUtil.getUrl("svg/settings.svg"));
+        SVGGlyph svgGlyph = SVGGlyphUtil.loadGlyph(ResourceUtil.getUrl("svg/settings.svg"));
         svgGlyph.setFill(Color.WHITE);
         svgGlyph.setSize(15, 15);
         btnSettings.getStyleClass().add("jfx-decorator-button");
