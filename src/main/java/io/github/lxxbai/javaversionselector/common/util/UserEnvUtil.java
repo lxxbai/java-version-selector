@@ -1,6 +1,13 @@
 package io.github.lxxbai.javaversionselector.common.util;
 
 import cn.hutool.core.util.RuntimeUtil;
+import cn.hutool.core.util.StrUtil;
+import com.sun.jna.platform.win32.Advapi32Util;
+import com.sun.jna.platform.win32.WinReg;
+import io.github.lxxbai.javaversionselector.common.Constants;
+
+import java.io.IOException;
+import java.net.URL;
 
 
 /**
@@ -16,9 +23,13 @@ public class UserEnvUtil {
     private static final String USER_ENV_PATH = "HKEY_CURRENT_USER\\Environment";
 
 
+    private static final String JAVA_PATH = "%JAVA_HOME\\bin%";
+
+
     private UserEnvUtil() {
 
     }
+
 
     /**
      * 删除用户环境变量
@@ -50,7 +61,7 @@ public class UserEnvUtil {
      * @return 用户注册表信息
      */
     public static String getUserEnv(String envName) {
-        return RuntimeUtil.execForStr("cmd /c reg query " + USER_ENV_PATH + envName + " /f");
+        return Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Environment", envName);
     }
 
     /**
@@ -61,4 +72,39 @@ public class UserEnvUtil {
         RuntimeUtil.execForStr("cmd /c reg delete " + USER_ENV_PATH + " /v " + envName + " /f");
         RuntimeUtil.execForStr("cmd /c setx " + envName + " \"" + newEnvValue + "\"");
     }
+
+
+    public static void addWindowsJdkHome(String javaHome) {
+        //获取path，查询%JAVA_HOME%\bin是否是第一个，
+        String path = getUserEnv("Path");
+        if (!StrUtil.startWith(path, JAVA_PATH)) {
+            path = StrUtil.replace(path, JAVA_PATH + ";", "");
+            path = JAVA_PATH + ";" + path;
+            //调用bat
+            String absolutePath = ResourceUtil.getFile("env/set_path.bat").getAbsolutePath();
+            String command = "cmd /c " + absolutePath + " " + path;
+            RuntimeUtil.execForStr(command);
+        }
+        //设置java_home
+        addUserEnv(Constants.STR_JAVA_HOME, javaHome);
+    }
+
+
+    /**
+     * 添加用户 PATH 到最前面
+     */
+    public static void addPathToFirst(String pathValue) {
+        String oldPath = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Environment", "PATH");
+        if (StrUtil.contains(oldPath, pathValue + ";")) {
+            oldPath = oldPath.replace(pathValue + ";", "");
+        }
+        // 设置用户环境变量, 覆盖之前的值
+        addUserEnv("Path", pathValue + ";" + oldPath);
+    }
+
+    public static void main(String[] args) throws IOException {
+        String absolutePath = ResourceUtil.getFile("env/set_path.bat").getAbsolutePath();
+        System.out.println(absolutePath);
+    }
+
 }

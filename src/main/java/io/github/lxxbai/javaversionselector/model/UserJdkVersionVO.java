@@ -41,4 +41,10 @@ public class UserJdkVersionVO {
      */
     private String localHomePath;
 
+
+    private String ukCode;
+
+    public String getUkCode() {
+        return ukVersion + localHomePath;
+    }
 }

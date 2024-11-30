@@ -3,12 +3,9 @@ package io.github.lxxbai.javaversionselector;
 import cn.hutool.extra.spring.EnableSpringUtil;
 import io.github.lxxbai.javaversionselector.common.util.*;
 import io.github.lxxbai.javaversionselector.config.GlobalExceptionHandler;
-import io.github.lxxbai.javaversionselector.model.ViewResult;
 import io.github.lxxbai.javaversionselector.view.DecoratorView;
 import io.github.lxxbai.javaversionselector.view.JVSMainView;
-import io.github.lxxbai.javaversionselector.view.SettingsView;
 import javafx.application.Application;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.mybatis.spring.annotation.MapperScan;
@@ -48,6 +45,8 @@ public class JdkVersionSelectorApp extends Application {
         ScreenUtil.setScreenPosition(stage, 0.7, 0.7);
         // 创建系统托盘
         TrayUtil.createTrayIcon(stage);
+//        SpringUtil.getApplicationContext().getAutowireCapableBeanFactory().destroyBean("");
+//        SpringUtil.getApplicationContext().getAutowireCapableBeanFactory().createBean()
         stage.show();
     }
 

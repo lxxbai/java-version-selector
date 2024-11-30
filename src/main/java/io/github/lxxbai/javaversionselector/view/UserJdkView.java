@@ -3,10 +3,8 @@ package io.github.lxxbai.javaversionselector.view;
 
 import com.jfoenix.controls.JFXButton;
 import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
-import io.github.lxxbai.javaversionselector.common.util.AlertUtil;
-import io.github.lxxbai.javaversionselector.common.util.DesktopUtil;
-import io.github.lxxbai.javaversionselector.common.util.JFXButtonUtil;
-import io.github.lxxbai.javaversionselector.common.util.StageUtil;
+import io.github.lxxbai.javaversionselector.common.enums.ApplyStatusEnum;
+import io.github.lxxbai.javaversionselector.common.util.*;
 import io.github.lxxbai.javaversionselector.component.cell.GraphicTableCellFactory;
 import io.github.lxxbai.javaversionselector.model.UserJdkVersionVO;
 import jakarta.annotation.Resource;
@@ -89,6 +87,9 @@ public class UserJdkView {
     private JFXButton buildApplyButton(UserJdkVersionVO vo) {
         JFXButton installButton = JFXButtonUtil.buildSvgButton("svg/check-solid.svg", "应用");
         installButton.setOnAction(event -> {
+            //添加环境变量
+            UserEnvUtil.addWindowsJdkHome(vo.getLocalHomePath());
+            vo.setStatus(ApplyStatusEnum.CURRENT);
         });
         return installButton;
     }
