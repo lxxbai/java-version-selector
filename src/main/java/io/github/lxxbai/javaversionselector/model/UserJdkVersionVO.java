@@ -10,6 +10,9 @@ import lombok.Data;
 public class UserJdkVersionVO {
 
 
+    private Integer id;
+
+
     /**
      * 供应商  oracle jdk or openjdk or other
      */

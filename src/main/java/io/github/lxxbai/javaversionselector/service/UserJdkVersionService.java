@@ -24,6 +24,7 @@ public class UserJdkVersionService {
         List<UserJdkVersionDO> jdkList = userJdkVersionManager.list();
         return jdkList.stream().map(v -> {
             UserJdkVersionVO vo = new UserJdkVersionVO();
+            vo.setId(v.getId());
             vo.setVmVendor(v.getVmVendor());
             vo.setMainVersion(v.getMainVersion());
             vo.setJavaVersion(v.getJavaVersion());
@@ -32,5 +33,17 @@ public class UserJdkVersionService {
             vo.setStatus(ApplyStatusEnum.valueOf(v.getStatus()));
             return vo;
         }).toList();
+    }
+
+
+    /**
+     * 更新状态
+     *
+     * @param jdkVersionVO 版本信息
+     */
+    public void updateStatus(UserJdkVersionVO jdkVersionVO) {
+        userJdkVersionManager.lambdaUpdate()
+                .eq(UserJdkVersionDO::getId, jdkVersionVO.getId())
+                .set(UserJdkVersionDO::getStatus, jdkVersionVO.getStatus());
     }
 }
