@@ -14,4 +14,6 @@ public class InstallStatusEvent {
     private String ukVersion;
 
     private InstallStatusEnum installStatus;
+
+    private String jdkHomePath;
 }

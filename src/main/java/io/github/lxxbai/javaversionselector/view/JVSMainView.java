@@ -4,18 +4,15 @@ import com.jfoenix.controls.JFXListView;
 import io.github.lxxbai.javaversionselector.component.menu.MenuCellFactory;
 import io.github.lxxbai.javaversionselector.component.menu.MenuPageFactory;
 import io.github.lxxbai.javaversionselector.model.MenuPage;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 
 
 /**
- * 主页视图 根据GridPane 实现
+ * 主页视图 根据BorderPane 实现
  *
  * @author wdc
  */
-public class JVSMainView extends GridPane {
+public class JVSMainView extends BorderPane {
 
     /**
      * 右侧内容
@@ -32,18 +29,18 @@ public class JVSMainView extends GridPane {
     private void init() {
         //左侧菜单
         JFXListView<MenuPage> listView = new JFXListView<>();
-        listView.setMinWidth(150);
-        listView.setMaxWidth(150);
+        listView.setMinWidth(60);
+        listView.setMaxWidth(60);
         //设置菜单的工厂
         listView.setCellFactory(new MenuCellFactory());
         //首页
-        MenuPage homePage = MenuPageFactory.build("Jdk版本", "view/java_version.fxml");
+        MenuPage homePage = MenuPageFactory.build("版本", "svg/home.svg", JdkVersionView.class);
         //下载
-        MenuPage downloadPage = MenuPageFactory.build("进度", "view/install_record.fxml");
-        //下载
-        MenuPage myPage = MenuPageFactory.build("我的", "view/my_jdk.fxml");
+        MenuPage downloadPage = MenuPageFactory.build("进度", "svg/download-solid.svg", InstallView.class);
+        //我的
+        MenuPage myPage = MenuPageFactory.build("我的", "svg/user-large-solid.svg", UserJdkView.class);
         //配置
-        listView.getItems().addAll(homePage, downloadPage,myPage);
+        listView.getItems().addAll(homePage, downloadPage, myPage);
         //左边菜单
         pane = new StackPane();
         GridPane.setHgrow(pane, Priority.ALWAYS);
@@ -58,10 +55,7 @@ public class JVSMainView extends GridPane {
         });
         //默认选中
         listView.getSelectionModel().select(homePage);
-        GridPane.setVgrow(listView, Priority.ALWAYS);
-        //左侧菜单
-        this.add(listView, 0, 0);
-        //右边内容
-        this.add(pane, 1, 0);
+        setCenter(pane);
+        setLeft(listView);
     }
 }

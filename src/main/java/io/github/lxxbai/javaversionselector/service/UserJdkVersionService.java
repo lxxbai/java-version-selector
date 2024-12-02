@@ -20,6 +20,22 @@ public class UserJdkVersionService {
     @Resource
     private UserJdkVersionManager userJdkVersionManager;
 
+
+    /**
+     * 保存用户版本信息
+     *
+     * @param javaHome 路径
+     */
+    public void saveUserJdk(String javaHome) {
+        userJdkVersionManager.buildUserJdk(javaHome);
+    }
+
+
+    /**
+     * 查询所有
+     *
+     * @return List
+     */
     public List<UserJdkVersionVO> queryAll() {
         List<UserJdkVersionDO> jdkList = userJdkVersionManager.list();
         return jdkList.stream().map(v -> {

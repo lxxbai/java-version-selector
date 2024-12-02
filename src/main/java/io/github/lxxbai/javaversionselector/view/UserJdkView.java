@@ -101,7 +101,7 @@ public class UserJdkView {
      * @return JFXButton
      */
     private JFXButton openFileButton(UserJdkVersionVO vo) {
-        JFXButton filePathButton = JFXButtonUtil.buildSvgButton("svg/folder-regular.svg", "打开地址");
+        JFXButton filePathButton = JFXButtonUtil.buildSvgButton("svg/folder-open-solid.svg", "打开地址");
         filePathButton.setOnAction(event ->
                 Platform.runLater(() -> {
                     try {

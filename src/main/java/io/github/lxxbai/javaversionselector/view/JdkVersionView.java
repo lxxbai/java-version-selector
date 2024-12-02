@@ -3,6 +3,7 @@ package io.github.lxxbai.javaversionselector.view;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
 import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.JFXButtonUtil;
 import io.github.lxxbai.javaversionselector.component.cell.GraphicTableCellFactory;
@@ -21,6 +22,7 @@ import java.util.Objects;
 /**
  * @author lxxbai
  */
+@FXView(url = "view/java_version.fxml")
 @Component
 public class JdkVersionView {
     @Resource

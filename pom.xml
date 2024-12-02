@@ -103,11 +103,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-        <!--状态机-->
-        <dependency>
-            <groupId>com.alibaba.cola</groupId>
-            <artifactId>cola-component-statemachine</artifactId>
-        </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -130,15 +125,9 @@
         </dependency>
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
-            <artifactId>ikonli-materialdesign-pack</artifactId>
-            <version>12.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-fontawesome5-pack</artifactId>
             <version>12.3.1</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -164,10 +153,6 @@
                             <mainClass>
                                 io.github.lxxbai.javaversionselector/io.github.lxxbai.javaversionselector.HelloApplication
                             </mainClass>
-                            <!-- <options>
-                                 <option>&#45;&#45;add-opens</option>
-                                 <option>javafx.base/com.sun.javafx.event=ALL-UNNAMED</option>
-                             </options>-->
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

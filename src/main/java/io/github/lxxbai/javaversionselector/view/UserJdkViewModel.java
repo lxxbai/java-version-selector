@@ -2,11 +2,13 @@
 package io.github.lxxbai.javaversionselector.view;
 
 import io.github.lxxbai.javaversionselector.common.enums.ApplyStatusEnum;
+import io.github.lxxbai.javaversionselector.event.InstallStatusEvent;
 import io.github.lxxbai.javaversionselector.model.UserJdkVersionVO;
 import io.github.lxxbai.javaversionselector.service.UserJdkVersionService;
 import jakarta.annotation.Resource;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -53,6 +55,14 @@ public class UserJdkViewModel {
      */
     private void refreshColumn(int index, UserJdkVersionVO installRecordVO) {
         this.jdkList.set(index, installRecordVO);
+    }
+
+    @EventListener(value = InstallStatusEvent.class)
+    public void changeStatus(InstallStatusEvent installStatusEvent) {
+        String jdkHomePath = installStatusEvent.getJdkHomePath();
+        userJdkVersionService.saveUserJdk(jdkHomePath);
+        // 刷新
+        refresh();
     }
 
 

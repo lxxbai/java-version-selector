@@ -70,7 +70,7 @@ public class JFXButtonUtil {
         SVGGlyph svgGlyph = SVGGlyphUtil.loadGlyph(ResourceUtil.getUrl(path));
         //derive(#d1e9ec, -20%)
         svgGlyph.setFill(Color.BURLYWOOD);
-        svgGlyph.setSize(15, 15);
+        svgGlyph.setSize(16, 15);
         btnSettings.setCursor(Cursor.HAND);
         btnSettings.setRipplerFill(Color.WHITE);
         btnSettings.setGraphic(svgGlyph);

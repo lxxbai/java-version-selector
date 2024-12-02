@@ -2,6 +2,7 @@
 package io.github.lxxbai.javaversionselector.view;
 
 import com.jfoenix.controls.JFXButton;
+import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
 import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.AlertUtil;
 import io.github.lxxbai.javaversionselector.common.util.DesktopUtil;
@@ -27,6 +28,7 @@ import java.util.Objects;
 /**
  * @author lxxbai
  */
+@FXView(url = "view/install_record.fxml")
 @Component
 public class InstallView {
 
@@ -157,7 +159,7 @@ public class InstallView {
      * @return JFXButton
      */
     private JFXButton buildFilePathButton(InstallRecordVO installRecordVO) {
-        JFXButton filePathButton = JFXButtonUtil.buildSvgButton("svg/folder-regular.svg", "打开文件地址");
+        JFXButton filePathButton = JFXButtonUtil.buildSvgButton("svg/folder-open-solid.svg", "打开文件地址");
         filePathButton.setOnAction(event ->
                 Platform.runLater(() -> {
                     try {

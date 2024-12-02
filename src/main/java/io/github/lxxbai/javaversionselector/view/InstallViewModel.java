@@ -163,7 +163,8 @@ public class InstallViewModel {
             }
         }
         //发送事件
-        PublishUtil.publishEvent(new InstallStatusEvent(installRecordVO.getUkVersion(), installRecordVO.getInstallStatus()));
+        PublishUtil.publishEvent(new InstallStatusEvent(installRecordVO.getUkVersion(),
+                installRecordVO.getInstallStatus(), installRecordVO.getInstalledJavaHome()));
     }
 
 

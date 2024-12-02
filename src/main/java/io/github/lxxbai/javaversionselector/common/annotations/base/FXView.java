@@ -10,7 +10,10 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Inherited
 public @interface FXView {
+
     String url();
+
+    String title() default "";
 
     double preWidth() default 0.0;
 

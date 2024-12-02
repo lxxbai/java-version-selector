@@ -35,18 +35,13 @@ public class JdkVersionSelectorApp extends Application {
         // 使用 JFXDecorator 包装主内容和标题栏按钮
         DecoratorView decorator = new DecoratorView(stage, jvsMainView);
         Scene scene = new Scene(decorator);
-        scene.getStylesheets().addAll(
-                ResourceUtil.toExternalForm("css/jf-all.css")
-//                BootstrapFX.bootstrapFXStylesheet()
-        );
+        scene.getStylesheets().addAll(ResourceUtil.toExternalForm("css/jf-all.css"));
         // 设置场景
         stage.setScene(scene);
         // 设置 Stage 的位置，使其居中
         ScreenUtil.setScreenPosition(stage, 0.7, 0.7);
         // 创建系统托盘
         TrayUtil.createTrayIcon(stage);
-//        SpringUtil.getApplicationContext().getAutowireCapableBeanFactory().destroyBean("");
-//        SpringUtil.getApplicationContext().getAutowireCapableBeanFactory().createBean()
         stage.show();
     }
 
