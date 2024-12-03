@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -25,7 +23,7 @@
         </HBox>
     </top>
     <center>
-        <TableView fx:id="tableView" BorderPane.alignment="CENTER">
+        <TableView fx:id="tableView" BorderPane.alignment="CENTER" >
             <columns>
                 <TableColumn fx:id="vmVendor" reorderable="false" resizable="false" sortable="false" text="供应商"/>
                 <TableColumn fx:id="mainVersion" reorderable="false" resizable="false" sortable="false" text="主版本"/>

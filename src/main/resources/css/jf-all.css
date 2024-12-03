@@ -77,7 +77,9 @@
 .main-center .table-row-cell {
     -fx-background-color: linear-gradient(to right, derive(rgba(248, 233, 248, 0.97), -20%), WHITE);
 }
-
+.main-center .table-view {
+    -fx-background-color: derive(rgba(248, 233, 248, 0.97), -20%);
+}
 .main-center .table-view .column-header {
     -fx-background-color: derive(rgba(248, 233, 248, 0.97), -20%);
 }
