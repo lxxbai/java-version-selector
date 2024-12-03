@@ -4,7 +4,9 @@ import com.jfoenix.controls.JFXListView;
 import io.github.lxxbai.javaversionselector.component.menu.MenuCellFactory;
 import io.github.lxxbai.javaversionselector.component.menu.MenuPageFactory;
 import io.github.lxxbai.javaversionselector.model.MenuPage;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 
 /**
@@ -14,11 +16,6 @@ import javafx.scene.layout.*;
  */
 public class JVSMainView extends BorderPane {
 
-    /**
-     * 右侧内容
-     */
-    private Pane pane;
-
     public JVSMainView() {
         init();
     }
@@ -27,12 +24,15 @@ public class JVSMainView extends BorderPane {
      * 初始化内容
      */
     private void init() {
+        getStyleClass().add("jvs-main");
         //左侧菜单
         JFXListView<MenuPage> listView = new JFXListView<>();
-        listView.setMinWidth(60);
-        listView.setMaxWidth(60);
+        listView.setMinWidth(50);
+        listView.setMaxWidth(50);
         //设置菜单的工厂
         listView.setCellFactory(new MenuCellFactory());
+        listView.getStyleClass().add("main-left");
+        listView.setShowTooltip(true);
         //首页
         MenuPage homePage = MenuPageFactory.build("版本", "svg/home.svg", JdkVersionView.class);
         //下载
@@ -42,9 +42,8 @@ public class JVSMainView extends BorderPane {
         //配置
         listView.getItems().addAll(homePage, downloadPage, myPage);
         //左边菜单
-        pane = new StackPane();
-        GridPane.setHgrow(pane, Priority.ALWAYS);
-        GridPane.setVgrow(pane, Priority.ALWAYS);
+        Pane pane = new StackPane();
+        pane.getStyleClass().add("main-center");
         //菜单切换
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {

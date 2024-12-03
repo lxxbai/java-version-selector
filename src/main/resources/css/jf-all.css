@@ -22,24 +22,68 @@
 }
 
 .table-view .table-row-cell:focused {
-    -fx-background-color: derive(#eaebf8, -20%); /* 透明背景，移除默认蓝色框 */
+    -fx-background-color: derive(#eaebf8, -20%);
 }
 
 /*选中后的颜色修改*/
 .table-view:selected {
     -fx-background-color: rgb(239, 242, 245);
 }
-/********************************table-view*********************************************/
-/********************************list-cell*********************************************/
 
-.list-cell:empty {
-    -fx-background-color: transparent; /* 无数据行的背景颜色 */
+/********************************table-view*********************************************/
+/********************************left-menu*********************************************/
+
+/*main-view左侧背景*/
+.main-left {
+    /*-fx-background-color: derive(#d1e9ec, -20%);*/
+    -fx-background-color: derive(rgba(248, 233, 248, 0.97), -20%);
+    -fx-alignment: CENTER;
 }
+
+.main-left .list-cell {
+    /*-fx-background-color: derive(#d1e9ec, -20%);*/
+    -fx-background-color: derive(rgba(248, 233, 248, 0.97), -20%);
+    -fx-padding: 10 0 10 0; /* 上 右 下 左 */
+}
+
+.main-left .jfx-svg-glyph {
+    -fx-background-color: #d7e4f1;
+}
+
+.main-left .jfx-svg-glyph:hover {
+    -fx-background-color: #5c6a6c; /* 鼠标悬停时的背景颜色 */
+    -fx-cursor: hand; /* 鼠标悬停时的指针样式 */
+}
+
 /*选中后的颜色修改*/
-.list-cell:selected {
-    -fx-background-color: rgb(239, 242, 245);
+.main-left .list-cell:selected .jfx-svg-glyph {
+    -fx-background-color: white;
 }
-/*********************************list-cell******************************************/
+
+/*********************************left-menu******************************************/
+/**********************************center*****************************************/
+
+.main-center {
+    -fx-background-color: derive(rgba(248, 233, 248, 0.97), -20%);
+}
+
+.main-h-box {
+    /*圆角*/
+    -fx-background-radius: 10;
+    /*-fx-background-color: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);*/
+    -fx-background-color: linear-gradient(to right, derive(rgba(248, 233, 248, 0.97), -20%), WHITE);
+}
+
+.main-center .table-row-cell {
+    -fx-background-color: linear-gradient(to right, derive(rgba(248, 233, 248, 0.97), -20%), WHITE);
+}
+
+.main-center .table-view .column-header {
+    -fx-background-color: derive(rgba(248, 233, 248, 0.97), -20%);
+}
+
+
+/**********************************center*****************************************/
 
 /*******************************************************************************
 *                                                                              *
@@ -48,7 +92,7 @@
 *******************************************************************************/
 
 .jfx-decorator {
-    -fx-decorator-color: derive(#d1e9ec, -20%);
+    -fx-decorator-color: derive(rgba(248, 233, 248, 0.97), -20%);
 }
 
 .jfx-decorator .jfx-decorator-buttons-container {
@@ -57,7 +101,7 @@
 
 .jfx-decorator .resize-border {
     -fx-border-color: -fx-decorator-color;
-    -fx-border-width: 0 4 4 4;
+    -fx-border-width: 0 0 0 0;
 }
 
 .jfx-decorator .jfx-decorator-title-container .jfx-decorator-text {
@@ -71,7 +115,7 @@
     -fx-background-color: WHITE;
 }
 
-
+/******************************ERROR LABELS**********************/
 .error-label {
     -fx-text-fill: #D34336;
     -fx-font-size: 0.75em;
@@ -97,3 +141,5 @@
     -fx-fill: #D34336;
     -fx-font-size: 1.0em;
 }
+
+/******************************ERROR LABELS**********************/

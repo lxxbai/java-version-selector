@@ -47,11 +47,11 @@ public class UserJdkView {
     public void initialize() throws Exception {
         ReadOnlyDoubleProperty width = tableView.widthProperty();
         //设置百分比宽度
-        vmVendor.prefWidthProperty().bind(width.multiply(.2));
+        vmVendor.prefWidthProperty().bind(width.multiply(.19));
         mainVersion.prefWidthProperty().bind(width.multiply(.2));
         javaVersion.prefWidthProperty().bind(width.multiply(.2));
         action.prefWidthProperty().bind(width.multiply(.2));
-        status.prefWidthProperty().bind(width.multiply(.2));
+        status.prefWidthProperty().bind(width.multiply(.19));
         vmVendor.setCellValueFactory(new PropertyValueFactory<>("vmVendor"));
         mainVersion.setCellValueFactory(new PropertyValueFactory<>("mainVersion"));
         javaVersion.setCellValueFactory(new PropertyValueFactory<>("javaVersion"));

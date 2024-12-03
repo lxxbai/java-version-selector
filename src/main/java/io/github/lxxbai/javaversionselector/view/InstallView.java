@@ -60,7 +60,7 @@ public class InstallView {
         javaVersion.prefWidthProperty().bind(width.multiply(.1));
         fileName.prefWidthProperty().bind(width.multiply(.2));
         fileSize.prefWidthProperty().bind(width.multiply(.15));
-        action.prefWidthProperty().bind(width.multiply(.2));
+        action.prefWidthProperty().bind(width.multiply(.18));
         status.prefWidthProperty().bind(width.multiply(.15));
         vmVendor.setCellValueFactory(new PropertyValueFactory<>("vmVendor"));
         mainVersion.setCellValueFactory(new PropertyValueFactory<>("mainVersion"));
