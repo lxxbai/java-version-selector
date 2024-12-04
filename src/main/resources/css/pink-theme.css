@@ -1,0 +1,153 @@
+/********************************left-menu*********************************************/
+
+.jvs-main {
+}
+
+/*main-view左侧背景*/
+.main-left {
+    /*-fx-background-color: derive(#d1e9ec, -20%);*/
+    -fx-background-color: linear-gradient(to bottom, derive(rgba(248, 233, 248, 0.97), -20%), WHITE);
+}
+
+.main-left:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.main-left .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 10 0 10 0; /* 上 右 下 左 */
+}
+
+.main-left .jfx-svg-glyph {
+    -fx-background-color: #d7e4f1;
+}
+
+.main-left .jfx-svg-glyph:hover {
+    -fx-background-color: #5c6a6c; /* 鼠标悬停时的背景颜色 */
+    -fx-cursor: hand; /* 鼠标悬停时的指针样式 */
+}
+
+/*选中后的颜色修改*/
+.main-left .list-cell:selected .jfx-svg-glyph {
+    -fx-background-color: white;
+}
+
+
+/*********************************left-menu******************************************/
+/**********************************center*****************************************/
+
+.main-h-box {
+    -fx-background-color: linear-gradient(to bottom, derive(rgba(248, 233, 248, 0.97), -20%), WHITE);
+}
+
+.main-center {
+    /*圆角*/
+    /*-fx-background-radius: 30;*/
+    -fx-background-color: linear-gradient(to right, derive(rgba(248, 233, 248, 0.97), -20%), WHITE);
+}
+
+/*选中后的颜色修改*/
+.main-center .table-view {
+    -fx-background-color: rgb(239, 242, 245);
+    -fx-border-color: transparent; /* 单元格边框颜色 */
+}
+
+.main-center .table-view .table-cell {
+    -fx-border-color: transparent; /* 单元格边框颜色 */
+}
+
+.main-center .table-row-cell {
+    -fx-border-color: transparent;
+}
+
+.main-center .table-row-cell:empty {
+    -fx-background-color: transparent; /* 无数据行的背景颜色 */
+    -fx-border-color: transparent;
+}
+
+.main-center .table-row-cell .text {
+    -fx-fill: black;
+    -fx-border-color: transparent;
+}
+
+.main-center .table-row-cell:selected .text {
+    -fx-fill: black;
+    -fx-border-color: transparent;
+}
+
+/*选中后的颜色修改*/
+.main-center .table-view:selected {
+    -fx-background-color: rgb(239, 242, 245);
+    -fx-border-color: transparent;
+}
+
+.main-center .table-view .table-cell {
+    -fx-border-color: transparent; /* 单元格边框颜色 */
+}
+
+.main-center .table-view .table-row-cell:focused {
+    -fx-background-color: derive(#eaebf8, -20%);
+}
+
+
+/**********************************center*****************************************/
+
+/*******************************************************************************
+*                                                                              *
+* JFX Decorator                                                                *
+*                                                                              *
+*******************************************************************************/
+
+.jfx-decorator {
+    -fx-decorator-color: derive(rgba(248, 233, 248, 0.97), -20%);
+}
+
+.jfx-decorator .jfx-decorator-buttons-container {
+    -fx-background-color: -fx-decorator-color;
+}
+
+.jfx-decorator .resize-border {
+    -fx-border-color: -fx-decorator-color;
+    -fx-border-width: 0 0 0 0;
+}
+
+.jfx-decorator .jfx-decorator-title-container .jfx-decorator-text {
+    -fx-fill: WHITE;
+    -fx-font-size: 12;
+}
+
+.jfx-decorator .jfx-decorator-title-container .jfx-svg-glyph {
+    -fx-shape: "M512 682c-128.024-99.309-255.626-199.040-384-298l384-298 384 298c-128.375 98.958-255.974 198.693-384 298zM512 792l314-246 70 54-384 298-384-298 70-54z";
+    -jfx-size: 15;
+    -fx-background-color: WHITE;
+}
+
+/******************************ERROR LABELS**********************/
+.error-label {
+    -fx-text-fill: #D34336;
+    -fx-font-size: 0.75em;
+    -fx-font-weight: bold;
+}
+
+.error-icon {
+    -fx-fill: #D34336;
+    -fx-font-size: 1.0em;
+}
+
+.jfx-text-field:error, .jfx-password-field:error, .jfx-text-area:error, .jfx-combo-box:error {
+    -jfx-focus-color: #D34336;
+    -jfx-unfocus-color: #D34336;
+}
+
+.jfx-text-field .error-label, .jfx-password-field .error-label, .jfx-text-area .error-label {
+    -fx-text-fill: #D34336;
+    -fx-font-size: 0.75em;
+}
+
+.jfx-text-field .error-icon, .jfx-password-field .error-icon, .jfx-text-area .error-icon {
+    -fx-fill: #D34336;
+    -fx-font-size: 1.0em;
+}
+
+/******************************ERROR LABELS**********************/

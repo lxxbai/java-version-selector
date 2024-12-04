@@ -59,9 +59,9 @@ public class JdkVersionView {
         vmVendor.prefWidthProperty().bind(width.multiply(.1));
         mainVersion.prefWidthProperty().bind(width.multiply(.1));
         javaVersion.prefWidthProperty().bind(width.multiply(.1));
-        releaseDate.prefWidthProperty().bind(width.multiply(.14));
+        releaseDate.prefWidthProperty().bind(width.multiply(.142));
         fileName.prefWidthProperty().bind(width.multiply(.3));
-        fileSize.prefWidthProperty().bind(width.multiply(.14));
+        fileSize.prefWidthProperty().bind(width.multiply(.15));
         action.prefWidthProperty().bind(width.multiply(.1));
         //绑定数据
         filterJavaVersion.textProperty().bindBidirectional(jdkVersionViewModel.getFilterJavaVersion());
