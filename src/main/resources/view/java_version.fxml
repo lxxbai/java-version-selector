@@ -5,25 +5,22 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="io.github.lxxbai.javaversionselector.view.JdkVersionView"
-            stylesheets="@../css/styles.css">
+            fx:controller="io.github.lxxbai.javaversionselector.view.JdkVersionView">
     <top>
         <HBox spacing="5.0" BorderPane.alignment="CENTER" styleClass="main-h-box">
             <JFXComboBox fx:id="filterVmVendor" promptText="供应商" labelFloat="true"/>
-            <JFXComboBox fx:id="filterMainVersion" promptText="主版本" labelFloat="true"/>
+            <JFXComboBox fx:id="filterMainVersion" promptText="主版本" labelFloat="true" />
             <JFXTextField fx:id="filterJavaVersion" promptText="版本" labelFloat="true"/>
+            <JFXButton  fx:id="resetButton"  onAction="#resetFilter"  HBox.hgrow="NEVER" styleClass="custom-shadow-button"/>
             <Region HBox.hgrow="ALWAYS"/>
-            <JFXButton alignment="CENTER_RIGHT" onAction="#resetFilter" text="重置"
-                       HBox.hgrow="NEVER" styleClass="custom-shadow-button"/>
-            <JFXButton alignment="CENTER_RIGHT" onAction="#onUpdateDataButtonClick" text="更新数据"
-                       HBox.hgrow="NEVER" styleClass="custom-shadow-button"/>
+            <JFXButton  fx:id="refreshButton" onAction="#onUpdateDataButtonClick" styleClass="svg-button"/>
             <padding>
-                <Insets bottom="10.0" left="10" right="10.0" top="10"/>
+                <Insets bottom="10" left="10" right="10.0" top="30"/>
             </padding>
         </HBox>
     </top>
     <center>
-        <TableView fx:id="tableView" BorderPane.alignment="CENTER" >
+        <TableView fx:id="tableView" BorderPane.alignment="CENTER">
             <columns>
                 <TableColumn fx:id="vmVendor" reorderable="false" resizable="false" sortable="false" text="供应商"/>
                 <TableColumn fx:id="mainVersion" reorderable="false" resizable="false" sortable="false" text="主版本"/>
@@ -35,5 +32,8 @@
                 <TableColumn fx:id="action" reorderable="false" resizable="false" sortable="false" text="操作"/>
             </columns>
         </TableView>
+        <padding>
+            <Insets top="-1"/>
+        </padding>
     </center>
 </BorderPane>

@@ -16,8 +16,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 
 /**
  * @author lxxbai
@@ -25,6 +23,7 @@ import java.util.Objects;
 @FXView(url = "view/java_version.fxml")
 @Component
 public class JdkVersionView {
+
     @Resource
     private JdkVersionViewModel jdkVersionViewModel;
     @Resource
@@ -51,9 +50,14 @@ public class JdkVersionView {
     private TableColumn<JdkVersionVO, String> fileSize;
     @FXML
     private TableColumn<JdkVersionVO, String> action;
+    @FXML
+    private JFXButton resetButton;
+    @FXML
+    private JFXButton refreshButton;
 
     @FXML
     public void initialize() {
+        //禁用焦点
         ReadOnlyDoubleProperty width = tableView.widthProperty();
         //设置百分比宽度
         vmVendor.prefWidthProperty().bind(width.multiply(.1));
@@ -83,6 +87,8 @@ public class JdkVersionView {
         tableView.setItems(jdkVersionViewModel.getJavaVersionList());
         filterVmVendor.setItems(jdkVersionViewModel.getVmVendorList());
         filterMainVersion.setItems(jdkVersionViewModel.getMainVersionList());
+        JFXButtonUtil.fullSvg(resetButton, "svg/rotate-solid.svg", "重置");
+        JFXButtonUtil.fullSvg(refreshButton, "svg/rotate-solid.svg", "刷新");
     }
 
 
@@ -97,7 +103,7 @@ public class JdkVersionView {
             JdkVersionVO vo = cellData.getData();
             InstallStatusEnum downloadStatus = vo.getInstallStatus();
             JFXButton downloadButton;
-            if (Objects.requireNonNull(downloadStatus) == InstallStatusEnum.DOWNLOADING) {
+            if (downloadStatus == InstallStatusEnum.DOWNLOADING) {
                 downloadButton = JFXButtonUtil.buildDynamicButton("pic/downloading.gif");
                 downloadButton.setDisable(true);
             } else {

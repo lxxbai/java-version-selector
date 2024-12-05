@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXListView;
 import io.github.lxxbai.javaversionselector.component.menu.MenuCellFactory;
 import io.github.lxxbai.javaversionselector.component.menu.MenuPageFactory;
 import io.github.lxxbai.javaversionselector.model.MenuPage;
+import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -33,6 +34,8 @@ public class JVSMainView extends BorderPane {
         listView.setCellFactory(new MenuCellFactory());
         listView.getStyleClass().add("main-left");
         listView.setShowTooltip(true);
+        //禁止焦点,不然好像有些问题
+        listView.setFocusTraversable(false);
         //首页
         MenuPage homePage = MenuPageFactory.build("版本", "svg/home.svg", JdkVersionView.class);
         //下载

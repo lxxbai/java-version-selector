@@ -16,7 +16,7 @@ public class MenuIcon extends VBox {
         //加载图标
         SVGGlyph svgGlyph = SVGGlyphUtil.loadGlyph(ResourceUtil.getUrl(iconPath));
         svgGlyph.setFill(Color.WHITE);
-        svgGlyph.setSize(20, 21);
+        svgGlyph.setSize(20, 20);
         this.getChildren().addAll(svgGlyph);
         this.getStyleClass().add("menu-item");
         this.setAlignment(Pos.CENTER);

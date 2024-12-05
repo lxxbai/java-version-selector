@@ -59,6 +59,7 @@ public class JFXButtonUtil {
         JFXTooltip.install(hBox, tooltip, Pos.CENTER_RIGHT);
         return hBox;
     }
+
     /**
      * 构建自定义按钮
      *
@@ -92,7 +93,7 @@ public class JFXButtonUtil {
         //加载图标
         SVGGlyph svgGlyph = SVGGlyphUtil.loadGlyph(ResourceUtil.getUrl(path));
         //derive(#d1e9ec, -20%)
-        svgGlyph.setFill(Color.BLACK);
+        svgGlyph.setFill(Color.WHITE);
         svgGlyph.setSize(20, 20);
         btnSettings.setCursor(Cursor.HAND);
         btnSettings.setRipplerFill(Color.WHITE);
@@ -119,5 +120,27 @@ public class JFXButtonUtil {
         btnSettings.setRipplerFill(Color.WHITE);
         btnSettings.setGraphic(imageView);
         return btnSettings;
+    }
+
+
+    /**
+     * 构建自定义按钮
+     *
+     * @param jfxButton  按钮
+     * @param path       图标路径
+     * @param tooltipStr 提示
+     */
+    public static void fullSvg(JFXButton jfxButton, String path, String tooltipStr) {
+        //加载图标
+        SVGGlyph svgGlyph = SVGGlyphUtil.loadGlyph(ResourceUtil.getUrl(path));
+        //derive(#d1e9ec, -20%)
+        svgGlyph.setFill(Color.WHITE);
+        svgGlyph.setSize(15, 15);
+        jfxButton.setCursor(Cursor.HAND);
+        jfxButton.setRipplerFill(Color.WHITE);
+        jfxButton.setGraphic(svgGlyph);
+        JFXTooltip tooltip = new JFXTooltip(tooltipStr);
+        tooltip.setShowDelay(Duration.millis(100));
+        JFXTooltip.install(jfxButton, tooltip, Pos.CENTER_RIGHT);
     }
 }

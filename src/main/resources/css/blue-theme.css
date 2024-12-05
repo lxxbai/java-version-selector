@@ -1,12 +1,4 @@
 /********************************left-menu*********************************************/
-.jvs-main {
-    /*主要背景颜色*/
-    -fx-base-background: derive(rgba(248, 233, 248, 0.97), -20%);
-    /*tableview的选中背景颜色*/
-    -fx-table-view-focused: derive(rgba(250, 224, 250, 0.16), -20%);
-    /*字体颜色*/
-    -fx-font-color: rgb(92, 2, 87);
-}
 
 *:focused {
     -fx-focus-color: transparent;
@@ -15,7 +7,8 @@
 
 /*main-view左侧背景*/
 .main-left {
-    -fx-background-color: linear-gradient(to bottom, -fx-base-background, WHITE);
+    /*-fx-background-color: derive(#d1e9ec, -20%);*/
+    -fx-background-color: linear-gradient(to bottom, derive(rgba(69, 116, 246, 0.82), -20%), WHITE);
 }
 
 .main-left .list-cell {
@@ -42,9 +35,9 @@
 /**********************************center*****************************************/
 
 .main-h-box {
-    /*-fx-background-color: linear-gradient(to bottom, -fx-base-background, WHITE);*/
-    -fx-background-color: -fx-base-background, WHITE;
-    -fx-background-radius: 0, 10 0 0 0;
+    -fx-background-radius: 10 10 0 0;
+    /*圆角*/
+    -fx-background-color: WHITE;
 }
 
 .main-center .table-view,
@@ -62,63 +55,22 @@
 }
 
 .main-center .table-row-cell .text {
-    -fx-fill: -fx-font-color;
+    -fx-fill: rgb(92, 2, 87);
 }
 
 .main-center .table-view .table-row-cell:focused {
-    -fx-background-color: -fx-table-view-focused;
+    -fx-background-color: derive(rgba(178, 196, 246, 0.82), -20%);
 }
 
 .main-center .table-view .column-header {
-    -fx-background-color: -fx-base-background;
-}
-
-/* 修改 TableView 表头的字体颜色 */
-.main-center .table-view .column-header .label {
-    -fx-text-fill: white;
+    -fx-background-color: derive(rgba(53, 102, 232, 0.82), -20%);
 }
 
 .main-center .table-row-cell:hover {
-    -fx-background-color: -fx-table-view-focused;
-}
-
-.main-center .jfx-text-field,
-.main-center .jfx-combo-box {
-    -jfx-focus-color: -fx-font-color;
-    -fx-pref-width: 80;
-}
-
-/* 下拉列表项的悬停颜色 */
-.main-center .jfx-combo-box .list-cell:hover {
-    -fx-background-color: -fx-base-background;
-    -fx-text-fill: white; /* 修改文字颜色 */
+    -fx-background-color: derive(rgba(177, 195, 245, 0.82), -20%);
 }
 
 /**********************************center*****************************************/
-
-/******button**********/
-
-/* 在 CSS 文件中 */
-.custom-shadow-button {
-    -fx-background-color: transparent; /* 自定义背景色 */
-    -fx-text-fill: -fx-base-background; /* 字体颜色 */
-    -fx-padding: 5 10; /* 内边距 */
-    -fx-font-size: 12px; /* 字体大小 */
-    -fx-effect: dropshadow(gaussian, rgba(239, 162, 238, 0.97), 10, 0, 0, 5); /* 添加阴影效果 */
-}
-
-/* 在 CSS 文件中 */
-.svg-button {
-    -fx-effect: dropshadow(gaussian, -fx-base-background, 10, 0, 0, 5); /* 添加阴影效果 */
-}
-
-.svg-button .jfx-svg-glyph {
-    -jfx-size: 18 20;
-    -fx-background-color: -fx-base-background;
-}
-
-/******button**********/
-
 
 /*******************************************************************************
 *                                                                              *
@@ -127,11 +79,12 @@
 *******************************************************************************/
 
 .jfx-decorator {
-    -fx-decorator-color: derive(rgba(248, 233, 248, 0.97), -20%);
+    -fx-decorator-color: derive(rgba(69, 116, 246, 0.82), -20%);
 }
 
 .jfx-decorator .jfx-decorator-buttons-container {
     -fx-background-color: -fx-decorator-color;
+    -fx-min-height: 40;
 }
 
 .jfx-decorator .resize-border {
@@ -141,7 +94,7 @@
 
 .jfx-decorator .jfx-decorator-title-container .jfx-decorator-text {
     -fx-fill: WHITE;
-    -fx-font-size: 12;
+    -fx-font-size: 15;
 }
 
 .jfx-decorator .jfx-decorator-title-container .jfx-svg-glyph {
