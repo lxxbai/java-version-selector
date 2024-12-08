@@ -31,9 +31,9 @@
                 <TableColumn fx:id="fileSize" reorderable="false" resizable="false" sortable="false" text="文件大小"/>
                 <TableColumn fx:id="action" reorderable="false" resizable="false" sortable="false" text="操作"/>
             </columns>
+            <padding>
+                <Insets top="-1"/>
+            </padding>
         </TableView>
-        <padding>
-            <Insets top="-1"/>
-        </padding>
     </center>
 </BorderPane>

@@ -3,7 +3,6 @@ package io.github.lxxbai.javaversionselector;
 import cn.hutool.extra.spring.EnableSpringUtil;
 import io.github.lxxbai.javaversionselector.common.util.*;
 import io.github.lxxbai.javaversionselector.config.GlobalExceptionHandler;
-import io.github.lxxbai.javaversionselector.view.DecoratorView;
 import io.github.lxxbai.javaversionselector.view.JVSMainView;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -29,17 +28,15 @@ public class JdkVersionSelectorApp extends Application {
         // 加载主页面
         JVSMainView jvsMainView = new JVSMainView();
         // 设置标题
-        stage.setTitle("Jdk Version Selector");
+        stage.setTitle("Jdk版本选择器");
         // 设置图标
         stage.getIcons().add(ResourceUtil.toImage("pic/jv.png"));
-        // 使用 JFXDecorator 包装主内容和标题栏按钮
-        DecoratorView decorator = new DecoratorView(stage, jvsMainView);
-        Scene scene = new Scene(decorator);
+        Scene scene = new Scene(jvsMainView);
         scene.getStylesheets().addAll(ResourceUtil.toExternalForm("css/pink-theme.css"));
         // 设置场景
         stage.setScene(scene);
         // 设置 Stage 的位置，使其居中
-        ScreenUtil.setScreenPosition(stage, 0.6, 0.6);
+        ScreenUtil.setScreenPosition(stage, 0.5, 0.5);
         // 创建系统托盘
         TrayUtil.createTrayIcon(stage);
         stage.show();

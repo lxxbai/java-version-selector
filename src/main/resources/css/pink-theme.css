@@ -1,7 +1,7 @@
 /********************************left-menu*********************************************/
 .jvs-main {
     /*主要背景颜色*/
-    -fx-base-background: derive(rgba(248, 233, 248, 0.97), -20%);
+    -fx-base-background: derive(rgba(241, 194, 241, 0.97), -20%);
     /*tableview的选中背景颜色*/
     -fx-table-view-focused: derive(rgba(250, 224, 250, 0.16), -20%);
     /*字体颜色*/
@@ -15,12 +15,12 @@
 
 /*main-view左侧背景*/
 .main-left {
-    -fx-background-color: linear-gradient(to bottom, -fx-base-background, WHITE);
+    -fx-background-color: -fx-base-background;
 }
 
 .main-left .list-cell {
     -fx-background-color: transparent;
-    -fx-padding: 10 0 10 0; /* 上 右 下 左 */
+    -fx-padding: 15 0 15 0; /* 上 右 下 左 */
 }
 
 .main-left .jfx-svg-glyph {
@@ -43,8 +43,8 @@
 
 .main-h-box {
     /*-fx-background-color: linear-gradient(to bottom, -fx-base-background, WHITE);*/
-    -fx-background-color: -fx-base-background, WHITE;
-    -fx-background-radius: 0, 10 0 0 0;
+    /*-fx-background-color: -fx-base-background, WHITE;*/
+    /*-fx-background-radius: 0, 10 0 0 0;*/
 }
 
 .main-center .table-view,
@@ -52,10 +52,23 @@
     -fx-background-color: white;
 }
 
+
+.main-center .table-view{
+    -fx-border-color: -fx-base-background;
+    -fx-border-width: 1 1 1 1;
+}
+
+
 .main-center .table-view .table-cell,
-.main-center .table-row-cell,
 .main-center .table-row-cell:empty,
 .main-center .table-view .table-row-cell:empty:hover {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 0;
+}
+
+
+.main-center .table-row-cell{
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-border-width: 0 0 0 0;
@@ -70,12 +83,13 @@
 }
 
 .main-center .table-view .column-header {
-    -fx-background-color: -fx-base-background;
+    -fx-background-color: white;
+    -fx-border-color: -fx-base-background;
 }
 
 /* 修改 TableView 表头的字体颜色 */
 .main-center .table-view .column-header .label {
-    -fx-text-fill: white;
+    -fx-text-fill: -fx-base-background;
 }
 
 .main-center .table-row-cell:hover {
@@ -113,7 +127,7 @@
 }
 
 .svg-button .jfx-svg-glyph {
-    -jfx-size: 18 20;
+    -jfx-size: 15;
     -fx-background-color: -fx-base-background;
 }
 
@@ -127,7 +141,9 @@
 *******************************************************************************/
 
 .jfx-decorator {
-    -fx-decorator-color: derive(rgba(248, 233, 248, 0.97), -20%);
+    /*-fx-decorator-color: rgba(248, 213, 248, 0.84);*/
+    /*-fx-background-color: -fx-decorator-color;*/
+    -fx-decorator-color: white;
 }
 
 .jfx-decorator .jfx-decorator-buttons-container {
@@ -135,19 +151,24 @@
 }
 
 .jfx-decorator .resize-border {
-    -fx-border-color: -fx-decorator-color;
-    -fx-border-width: 0 0 0 0;
+    -fx-border-color: rgba(244, 235, 244, 0.97);
+    -fx-border-width: 1 0 0 0;
 }
 
 .jfx-decorator .jfx-decorator-title-container .jfx-decorator-text {
-    -fx-fill: WHITE;
-    -fx-font-size: 12;
+    -fx-fill: -fx-base-background;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
 }
 
 .jfx-decorator .jfx-decorator-title-container .jfx-svg-glyph {
     -fx-shape: "M512 682c-128.024-99.309-255.626-199.040-384-298l384-298 384 298c-128.375 98.958-255.974 198.693-384 298zM512 792l314-246 70 54-384 298-384-298 70-54z";
     -jfx-size: 15;
-    -fx-background-color: WHITE;
+    -fx-background-color: -fx-base-background;
+}
+
+.jfx-decorator .jfx-decorator-buttons-container .jfx-svg-glyph {
+    -fx-background-color: -fx-base-background;
 }
 
 /******************************ERROR LABELS**********************/
