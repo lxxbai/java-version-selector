@@ -1,38 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="io.github.lxxbai.javaversionselector.view.JdkVersionView">
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.lxxbai.javaversionselector.view.JdkVersionView">
     <top>
-        <HBox spacing="5.0" BorderPane.alignment="CENTER" styleClass="main-h-box">
-            <JFXComboBox fx:id="filterVmVendor" promptText="供应商" labelFloat="true"/>
-            <JFXComboBox fx:id="filterMainVersion" promptText="主版本" labelFloat="true" />
-            <JFXTextField fx:id="filterJavaVersion" promptText="版本" labelFloat="true"/>
-            <JFXButton  fx:id="resetButton"  onAction="#resetFilter"  HBox.hgrow="NEVER" styleClass="custom-shadow-button"/>
-            <Region HBox.hgrow="ALWAYS"/>
-            <JFXButton  fx:id="refreshButton" onAction="#onUpdateDataButtonClick" styleClass="svg-button"/>
+        <HBox spacing="5.0" styleClass="main-h-box" BorderPane.alignment="CENTER">
+            <JFXComboBox fx:id="filterVmVendor" labelFloat="true" promptText="供应商" />
+            <JFXComboBox fx:id="filterMainVersion" labelFloat="true" promptText="主版本" />
+            <JFXTextField fx:id="filterJavaVersion" labelFloat="true" promptText="版本" />
+            <JFXButton fx:id="resetButton" onAction="#resetFilter" styleClass="custom-shadow-button" HBox.hgrow="NEVER" />
+            <Region HBox.hgrow="ALWAYS" />
+            <JFXButton fx:id="refreshButton" onAction="#onUpdateDataButtonClick" styleClass="svg-button" />
             <padding>
-                <Insets bottom="10" left="10" right="10.0" top="30"/>
+                <Insets bottom="10" left="10" right="10.0" top="30" />
             </padding>
         </HBox>
     </top>
     <center>
-        <TableView fx:id="tableView" BorderPane.alignment="CENTER">
+        <TableView fx:id="tableView">
             <columns>
-                <TableColumn fx:id="vmVendor" reorderable="false" resizable="false" sortable="false" text="供应商"/>
-                <TableColumn fx:id="mainVersion" reorderable="false" resizable="false" sortable="false" text="主版本"/>
-                <TableColumn fx:id="javaVersion" reorderable="false" resizable="false" sortable="false" text="版本"/>
-                <TableColumn fx:id="releaseDate" reorderable="false" resizable="false" sortable="false"
-                             text="发布日期"/>
-                <TableColumn fx:id="fileName" reorderable="false" resizable="false" sortable="false" text="文件名"/>
-                <TableColumn fx:id="fileSize" reorderable="false" resizable="false" sortable="false" text="文件大小"/>
-                <TableColumn fx:id="action" reorderable="false" resizable="false" sortable="false" text="操作"/>
+                <TableColumn fx:id="vmVendor" prefWidth="60" reorderable="false"  sortable="false" text="供应商" />
+                <TableColumn fx:id="mainVersion" prefWidth="51" reorderable="false"  sortable="false" text="主版本" />
+                <TableColumn fx:id="javaVersion" prefWidth="57" reorderable="false"  sortable="false" text="版本" />
+                <TableColumn fx:id="releaseDate" prefWidth="77" reorderable="false"  sortable="false" text="发布日期" />
+                <TableColumn fx:id="fileName" prefWidth="113" reorderable="false"  sortable="false" text="文件名" />
+                <TableColumn fx:id="fileSize" prefWidth="67" reorderable="false"  sortable="false" text="文件大小" />
+                <TableColumn fx:id="action" prefWidth="136" reorderable="false"  sortable="false" text="操作" />
             </columns>
             <padding>
-                <Insets top="-1"/>
+                <Insets top="-1" />
             </padding>
         </TableView>
     </center>

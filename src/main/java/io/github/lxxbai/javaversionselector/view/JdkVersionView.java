@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 import org.springframework.stereotype.Component;
 
 
@@ -59,6 +60,7 @@ public class JdkVersionView {
     public void initialize() {
         //禁用焦点
         ReadOnlyDoubleProperty width = tableView.widthProperty();
+//        tableView.
         //设置百分比宽度
         vmVendor.prefWidthProperty().bind(width.multiply(.1));
         mainVersion.prefWidthProperty().bind(width.multiply(.1));
@@ -123,5 +125,62 @@ public class JdkVersionView {
     @FXML
     private void resetFilter() {
         jdkVersionViewModel.resetFilter();
+    }
+
+
+
+    // 定义自定义的 ColumnResizePolicy
+    public static class CustomColumnResizePolicy<T> implements Callback<TableView.ResizeFeatures<T>, Boolean> {
+
+        private final TableView<T> tableView;
+
+        public CustomColumnResizePolicy(TableView<T> tableView) {
+            this.tableView = tableView;
+        }
+
+        @Override
+        public Boolean call(TableView.ResizeFeatures<T> features) {
+            if (features == null || features.getColumn() == null) {
+                return false;
+            }
+            TableColumn<T, ?> column = features.getColumn();
+            double delta = features.getDelta(); // 调整的距离
+            double newWidth = column.getWidth() + delta;
+
+            // 确保列宽不小于最小宽度（例如 50 像素）
+            double minWidth = 50.0;
+            if (newWidth < minWidth) {
+                newWidth = minWidth;
+            }
+
+            // 确保列宽不大于最大宽度（例如 300 像素）
+            double maxWidth = 300.0;
+            if (newWidth > maxWidth) {
+                newWidth = maxWidth;
+            }
+            // 更新列宽
+            column.setPrefWidth(newWidth);
+            // 如果是最后一列，确保它占据剩余的空间
+            if (column == tableView.getColumns().get(tableView.getColumns().size() - 1)) {
+                adjustLastColumnWidth(tableView);
+            }
+            return true;
+        }
+
+        private void adjustLastColumnWidth(TableView<T> tableView) {
+            // 获取最后一列
+            TableColumn<T, ?> lastColumn = tableView.getColumns().get(tableView.getColumns().size() - 1);
+
+            // 计算剩余空间
+            double totalWidth = tableView.getWidth();
+            double usedWidth = tableView.getColumns().stream()
+                    .filter(col -> col != lastColumn)
+                    .mapToDouble(TableColumn::getWidth)
+                    .sum();
+
+            // 设置最后一列的宽度为剩余空间
+            double remainingWidth = Math.max(totalWidth - usedWidth, 50.0); // 最小宽度为 50 像素
+            lastColumn.setPrefWidth(remainingWidth);
+        }
     }
 }

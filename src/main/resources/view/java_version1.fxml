@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import io.github.palexdev.materialfx.controls.MFXTableView?>
+<BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.github.lxxbai.javaversionselector.view.JdkVersionView1">
+    <top>
+        <HBox spacing="5.0" BorderPane.alignment="CENTER" styleClass="main-h-box">
+            <JFXComboBox fx:id="filterVmVendor" promptText="供应商" labelFloat="true"/>
+            <JFXComboBox fx:id="filterMainVersion" promptText="主版本" labelFloat="true" />
+            <JFXTextField fx:id="filterJavaVersion" promptText="版本" labelFloat="true"/>
+            <JFXButton  fx:id="resetButton"  onAction="#resetFilter"  HBox.hgrow="NEVER" styleClass="custom-shadow-button"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <JFXButton  fx:id="refreshButton" onAction="#onUpdateDataButtonClick" styleClass="svg-button"/>
+            <padding>
+                <Insets bottom="10" left="10" right="10.0" top="30"/>
+            </padding>
+        </HBox>
+    </top>
+    <center>
+        <MFXTableView fx:id="tableView" BorderPane.alignment="CENTER"/>
+    </center>
+</BorderPane>
