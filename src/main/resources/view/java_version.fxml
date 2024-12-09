@@ -20,19 +20,21 @@
         </HBox>
     </top>
     <center>
-        <TableView fx:id="tableView">
-            <columns>
-                <TableColumn fx:id="vmVendor" prefWidth="60" reorderable="false"  sortable="false" text="供应商" />
-                <TableColumn fx:id="mainVersion" prefWidth="51" reorderable="false"  sortable="false" text="主版本" />
-                <TableColumn fx:id="javaVersion" prefWidth="57" reorderable="false"  sortable="false" text="版本" />
-                <TableColumn fx:id="releaseDate" prefWidth="77" reorderable="false"  sortable="false" text="发布日期" />
-                <TableColumn fx:id="fileName" prefWidth="113" reorderable="false"  sortable="false" text="文件名" />
-                <TableColumn fx:id="fileSize" prefWidth="67" reorderable="false"  sortable="false" text="文件大小" />
-                <TableColumn fx:id="action" prefWidth="136" reorderable="false"  sortable="false" text="操作" />
-            </columns>
-            <padding>
-                <Insets top="-1" />
-            </padding>
-        </TableView>
+        <StackPane>
+            <TableView fx:id="tableView">
+                <columns>
+                    <TableColumn fx:id="vmVendor" prefWidth="100" reorderable="false" minWidth="50" sortable="false" text="供应商" />
+                    <TableColumn fx:id="mainVersion" prefWidth="100" reorderable="false"  minWidth="50"  sortable="false" text="主版本" />
+                    <TableColumn fx:id="javaVersion" prefWidth="100" reorderable="false" minWidth="50"   sortable="false" text="版本" />
+                    <TableColumn fx:id="releaseDate" prefWidth="150" reorderable="false" minWidth="75"   sortable="false" text="发布日期" />
+                    <TableColumn fx:id="fileName" prefWidth="300" minWidth="200" reorderable="false"  sortable="false" text="文件名" />
+                    <TableColumn fx:id="fileSize" prefWidth="150" reorderable="false" minWidth="75"   sortable="false" text="文件大小" />
+                    <TableColumn fx:id="action" prefWidth="100" reorderable="false" minWidth="50"   sortable="false" text="操作" />
+                </columns>
+                <padding>
+                    <Insets top="-1" />
+                </padding>
+            </TableView>
+        </StackPane>
     </center>
 </BorderPane>

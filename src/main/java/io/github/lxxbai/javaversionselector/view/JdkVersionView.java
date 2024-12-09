@@ -6,16 +6,26 @@ import com.jfoenix.controls.JFXTextField;
 import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
 import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.JFXButtonUtil;
+import io.github.lxxbai.javaversionselector.component.ColumnResizePolicy;
 import io.github.lxxbai.javaversionselector.component.cell.GraphicTableCellFactory;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import jakarta.annotation.Resource;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXML;
+import javafx.geometry.Orientation;
+import javafx.scene.Node;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumnBase;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Set;
+
+import static javafx.scene.control.PopupControl.USE_COMPUTED_SIZE;
+import static javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY;
 
 
 /**
@@ -58,18 +68,44 @@ public class JdkVersionView {
 
     @FXML
     public void initialize() {
-        //禁用焦点
-        ReadOnlyDoubleProperty width = tableView.widthProperty();
-//        tableView.
-        //设置百分比宽度
-        vmVendor.prefWidthProperty().bind(width.multiply(.1));
-        mainVersion.prefWidthProperty().bind(width.multiply(.1));
-        javaVersion.prefWidthProperty().bind(width.multiply(.1));
-        releaseDate.prefWidthProperty().bind(width.multiply(.142));
-        fileName.prefWidthProperty().bind(width.multiply(.3));
-        fileSize.prefWidthProperty().bind(width.multiply(.15));
-        action.prefWidthProperty().bind(width.multiply(.1));
+        ColumnResizePolicy customerResizePolicy = new ColumnResizePolicy<>(x -> {
+            double width = tableView.getBoundsInLocal().getWidth();
+            System.out.println(width);
+            System.out.println(tableView.getWidth());
+            System.out.println(x.widthProperty().getValue());
+            Double realWidth = x.widthProperty().getValue() - 40;
+            vmVendor.setPrefWidth(realWidth * 0.1);
+            mainVersion.setPrefWidth(realWidth * 0.1);
+            javaVersion.setPrefWidth(realWidth * 0.15);
+            releaseDate.setPrefWidth(realWidth * 0.10);
+            fileName.setPrefWidth(realWidth * 0.3);
+            fileSize.setPrefWidth(realWidth * 0.15);
+            action.setPrefWidth(realWidth * 0.1);
+        });
+        tableView.setColumnResizePolicy(customerResizePolicy);
+//        tableView.widthProperty().addListener((observableValue, number, t1) -> {
+//            Double realWidth = tableView.widthProperty().getValue();
+//            vmVendor.setPrefWidth(realWidth * 0.1);
+//            mainVersion.setPrefWidth(realWidth * 0.1);
+//            javaVersion.setPrefWidth(realWidth * 0.1);
+//            releaseDate.setPrefWidth(realWidth * 0.10);
+//            fileName.setPrefWidth(realWidth * 0.3);
+//            fileSize.setPrefWidth(realWidth * 0.15);
+//            action.setPrefWidth(realWidth * 0.1);
+
+//            mainVersion.prefWidthProperty().bind(width.multiply(.1));
+//            javaVersion.prefWidthProperty().bind(width.multiply(.1));
+//            releaseDate.prefWidthProperty().bind(width.multiply(.142));
+//            fileName.prefWidthProperty().bind(width.multiply(.3));
+//            fileSize.prefWidthProperty().bind(width.multiply(.15));
+//            action.prefWidthProperty().bind(width.multiply(.1));
+//        });
+//        tableView.setColumnResizePolicy(resizeFeatures -> true);
+//        tableView.widthProperty().addListener((observableValue, number, t1) -> customResize(tableView));
+//        GUIUtils.autoFitTable(tableView);
+        //tableView.widthProperty().addListener((observableValue, number, t1) -> updateScrollBar(tableView));
         //绑定数据
+
         filterJavaVersion.textProperty().bindBidirectional(jdkVersionViewModel.getFilterJavaVersion());
         filterMainVersion.valueProperty().bindBidirectional(jdkVersionViewModel.getFilterMainVersion());
         filterVmVendor.valueProperty().bindBidirectional(jdkVersionViewModel.getFilterVmVendor());
@@ -91,6 +127,38 @@ public class JdkVersionView {
         filterMainVersion.setItems(jdkVersionViewModel.getMainVersionList());
         JFXButtonUtil.fullSvg(resetButton, "svg/rotate-solid.svg", "重置");
         JFXButtonUtil.fullSvg(refreshButton, "svg/rotate-solid.svg", "刷新");
+    }
+
+    public static void customResize(TableView<?> view) {
+        double width = 0;
+        for (TableColumn<?, ?> column : view.getColumns()) {
+            width += column.getWidth();
+        }
+        double tableWidth = view.getWidth();
+        if (tableWidth > width) {
+            TableColumn<?, ?> col = view.getColumns().get(view.getColumns().size() - 1);
+            col.setPrefWidth(col.getWidth() + (tableWidth - width));
+        }
+    }
+
+    public static void updateScrollBar(final TableView<?> table) {
+        // lookup the horizontal scroll bar
+        ScrollBar hbar = null;
+        Set<Node> scrollBars = table.lookupAll(".scroll-bar");
+        for (Node node : scrollBars) {
+            ScrollBar bar = (ScrollBar) node;
+            if (bar.getOrientation() == Orientation.HORIZONTAL) {
+                hbar = bar;
+                break;
+            }
+        }
+        // choose sizing constraint as either 0 or useComputed, depending on policy
+        Callback<?, ?> policy = table.getColumnResizePolicy();
+        double pref = policy == CONSTRAINED_RESIZE_POLICY ? 0 : USE_COMPUTED_SIZE;
+        // set all sizing constraints
+        hbar.setPrefSize(pref, pref);
+        hbar.setMaxSize(pref, pref);
+        hbar.setMinSize(pref, pref);
     }
 
 
@@ -128,21 +196,18 @@ public class JdkVersionView {
     }
 
 
-
     // 定义自定义的 ColumnResizePolicy
     public static class CustomColumnResizePolicy<T> implements Callback<TableView.ResizeFeatures<T>, Boolean> {
 
-        private final TableView<T> tableView;
-
-        public CustomColumnResizePolicy(TableView<T> tableView) {
-            this.tableView = tableView;
-        }
-
         @Override
         public Boolean call(TableView.ResizeFeatures<T> features) {
-            if (features == null || features.getColumn() == null) {
-                return false;
+            TableView<T> tableView = features.getTable();
+            List<? extends TableColumnBase<?, ?>> visibleLeafColumns = tableView.getVisibleLeafColumns();
+            double colWidth = 0;
+            for (TableColumnBase<?, ?> col : visibleLeafColumns) {
+                colWidth += col.getWidth();
             }
+
             TableColumn<T, ?> column = features.getColumn();
             double delta = features.getDelta(); // 调整的距离
             double newWidth = column.getWidth() + delta;
