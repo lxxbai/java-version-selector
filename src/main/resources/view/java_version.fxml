@@ -21,7 +21,7 @@
     </top>
     <center>
         <StackPane>
-            <TableView fx:id="tableView">
+            <TableView fx:id="tableView" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                 <columns>
                     <TableColumn fx:id="vmVendor" prefWidth="100" reorderable="false" minWidth="50" sortable="false" text="供应商" />
                     <TableColumn fx:id="mainVersion" prefWidth="100" reorderable="false"  minWidth="50"  sortable="false" text="主版本" />
