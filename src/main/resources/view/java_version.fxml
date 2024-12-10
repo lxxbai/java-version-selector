@@ -1,40 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
+<?import io.github.lxxbai.javaversionselector.component.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.*?>
-
-<BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.lxxbai.javaversionselector.view.JdkVersionView">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.github.lxxbai.javaversionselector.view.JdkVersionView">
     <top>
         <HBox spacing="5.0" styleClass="main-h-box" BorderPane.alignment="CENTER">
-            <JFXComboBox fx:id="filterVmVendor" labelFloat="true" promptText="供应商" />
-            <JFXComboBox fx:id="filterMainVersion" labelFloat="true" promptText="主版本" />
-            <JFXTextField fx:id="filterJavaVersion" labelFloat="true" promptText="版本" />
-            <JFXButton fx:id="resetButton" onAction="#resetFilter" styleClass="custom-shadow-button" HBox.hgrow="NEVER" />
-            <Region HBox.hgrow="ALWAYS" />
-            <JFXButton fx:id="refreshButton" onAction="#onUpdateDataButtonClick" styleClass="svg-button" />
+            <JFXComboBox fx:id="filterVmVendor" labelFloat="true" promptText="供应商"/>
+            <JFXComboBox fx:id="filterMainVersion" labelFloat="true" promptText="主版本"/>
+            <JFXTextField fx:id="filterJavaVersion" labelFloat="true" promptText="版本"/>
+            <JFXButton fx:id="resetButton" onAction="#resetFilter" styleClass="custom-shadow-button"
+                       HBox.hgrow="NEVER"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <JFXButton fx:id="refreshButton" onAction="#onUpdateDataButtonClick" styleClass="svg-button"/>
             <padding>
-                <Insets bottom="10" left="10" right="10.0" top="30" />
+                <Insets bottom="10" left="10" right="10.0" top="30"/>
             </padding>
         </HBox>
     </top>
     <center>
-        <StackPane>
-            <TableView fx:id="tableView" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                <columns>
-                    <TableColumn fx:id="vmVendor" prefWidth="100" reorderable="false" minWidth="50" sortable="false" text="供应商" />
-                    <TableColumn fx:id="mainVersion" prefWidth="100" reorderable="false"  minWidth="50"  sortable="false" text="主版本" />
-                    <TableColumn fx:id="javaVersion" prefWidth="100" reorderable="false" minWidth="50"   sortable="false" text="版本" />
-                    <TableColumn fx:id="releaseDate" prefWidth="150" reorderable="false" minWidth="75"   sortable="false" text="发布日期" />
-                    <TableColumn fx:id="fileName" prefWidth="300" minWidth="200" reorderable="false"  sortable="false" text="文件名" />
-                    <TableColumn fx:id="fileSize" prefWidth="150" reorderable="false" minWidth="75"   sortable="false" text="文件大小" />
-                    <TableColumn fx:id="action" prefWidth="100" reorderable="false" minWidth="50"   sortable="false" text="操作" />
-                </columns>
-                <padding>
-                    <Insets top="-1" />
-                </padding>
-            </TableView>
-        </StackPane>
+        <TableView fx:id="tableView" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <columns>
+                <RateTableColumn fx:id="vmVendor" reorderable="false" sortable="false"
+                                 resizable="false" rateWidth="0.1" text="供应商"/>
+                <RateTableColumn fx:id="mainVersion" reorderable="false" sortable="false"
+                                 resizable="false" rateWidth="0.1" text="主版本"/>
+                <RateTableColumn fx:id="javaVersion" prefWidth="100" reorderable="false" sortable="false"
+                                 resizable="false" rateWidth="0.1" text="版本"/>
+                <RateTableColumn fx:id="releaseDate" reorderable="false" sortable="false"
+                                 resizable="false" rateWidth="0.15" text="发布日期"/>
+                <RateTableColumn fx:id="fileName" reorderable="false" sortable="false"
+                                 resizable="false" rateWidth="0.3" text="文件名"/>
+                <RateTableColumn fx:id="fileSize" reorderable="false" sortable="false"
+                                 resizable="false" rateWidth="0.1" text="文件大小"/>
+                <RateTableColumn fx:id="action" reorderable="false" sortable="false"
+                                 resizable="false" rateWidth="0.15" text="操作"/>
+            </columns>
+        </TableView>
     </center>
 </BorderPane>

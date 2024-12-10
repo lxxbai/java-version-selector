@@ -6,7 +6,6 @@ import com.jfoenix.controls.JFXTextField;
 import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
 import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.JFXButtonUtil;
-import io.github.lxxbai.javaversionselector.component.ColumnResizePolicy;
 import io.github.lxxbai.javaversionselector.component.cell.GraphicTableCellFactory;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import jakarta.annotation.Resource;
@@ -68,21 +67,21 @@ public class JdkVersionView {
 
     @FXML
     public void initialize() {
-        ColumnResizePolicy customerResizePolicy = new ColumnResizePolicy<>(x -> {
-            double width = tableView.getBoundsInLocal().getWidth();
-            System.out.println(width);
-            System.out.println(tableView.getWidth());
-            System.out.println(x.widthProperty().getValue());
-            Double realWidth = x.widthProperty().getValue() - 40;
-            vmVendor.setPrefWidth(realWidth * 0.1);
-            mainVersion.setPrefWidth(realWidth * 0.1);
-            javaVersion.setPrefWidth(realWidth * 0.15);
-            releaseDate.setPrefWidth(realWidth * 0.10);
-            fileName.setPrefWidth(realWidth * 0.3);
-            fileSize.setPrefWidth(realWidth * 0.15);
-            action.setPrefWidth(realWidth * 0.1);
-        });
-        tableView.setColumnResizePolicy(customerResizePolicy);
+//        ColumnResizePolicy customerResizePolicy = new ColumnResizePolicy<>(x -> {
+//            double width = tableView.getBoundsInLocal().getWidth();
+//            System.out.println(width);
+//            System.out.println(tableView.getWidth());
+//            System.out.println(x.widthProperty().getValue());
+//            Double realWidth = x.widthProperty().getValue() - 40;
+//            vmVendor.setPrefWidth(realWidth * 0.1);
+//            mainVersion.setPrefWidth(realWidth * 0.1);
+//            javaVersion.setPrefWidth(realWidth * 0.15);
+//            releaseDate.setPrefWidth(realWidth * 0.10);
+//            fileName.setPrefWidth(realWidth * 0.3);
+//            fileSize.setPrefWidth(realWidth * 0.15);
+//            action.setPrefWidth(realWidth * 0.1);
+//        });
+//        tableView.setColumnResizePolicy(customerResizePolicy);
 //        tableView.widthProperty().addListener((observableValue, number, t1) -> {
 //            Double realWidth = tableView.widthProperty().getValue();
 //            vmVendor.setPrefWidth(realWidth * 0.1);
