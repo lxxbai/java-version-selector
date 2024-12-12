@@ -79,6 +79,10 @@
 
 }
 
+.main-center .table-view .scroll-bar:horizontal {
+    /*visibility: hidden;*/
+}
+
 .main-center .table-view .column-header {
     -fx-background-color: white;
     -fx-border-color: -fx-base-background;

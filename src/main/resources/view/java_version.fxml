@@ -5,6 +5,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TableColumn?>
 <BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="io.github.lxxbai.javaversionselector.view.JdkVersionView">
     <top>
@@ -22,23 +23,16 @@
         </HBox>
     </top>
     <center>
-        <TableView fx:id="tableView" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <RateTableView fx:id="tableView">
             <columns>
-                <RateTableColumn fx:id="vmVendor" reorderable="false" sortable="false"
-                                 resizable="false" rateWidth="0.1" text="供应商"/>
-                <RateTableColumn fx:id="mainVersion" reorderable="false" sortable="false"
-                                 resizable="false" rateWidth="0.1" text="主版本"/>
-                <RateTableColumn fx:id="javaVersion" prefWidth="100" reorderable="false" sortable="false"
-                                 resizable="false" rateWidth="0.1" text="版本"/>
-                <RateTableColumn fx:id="releaseDate" reorderable="false" sortable="false"
-                                 resizable="false" rateWidth="0.15" text="发布日期"/>
-                <RateTableColumn fx:id="fileName" reorderable="false" sortable="false"
-                                 resizable="false" rateWidth="0.3" text="文件名"/>
-                <RateTableColumn fx:id="fileSize" reorderable="false" sortable="false"
-                                 resizable="false" rateWidth="0.1" text="文件大小"/>
-                <RateTableColumn fx:id="action" reorderable="false" sortable="false"
-                                 resizable="false" rateWidth="0.15" text="操作"/>
+                <RateTableColumn fx:id="vmVendor" reorderable="false" sortable="false"  text="供应商" rateWidth="0.1"/>
+                <RateTableColumn fx:id="mainVersion" reorderable="false" sortable="false" text="主版本" rateWidth="0.1"/>
+                <RateTableColumn fx:id="javaVersion" prefWidth="100" reorderable="false" sortable="false"  text="版本" rateWidth="0.1"/>
+                <RateTableColumn fx:id="releaseDate" reorderable="false" sortable="false"  text="发布日期" rateWidth="0.15"/>
+                <RateTableColumn fx:id="fileName" reorderable="false" sortable="false" text="文件名" rateWidth="0.3" />
+                <RateTableColumn fx:id="fileSize" reorderable="false" sortable="false"  text="文件大小" rateWidth="0.1"/>
+                <RateTableColumn fx:id="action" reorderable="false" sortable="false" text="操作" rateWidth="0.149"/>
             </columns>
-        </TableView>
+        </RateTableView>
     </center>
 </BorderPane>

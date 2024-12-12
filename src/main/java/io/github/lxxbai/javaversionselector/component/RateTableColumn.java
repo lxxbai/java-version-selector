@@ -16,13 +16,20 @@ public class RateTableColumn<S, T> extends TableColumn<S, T> {
      */
     private final DoubleProperty rateWidth = new SimpleDoubleProperty(1);
 
+
     public RateTableColumn() {
-        tableViewProperty().addListener((ov, t, t1) -> {
-            if (RateTableColumn.this.prefWidthProperty().isBound()) {
-                RateTableColumn.this.prefWidthProperty().unbind();
-            }
-            RateTableColumn.this.prefWidthProperty().bind(t1.widthProperty().multiply(rateWidth));
-        });
+        // 监听TableView的Padding
+        tableViewProperty().addListener((ov, oldTableView, newTableView) -> {
+                    // 监听TableView的Padding
+                    newTableView.paddingProperty().addListener((obv, oldInsets, newInsets) -> {
+                        prefWidthProperty().unbind();
+                        prefWidthProperty().bind(newTableView.widthProperty()
+                                .subtract(newInsets.getLeft() + newInsets.getRight())
+                                .multiply(rateWidth));
+                    });
+                }
+        );
+        this.setResizable(false);
     }
 
     public final DoubleProperty rateWidthProperty() {
