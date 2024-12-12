@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import io.github.lxxbai.javaversionselector.component.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="io.github.lxxbai.javaversionselector.view.JdkVersionView">
+            fx:controller="io.github.lxxbai.javaversionselector.view.JdkVersionView" stylesheets="">
     <top>
         <HBox spacing="5.0" styleClass="main-h-box" BorderPane.alignment="CENTER">
+            <!--            <HBox spacing="5.0" styleClass="search-box">-->
+            <SvgButton svgPath="svg/filter-xmark.svg" onAction="#resetFilter" svgTooltip="Clear"/>
             <JFXComboBox fx:id="filterVmVendor" labelFloat="true" promptText="供应商"/>
             <JFXComboBox fx:id="filterMainVersion" labelFloat="true" promptText="主版本"/>
             <JFXTextField fx:id="filterJavaVersion" labelFloat="true" promptText="版本"/>
-            <JFXButton fx:id="resetButton" onAction="#resetFilter" styleClass="custom-shadow-button"
-                       HBox.hgrow="NEVER"/>
+            <SvgButton svgPath="svg/search.svg" svgTooltip="查询" disable="true"/>
+            <!--                <padding>-->
+            <!--                    <Insets bottom="10" top="20"/>-->
+            <!--                </padding>-->
+            <!--            </HBox>-->
             <Region HBox.hgrow="ALWAYS"/>
-            <JFXButton fx:id="refreshButton" onAction="#onUpdateDataButtonClick" styleClass="svg-button"/>
+            <SvgButton svgPath="svg/rotate-solid.svg" onAction="#onUpdateDataButtonClick" svgTooltip="刷新"/>
             <padding>
-                <Insets bottom="10" left="10" right="10.0" top="30"/>
+                <Insets bottom="10" top="30"/>
             </padding>
         </HBox>
     </top>
     <center>
-        <TableView fx:id="tableView" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <XxbTableView fx:id="tableView">
             <columns>
-                <RateTableColumn fx:id="vmVendor" reorderable="false" sortable="false"
-                                 resizable="false" rateWidth="0.1" text="供应商"/>
-                <RateTableColumn fx:id="mainVersion" reorderable="false" sortable="false"
-                                 resizable="false" rateWidth="0.1" text="主版本"/>
-                <RateTableColumn fx:id="javaVersion" prefWidth="100" reorderable="false" sortable="false"
-                                 resizable="false" rateWidth="0.1" text="版本"/>
-                <RateTableColumn fx:id="releaseDate" reorderable="false" sortable="false"
-                                 resizable="false" rateWidth="0.15" text="发布日期"/>
-                <RateTableColumn fx:id="fileName" reorderable="false" sortable="false"
-                                 resizable="false" rateWidth="0.3" text="文件名"/>
-                <RateTableColumn fx:id="fileSize" reorderable="false" sortable="false"
-                                 resizable="false" rateWidth="0.1" text="文件大小"/>
-                <RateTableColumn fx:id="action" reorderable="false" sortable="false"
-                                 resizable="false" rateWidth="0.15" text="操作"/>
+                <RateTableColumn fx:id="vmVendor" reorderable="false" sortable="false" text="供应商" rateWidth="0.1"/>
+                <RateTableColumn fx:id="mainVersion" reorderable="false" sortable="false" text="主版本"
+                                 rateWidth="0.1"/>
+                <RateTableColumn fx:id="javaVersion" prefWidth="100" reorderable="false" sortable="false" text="版本"
+                                 rateWidth="0.1"/>
+                <RateTableColumn fx:id="releaseDate" reorderable="false" sortable="false" text="发布日期"
+                                 rateWidth="0.15"/>
+                <RateTableColumn fx:id="fileName" reorderable="false" sortable="false" text="文件名" rateWidth="0.3"
+                                 openTooltip="true"/>
+                <RateTableColumn fx:id="fileSize" reorderable="false" sortable="false" text="文件大小" rateWidth="0.1"/>
+                <RateTableColumn fx:id="action" reorderable="false" sortable="false" text="操作" rateWidth="0.15"/>
             </columns>
-        </TableView>
+        </XxbTableView>
     </center>
 </BorderPane>

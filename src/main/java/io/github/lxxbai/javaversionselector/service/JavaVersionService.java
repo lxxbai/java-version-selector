@@ -3,7 +3,6 @@ package io.github.lxxbai.javaversionselector.service;
 import cn.hutool.core.collection.CollUtil;
 import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.ObjectMapperUtil;
-import io.github.lxxbai.javaversionselector.common.util.StringUtil;
 import io.github.lxxbai.javaversionselector.datasource.entity.InstallRecordDO;
 import io.github.lxxbai.javaversionselector.datasource.entity.JdkVersionDO;
 import io.github.lxxbai.javaversionselector.datasource.entity.UserJdkVersionDO;
@@ -80,24 +79,5 @@ public class JavaVersionService {
             vo.setInstallStatus(InstallStatusEnum.NO_DOWNLOADED);
             return vo;
         }).toList();
-    }
-
-
-    /**
-     * 根据虚拟机供应商、主要版本和Java版本过滤Java版本信息
-     *
-     * @param vmVendor    虚拟机供应商，如'Oracle Corporation'
-     * @param mainVersion Java主要版本，如'1.8'
-     * @param javaVersion Java版本，如'1.8.0_231'
-     * @return 返回过滤后的Java版本信息列表
-     */
-    public List<JdkVersionVO> filter(String vmVendor, String mainVersion, String javaVersion) {
-        // 查询所有Java版本信息，不进行缓存
-        List<JdkVersionVO> jdkVersionVOList = queryAll(false);
-        // 使用流式操作过滤Java版本信息
-        // 过滤条件：虚拟机供应商、主要版本和Java版本任意一个为空或相等
-        return jdkVersionVOList.stream().filter(v -> StringUtil.isBlankOrEqual(vmVendor, v.getVmVendor())
-                && StringUtil.isBlankOrEqual(mainVersion, v.getMainVersion())
-                && StringUtil.isBlankOrLike(javaVersion, v.getJavaVersion())).toList();
     }
 }

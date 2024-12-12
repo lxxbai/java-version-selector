@@ -47,7 +47,7 @@ public class DownloadProgressBar implements BaseNode {
      */
     public DownloadProgressBar(int width, int height, String downloadUrl, String fileName, String detailDesc) {
         this.node = new HBox();
-        node.setAlignment(Pos.CENTER);
+        node.setAlignment(Pos.CENTER_LEFT);
         StackPane stackPane = new StackPane();
         // 创建进度条
         progressBar = new JFXProgressBar();

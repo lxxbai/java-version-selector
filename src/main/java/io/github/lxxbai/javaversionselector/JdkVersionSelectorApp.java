@@ -36,7 +36,7 @@ public class JdkVersionSelectorApp extends Application {
         // 设置场景
         stage.setScene(scene);
         // 设置 Stage 的位置，使其居中
-        ScreenUtil.setScreenPosition(stage, 0.5, 0.5);
+        ScreenUtil.setScreenPosition(stage, 0.53, 0.56);
         // 创建系统托盘
         TrayUtil.createTrayIcon(stage);
         stage.show();

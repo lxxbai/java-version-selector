@@ -2,13 +2,15 @@
 package io.github.lxxbai.javaversionselector.view;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
+import io.github.lxxbai.javaversionselector.common.enums.ApplyStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.*;
+import io.github.lxxbai.javaversionselector.component.SvgButton;
 import io.github.lxxbai.javaversionselector.component.cell.GraphicTableCellFactory;
 import io.github.lxxbai.javaversionselector.model.UserJdkVersionVO;
 import jakarta.annotation.Resource;
 import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -27,7 +29,6 @@ import java.io.File;
 @Component
 public class UserJdkView {
 
-
     @Resource
     private UserJdkViewModel userJdkViewModel;
     @FXML
@@ -42,22 +43,40 @@ public class UserJdkView {
     private TableColumn<UserJdkVersionVO, String> action;
     @FXML
     private TableColumn<UserJdkVersionVO, String> status;
+    @FXML
+    private JFXTextField versionFilter;
 
     @FXML
     public void initialize() throws Exception {
-        ReadOnlyDoubleProperty width = tableView.widthProperty();
-        //设置百分比宽度
-        vmVendor.prefWidthProperty().bind(width.multiply(.19));
-        mainVersion.prefWidthProperty().bind(width.multiply(.2));
-        javaVersion.prefWidthProperty().bind(width.multiply(.2));
-        action.prefWidthProperty().bind(width.multiply(.2));
-        status.prefWidthProperty().bind(width.multiply(.19));
         vmVendor.setCellValueFactory(new PropertyValueFactory<>("vmVendor"));
         mainVersion.setCellValueFactory(new PropertyValueFactory<>("mainVersion"));
         javaVersion.setCellValueFactory(new PropertyValueFactory<>("javaVersion"));
-        status.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getStatus().getDesc()));
+//        status.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getStatus().getDesc()));
+        status.setCellFactory(buildStatusCellFactory());
         action.setCellFactory(buildActionCellFactory());
         tableView.setItems(userJdkViewModel.getJdkList());
+        //绑定数据
+        versionFilter.textProperty().bindBidirectional(userJdkViewModel.getFilterJavaVersion());
+        //变更事件
+        versionFilter.textProperty().addListener(str -> userJdkViewModel.filter());
+    }
+
+    /**
+     * 构建状态列
+     *
+     * @return 工厂
+     */
+    private GraphicTableCellFactory<UserJdkVersionVO, String> buildStatusCellFactory() {
+        return GraphicTableCellFactory.withGraphicFunc(cellData -> {
+            UserJdkVersionVO vo = cellData.getData();
+            ApplyStatusEnum applyStatus =  vo.getStatus();
+            String color = "#000000";
+            switch (applyStatus) {
+                case CURRENT-> color = "GREEN";
+                case NOT_APPLY -> color = "GRAY";
+            }
+            return JFXButtonUtil.buildReadOnlyButton(vo.getStatus().getDesc(), color);
+        });
     }
 
     /**
@@ -84,7 +103,7 @@ public class UserJdkView {
      * @return JFXButton
      */
     private JFXButton buildApplyButton(UserJdkVersionVO vo) {
-        JFXButton installButton = JFXButtonUtil.buildSvgButton("svg/check-solid.svg", "应用");
+        SvgButton installButton = new SvgButton("svg/check-solid.svg", "应用");
         installButton.setOnAction(event -> {
             userJdkViewModel.applyJdk(vo);
             //添加环境变量
@@ -101,7 +120,7 @@ public class UserJdkView {
      * @return JFXButton
      */
     private JFXButton openFileButton(UserJdkVersionVO vo) {
-        JFXButton filePathButton = JFXButtonUtil.buildSvgButton("svg/folder-open-solid.svg", "打开地址");
+        SvgButton filePathButton = new SvgButton("svg/folder-open-solid.svg", 18, 16, "打开地址");
         filePathButton.setOnAction(event ->
                 Platform.runLater(() -> {
                     try {

@@ -14,10 +14,14 @@ import io.github.lxxbai.javaversionselector.model.InstallRecordVO;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import io.github.lxxbai.javaversionselector.service.InstallService;
 import jakarta.annotation.Resource;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -35,8 +39,13 @@ public class InstallViewModel {
     @Resource
     private InstallService installService;
 
+    @Getter
+    private final StringProperty filterJavaVersion = new SimpleStringProperty();
 
     private final ObservableList<InstallRecordVO> downLoadList = FXCollections.observableArrayList();
+
+    // 创建 FilteredList
+    private final FilteredList<InstallRecordVO> filteredData = new FilteredList<>(downLoadList, p -> true);
 
 
     /**
@@ -54,7 +63,20 @@ public class InstallViewModel {
             }
         });
         downLoadList.addAll(queryAll());
-        return downLoadList;
+        return filteredData;
+    }
+
+    /**
+     * 过滤
+     */
+    public void filter() {
+        //过滤的值
+        String javaVersionValue = filterJavaVersion.getValue();
+        if (StrUtil.isBlank(javaVersionValue)) {
+            filteredData.setPredicate(record -> true);
+            return;
+        }
+        filteredData.setPredicate(record -> StrUtil.containsIgnoreCase(record.getJavaVersion(), javaVersionValue));
     }
 
 

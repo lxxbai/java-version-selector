@@ -5,8 +5,8 @@ import io.github.lxxbai.javaversionselector.common.util.StageUtil;
 import io.github.lxxbai.javaversionselector.component.menu.MenuCellFactory;
 import io.github.lxxbai.javaversionselector.component.menu.MenuPageFactory;
 import io.github.lxxbai.javaversionselector.model.MenuPage;
+import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 
 
 /**
@@ -41,20 +41,18 @@ public class JVSMainView extends BorderPane {
         MenuPage downloadPage = MenuPageFactory.build("进度", "svg/download-solid.svg", InstallView.class);
         //我的
         MenuPage myPage = MenuPageFactory.build("我的", "svg/user-large-solid.svg", UserJdkView.class);
-//        MenuPage home1Page = MenuPageFactory.build("版本", "svg/home.svg", JdkVersionView1.class);
-        //下载
         //配置
         listView.getItems().addAll(homePage, downloadPage, myPage);
-        StackPane stackPane = new StackPane();
-        DecoratorView pane = new DecoratorView(StageUtil.getPrimaryStage(), stackPane);
+        BorderPane borderPane = new BorderPane();
+        borderPane.setPadding(new Insets(0, 10, 0, 10));
+        DecoratorView pane = new DecoratorView(StageUtil.getPrimaryStage(), borderPane);
         pane.getStyleClass().add("main-center");
         //菜单切换
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
                 return;
             }
-            stackPane.getChildren().clear();
-            stackPane.getChildren().setAll(newValue.getContent());
+            borderPane.setCenter(newValue.getContent());
         });
         //默认选中
         listView.getSelectionModel().select(homePage);

@@ -2,6 +2,7 @@ package io.github.lxxbai.javaversionselector.view;
 
 import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.common.enums.VmVendorEnum;
+import io.github.lxxbai.javaversionselector.common.util.StringUtil;
 import io.github.lxxbai.javaversionselector.event.InstallStatusEvent;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import io.github.lxxbai.javaversionselector.service.JavaVersionService;
@@ -10,6 +11,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import lombok.Getter;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -36,12 +38,14 @@ public class JdkVersionViewModel {
     @Getter
     private final StringProperty filterVmVendor = new SimpleStringProperty();
 
-
     private final ObservableList<JdkVersionVO> javaVersionList = FXCollections.observableArrayList();
 
     private final ObservableList<String> vmVendorList = FXCollections.observableArrayList();
 
     private final ObservableList<String> mainVersionList = FXCollections.observableArrayList();
+
+    // 创建 FilteredList
+    private final FilteredList<JdkVersionVO> filteredData = new FilteredList<>(javaVersionList, p -> true);
 
 
     /**
@@ -54,16 +58,16 @@ public class JdkVersionViewModel {
     }
 
     /**
-     * 过滤
+     * 根据虚拟机供应商、主要版本和Java版本过滤Java版本信息
      */
     public void filter() {
         //过滤的值
         String javaVersionValue = filterJavaVersion.getValue();
         String mainVersionValue = filterMainVersion.getValue();
         String vmVendorValue = filterVmVendor.getValue();
-        List<JdkVersionVO> filterVersions = javaVersionService.filter(vmVendorValue, mainVersionValue, javaVersionValue);
-        javaVersionList.clear();
-        javaVersionList.addAll(filterVersions);
+        filteredData.setPredicate(v -> StringUtil.isBlankOrEqual(vmVendorValue, v.getVmVendor())
+                && StringUtil.isBlankOrEqual(mainVersionValue, v.getMainVersion())
+                && StringUtil.isBlankOrLike(javaVersionValue, v.getJavaVersion()));
     }
 
     /**
@@ -73,7 +77,7 @@ public class JdkVersionViewModel {
      */
     public ObservableList<JdkVersionVO> getJavaVersionList() {
         javaVersionList.addAll(javaVersionService.queryAll(false));
-        return javaVersionList;
+        return filteredData;
     }
 
     /**

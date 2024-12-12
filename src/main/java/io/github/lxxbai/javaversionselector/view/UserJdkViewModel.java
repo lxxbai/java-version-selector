@@ -1,13 +1,18 @@
 
 package io.github.lxxbai.javaversionselector.view;
 
+import cn.hutool.core.util.StrUtil;
 import io.github.lxxbai.javaversionselector.common.enums.ApplyStatusEnum;
 import io.github.lxxbai.javaversionselector.event.InstallStatusEvent;
 import io.github.lxxbai.javaversionselector.model.UserJdkVersionVO;
 import io.github.lxxbai.javaversionselector.service.UserJdkVersionService;
 import jakarta.annotation.Resource;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import lombok.Getter;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +31,12 @@ public class UserJdkViewModel {
 
     private final ObservableList<UserJdkVersionVO> jdkList = FXCollections.observableArrayList();
 
+    // 创建 FilteredList
+    private final FilteredList<UserJdkVersionVO> filteredData = new FilteredList<>(jdkList, p -> true);
+
+    @Getter
+    private final StringProperty filterJavaVersion = new SimpleStringProperty();
+
 
     /**
      * 刷新用户已安装的jdk列表
@@ -36,7 +47,20 @@ public class UserJdkViewModel {
         List<UserJdkVersionVO> myList = userJdkVersionService.queryAll();
         jdkList.clear();
         jdkList.addAll(myList);
-        return jdkList;
+        return filteredData;
+    }
+
+    /**
+     * 过滤
+     */
+    public void filter() {
+        //过滤的值
+        String javaVersionValue = filterJavaVersion.getValue();
+        if (StrUtil.isBlank(javaVersionValue)) {
+            filteredData.setPredicate(record -> true);
+            return;
+        }
+        filteredData.setPredicate(record -> StrUtil.containsIgnoreCase(record.getJavaVersion(), javaVersionValue));
     }
 
     /**
