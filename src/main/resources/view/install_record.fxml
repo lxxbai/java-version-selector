@@ -11,7 +11,7 @@
             <SvgButton svgPath="svg/search.svg" svgTooltip="查询" disable="true"/>
             <JFXTextField fx:id="versionFilter" labelFloat="true" promptText="版本"/>
             <padding>
-                <Insets bottom="10" top="30"/>
+                <Insets bottom="10" top="20"/>
             </padding>
         </HBox>
     </top>

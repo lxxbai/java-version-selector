@@ -43,13 +43,6 @@
 /*********************************left-menu******************************************/
 /**********************************center*****************************************/
 
-.main-h-box .search-box {
-    -fx-background-radius: 10;
-    -fx-border-color: rgba(108, 100, 108, 0.16);
-    -fx-border-width: 1;
-    -fx-border-radius: 8;
-    -fx-pref-height: 30;
-}
 
 .main-center .table-view,
 .main-center {
@@ -184,7 +177,7 @@
 }
 
 .readonly-button{
-    -fx-background-radius: 8;
+    -fx-background-radius: 10;
     -fx-text-fill: white; /* 字体颜色 */
     -fx-font-size: 12;
 }

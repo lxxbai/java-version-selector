@@ -51,7 +51,6 @@ public class UserJdkView {
         vmVendor.setCellValueFactory(new PropertyValueFactory<>("vmVendor"));
         mainVersion.setCellValueFactory(new PropertyValueFactory<>("mainVersion"));
         javaVersion.setCellValueFactory(new PropertyValueFactory<>("javaVersion"));
-//        status.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getStatus().getDesc()));
         status.setCellFactory(buildStatusCellFactory());
         action.setCellFactory(buildActionCellFactory());
         tableView.setItems(userJdkViewModel.getJdkList());

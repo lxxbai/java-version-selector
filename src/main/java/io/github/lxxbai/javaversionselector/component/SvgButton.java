@@ -28,9 +28,9 @@ public class SvgButton extends JFXButton {
      */
     private final StringProperty svgPath = new SimpleStringProperty();
 
-    private final DoubleProperty svgWidth = new SimpleDoubleProperty(15);
+    private final DoubleProperty svgWidth = new SimpleDoubleProperty(16);
 
-    private final DoubleProperty svgHeight = new SimpleDoubleProperty(15);
+    private final DoubleProperty svgHeight = new SimpleDoubleProperty(16);
 
     private final StringProperty svgTooltip = new SimpleStringProperty();
 

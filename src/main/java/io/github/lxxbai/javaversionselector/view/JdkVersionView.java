@@ -88,7 +88,7 @@ public class JdkVersionView {
                 downloadButton = JFXButtonUtil.buildDynamicButton("pic/downloading.gif");
                 downloadButton.setDisable(true);
             } else {
-                downloadButton = new SvgButton("svg/circle-down-regular.svg", 20, 21, "下载");
+                downloadButton = new SvgButton("svg/circle-down-regular.svg", 18, 18, "下载");
                 //下载
                 downloadButton.setOnAction(event -> installViewModel.download(vo));
             }
