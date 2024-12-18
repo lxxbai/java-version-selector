@@ -9,6 +9,10 @@ import javafx.scene.control.TableColumn;
 
 /**
  * 百分比宽度列
+ * 需配合
+ * .table-view .filler{
+ * -fx-background-color: white;
+ * }
  *
  * @author lxxbai
  */
@@ -32,7 +36,9 @@ public class RateTableColumn<S, T> extends TableColumn<S, T> {
                     newTableView.paddingProperty().addListener((obv, oldInsets, newInsets) -> {
                         prefWidthProperty().unbind();
                         prefWidthProperty().bind(newTableView.widthProperty()
+                                // 减去左右padding
                                 .subtract(newInsets.getLeft() + newInsets.getRight())
+                                //不减的话下面的框就出来了
                                 .multiply(rateWidth).subtract(0.5));
                     });
                 }

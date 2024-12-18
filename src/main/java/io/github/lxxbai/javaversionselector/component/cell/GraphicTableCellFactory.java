@@ -11,8 +11,7 @@ import javafx.util.Callback;
 import java.util.function.Function;
 
 /**
- * @author liaosp
- * @since JavaFX 2.2
+ * @author lxxbai
  */
 public class GraphicTableCellFactory<S, T> implements Callback<TableColumn<S, T>, TableCell<S, T>> {
 

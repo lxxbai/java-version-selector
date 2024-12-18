@@ -11,7 +11,7 @@ import javafx.util.Callback;
 import java.util.function.Function;
 
 /**
- * @author liaosp
+ * @author lxxbai
  * @since JavaFX 2.2
  */
 public class GraphicTableCell<S, T> extends TableCell<S, T> {

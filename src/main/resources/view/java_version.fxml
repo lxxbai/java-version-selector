@@ -24,17 +24,16 @@
     <center>
         <XxbTableView fx:id="tableView">
             <columns>
-                <RateTableColumn fx:id="vmVendor" reorderable="false" sortable="false" text="供应商" rateWidth="0.1"/>
+                <RateTableColumn fx:id="vmVendor" reorderable="false" sortable="false" text="供应商" rateWidth="0.15"/>
                 <RateTableColumn fx:id="mainVersion" reorderable="false" sortable="false" text="主版本"
-                                 rateWidth="0.1"/>
+                                 rateWidth="0.15"/>
                 <RateTableColumn fx:id="javaVersion" prefWidth="100" reorderable="false" sortable="false" text="版本"
-                                 rateWidth="0.1"/>
+                                 rateWidth="0.15"/>
                 <RateTableColumn fx:id="releaseDate" reorderable="false" sortable="false" text="发布日期"
                                  rateWidth="0.15"/>
                 <RateTableColumn fx:id="fileName" reorderable="false" sortable="false" text="文件名" rateWidth="0.3"
                                  openTooltip="true"/>
                 <RateTableColumn fx:id="fileSize" reorderable="false" sortable="false" text="文件大小" rateWidth="0.1"/>
-                <RateTableColumn fx:id="action" reorderable="false" sortable="false" text="操作" rateWidth="0.15"/>
             </columns>
         </XxbTableView>
     </center>
