@@ -4,6 +4,7 @@ package io.github.lxxbai.javaversionselector.component.cell;
 
 import javafx.scene.control.TableCell;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -18,6 +19,20 @@ public class XxbTableCell<S, T> extends TableCell<S, T> {
 
     public XxbTableCell(Consumer<XxbTableCell<S, T>> consumer) {
         this.consumer = consumer;
+    }
+
+    public XxbTableCell(Consumer<XxbTableCell<S, T>> consumer, boolean openRowHoverListener) {
+        this.consumer = consumer;
+        if (openRowHoverListener) {
+            this.tableRowProperty().addListener((observableValue, oldRow, newRow) -> {
+                if (Objects.nonNull(newRow)) {
+                    newRow.hoverProperty().addListener((observableValue1, aBoolean, t1) -> {
+                        S item = newRow.getItem();
+                        updateItem(getItem(), Objects.isNull(item));
+                    });
+                }
+            });
+        }
     }
 
 

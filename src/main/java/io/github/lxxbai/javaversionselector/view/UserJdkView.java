@@ -7,11 +7,9 @@ import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
 import io.github.lxxbai.javaversionselector.common.enums.ApplyStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.*;
 import io.github.lxxbai.javaversionselector.component.SvgButton;
-import io.github.lxxbai.javaversionselector.component.cell.GraphicTableCellFactory;
+import io.github.lxxbai.javaversionselector.component.cell.XxbTableCellFactory;
 import io.github.lxxbai.javaversionselector.model.UserJdkVersionVO;
 import jakarta.annotation.Resource;
-import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -20,6 +18,7 @@ import javafx.scene.layout.HBox;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.Objects;
 
 
 /**
@@ -40,8 +39,6 @@ public class UserJdkView {
     @FXML
     private TableColumn<UserJdkVersionVO, String> javaVersion;
     @FXML
-    private TableColumn<UserJdkVersionVO, String> action;
-    @FXML
     private TableColumn<UserJdkVersionVO, String> status;
     @FXML
     private JFXTextField versionFilter;
@@ -50,10 +47,9 @@ public class UserJdkView {
     public void initialize() throws Exception {
         vmVendor.setCellValueFactory(new PropertyValueFactory<>("vmVendor"));
         mainVersion.setCellValueFactory(new PropertyValueFactory<>("mainVersion"));
-        javaVersion.setCellValueFactory(new PropertyValueFactory<>("javaVersion"));
         status.setCellFactory(buildStatusCellFactory());
-        action.setCellFactory(buildActionCellFactory());
         tableView.setItems(userJdkViewModel.getJdkList());
+        javaVersion.setCellFactory(buildActionCellFactory());
         //绑定数据
         versionFilter.textProperty().bindBidirectional(userJdkViewModel.getFilterJavaVersion());
         //变更事件
@@ -61,39 +57,47 @@ public class UserJdkView {
     }
 
     /**
-     * 构建状态列
+     * 构建状态
      *
-     * @return 工厂
+     * @return 表格列工厂
      */
-    private GraphicTableCellFactory<UserJdkVersionVO, String> buildStatusCellFactory() {
-        return GraphicTableCellFactory.withGraphicFunc(cellData -> {
-            UserJdkVersionVO vo = cellData.getData();
-            ApplyStatusEnum applyStatus =  vo.getStatus();
-            String color = "#000000";
-            switch (applyStatus) {
-                case CURRENT-> color = "GREEN";
-                case NOT_APPLY -> color = "GRAY";
-            }
-            return JFXButtonUtil.buildReadOnlyButton(vo.getStatus().getDesc(), color);
+    private XxbTableCellFactory<UserJdkVersionVO, String> buildStatusCellFactory() {
+        return XxbTableCellFactory.cellFactory(cell -> {
+            UserJdkVersionVO vo = cell.getData();
+            ApplyStatusEnum applyStatus = vo.getStatus();
+            cell.setText(null);
+            cell.setGraphic(Objects.equals(applyStatus, ApplyStatusEnum.CURRENT) ?
+                    JFXButtonUtil.buildReadOnlyButton("当前版本", "GREEN")
+                    : JFXButtonUtil.buildReadOnlyButton("未应用", "GRAY"));
         });
     }
 
     /**
-     * 构建状态列
+     * 构建状态
      *
-     * @return 工厂
+     * @return 表格列工厂
      */
-    private GraphicTableCellFactory<UserJdkVersionVO, String> buildActionCellFactory() {
-        return GraphicTableCellFactory.withGraphicFunc(cellData -> {
-            UserJdkVersionVO vo = cellData.getData();
+    private XxbTableCellFactory<UserJdkVersionVO, String> buildActionCellFactory() {
+        return XxbTableCellFactory.cellFactoryWithRowHover(cell -> {
+            UserJdkVersionVO vo = cell.getData();
+            if (!cell.getTableRow().isHover()) {
+                cell.setGraphic(null);
+                cell.setText(vo.getJavaVersion());
+                return;
+            }
             //文件位置按钮，应用按钮
             HBox hBox = new HBox();
+            if (Objects.equals(ApplyStatusEnum.NOT_APPLY, vo.getStatus())) {
+                JFXButton applyButton = buildApplyButton(vo);
+                hBox.getChildren().add(applyButton);
+            }
             JFXButton openFileButton = openFileButton(vo);
-            JFXButton applyButton = buildApplyButton(vo);
-            hBox.getChildren().addAll(applyButton, openFileButton);
-            return hBox;
+            hBox.getChildren().add(openFileButton);
+            cell.setGraphic(hBox);
+            cell.setText(null);
         });
     }
+
 
     /**
      * 构建安装按钮
@@ -102,7 +106,7 @@ public class UserJdkView {
      * @return JFXButton
      */
     private JFXButton buildApplyButton(UserJdkVersionVO vo) {
-        SvgButton installButton = new SvgButton("svg/check-solid.svg", "应用");
+        SvgButton installButton = new SvgButton("svg/check-solid.svg", 16, 14, "应用");
         installButton.setOnAction(event -> {
             userJdkViewModel.applyJdk(vo);
             //添加环境变量
@@ -119,9 +123,9 @@ public class UserJdkView {
      * @return JFXButton
      */
     private JFXButton openFileButton(UserJdkVersionVO vo) {
-        SvgButton filePathButton = new SvgButton("svg/folder-open-solid.svg", 18, 16, "打开地址");
+        SvgButton filePathButton = new SvgButton("svg/folder-open-solid.svg", 16, 14, "打开地址");
         filePathButton.setOnAction(event ->
-                Platform.runLater(() -> {
+                ThreadPoolUtil.execute(() -> {
                     try {
                         DesktopUtil.openFileDirectory(new File(vo.getLocalHomePath()));
                     } catch (Exception e) {

@@ -5,17 +5,14 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
 import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
-import io.github.lxxbai.javaversionselector.common.util.AlertUtil;
-import io.github.lxxbai.javaversionselector.common.util.DesktopUtil;
-import io.github.lxxbai.javaversionselector.common.util.JFXButtonUtil;
-import io.github.lxxbai.javaversionselector.common.util.StageUtil;
+import io.github.lxxbai.javaversionselector.common.util.*;
 import io.github.lxxbai.javaversionselector.component.DownloadProgressBar;
 import io.github.lxxbai.javaversionselector.component.SvgButton;
-import io.github.lxxbai.javaversionselector.component.cell.GraphicTableCellFactory;
+import io.github.lxxbai.javaversionselector.component.cell.XxbTableCellFactory;
 import io.github.lxxbai.javaversionselector.model.InstallRecordVO;
 import jakarta.annotation.Resource;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -50,8 +47,6 @@ public class InstallView {
     @FXML
     private TableColumn<InstallRecordVO, String> fileSize;
     @FXML
-    private TableColumn<InstallRecordVO, String> action;
-    @FXML
     private TableColumn<InstallRecordVO, String> status;
 
     @FXML
@@ -60,9 +55,8 @@ public class InstallView {
         mainVersion.setCellValueFactory(new PropertyValueFactory<>("mainVersion"));
         javaVersion.setCellValueFactory(new PropertyValueFactory<>("javaVersion"));
         fileName.setCellValueFactory(new PropertyValueFactory<>("fileName"));
-        fileSize.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
-        status.setCellFactory(buildStatusTableCellFactory());
-        action.setCellFactory(buildActionCellFactory());
+        status.setCellFactory(buildStatusCellFactory());
+        fileSize.setCellFactory(buildActionCellFactory());
         tableView.setItems(installViewModel.getDownLoadList());
         //绑定数据
         versionFilter.textProperty().bindBidirectional(installViewModel.getFilterJavaVersion());
@@ -70,59 +64,50 @@ public class InstallView {
         versionFilter.textProperty().addListener(str -> installViewModel.filter());
     }
 
+    /**
+     * 构建状态列
+     *
+     * @return 工厂
+     */
+    private XxbTableCellFactory<InstallRecordVO, String> buildStatusCellFactory() {
+        return XxbTableCellFactory.cellFactory(cell -> {
+            InstallRecordVO installRecordVO = cell.getData();
+            // 获取当前行数据
+            InstallStatusEnum downloadStatus = installRecordVO.getInstallStatus();
+            Node button = switch (downloadStatus) {
+                case DOWNLOADING, DOWNLOAD_PAUSE -> installRecordVO.getDownloadProgressBar().getContent();
+                case DOWNLOAD_FAILURE -> JFXButtonUtil.buildReadOnlyButton("下载失败", "red");
+                case DOWNLOADED -> JFXButtonUtil.buildReadOnlyButton("下载完成", "green");
+                case INSTALLING -> JFXButtonUtil.buildReadOnlyButton("安装中", "pink");
+                case INSTALLED -> JFXButtonUtil.buildReadOnlyButton("安装完成", "green");
+                case INSTALLED_FAILURE -> JFXButtonUtil.buildReadOnlyButton("安装失败", "red");
+                default -> JFXButtonUtil.buildReadOnlyButton("安装失败", "red");
+            };
+            cell.setGraphic(button);
+            cell.setText(null);
+        });
+    }
 
     /**
      * 构建状态列
      *
      * @return 工厂
      */
-    private GraphicTableCellFactory<InstallRecordVO, String> buildStatusTableCellFactory() {
-        return GraphicTableCellFactory.withGraphicFunc(cellData -> {
-            InstallRecordVO installRecordVO = cellData.getData();
-            // 获取当前行数据
-            InstallStatusEnum downloadStatus = installRecordVO.getInstallStatus();
-            switch (downloadStatus) {
-                case DOWNLOADING, DOWNLOAD_PAUSE -> {
-                    return installRecordVO.getDownloadProgressBar().getContent();
-                }
-                case DOWNLOAD_FAILURE -> {
-                    return JFXButtonUtil.buildReadOnlyButton("下载失败", "red");
-                }
-                case DOWNLOADED -> {
-                    return JFXButtonUtil.buildReadOnlyButton("下载完成", "green");
-                }
-                case INSTALLING -> {
-                    return JFXButtonUtil.buildReadOnlyButton("安装中", "pink");
-                }
-                case INSTALLED -> {
-                    return JFXButtonUtil.buildReadOnlyButton("安装完成", "green");
-                }
-                case INSTALLED_FAILURE -> {
-                    return JFXButtonUtil.buildReadOnlyButton("安装失败", "red");
-                }
-                default -> {
-                    return null;
-                }
+    private XxbTableCellFactory<InstallRecordVO, String> buildActionCellFactory() {
+        return XxbTableCellFactory.cellFactoryWithRowHover(cell -> {
+            InstallRecordVO installRecordVO = cell.getData();
+            if (!cell.getTableRow().isHover()) {
+                cell.setText(installRecordVO.getFileSize());
+                cell.setGraphic(null);
+                return;
             }
-        });
-    }
-
-
-    /**
-     * 构建操作列
-     *
-     * @return 工厂
-     */
-    private GraphicTableCellFactory<InstallRecordVO, String> buildActionCellFactory() {
-        return GraphicTableCellFactory.withGraphicFunc(cellData -> {
-            InstallRecordVO installRecordVO = cellData.getData();
-            Integer index = cellData.getIndex();
             // 获取当前行数据
             InstallStatusEnum downloadStatus = installRecordVO.getInstallStatus();
             //开始下载按钮，暂停按钮，文件位置按钮，删除按钮
             HBox hBox = new HBox();
             JFXButton filePathButton = buildFilePathButton(installRecordVO);
-            JFXButton deleteButton = buildDeleteButton(index, installRecordVO);
+            JFXButton deleteButton = buildDeleteButton(cell.getCurrentIndex(), installRecordVO);
+            int index = cell.getCurrentIndex();
             switch (downloadStatus) {
                 case DOWNLOADING -> {
                     //暂停按钮
@@ -145,7 +130,8 @@ public class InstallView {
                 case INSTALLING -> hBox.getChildren().addAll(filePathButton);
                 case INSTALLED -> hBox.getChildren().addAll(filePathButton, deleteButton);
             }
-            return hBox;
+            cell.setGraphic(hBox);
+            cell.setText(null);
         });
     }
 
@@ -157,9 +143,9 @@ public class InstallView {
      * @return JFXButton
      */
     private JFXButton buildFilePathButton(InstallRecordVO installRecordVO) {
-        SvgButton filePathButton = new SvgButton("svg/folder-open-solid.svg", 18, 16, "打开文件");
+        SvgButton filePathButton = new SvgButton("svg/folder-open-solid.svg", 16, 14, "打开文件");
         filePathButton.setOnAction(event ->
-                Platform.runLater(() -> {
+                ThreadPoolUtil.execute(() -> {
                     try {
                         DesktopUtil.openFileDirectory(new File(installRecordVO.getJdkPackageUrl()));
                     } catch (Exception e) {
@@ -176,7 +162,7 @@ public class InstallView {
      * @return JFXButton
      */
     private JFXButton buildDeleteButton(int index, InstallRecordVO installRecordVO) {
-        SvgButton deleteButton = new SvgButton("svg/trash-solid.svg", "删除");
+        SvgButton deleteButton = new SvgButton("svg/trash-solid.svg", 14, 16, "删除");
         deleteButton.getStyleClass().add("warn-hover");
         deleteButton.setOnAction(event -> {
             //删除文件

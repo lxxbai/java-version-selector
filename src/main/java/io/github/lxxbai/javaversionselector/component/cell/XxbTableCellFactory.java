@@ -19,19 +19,29 @@ public class XxbTableCellFactory<S, T> implements Callback<TableColumn<S, T>, Ta
      */
     private final Consumer<XxbTableCell<S, T>> consumer;
 
-    private XxbTableCellFactory(Consumer<XxbTableCell<S, T>> consumer) {
+    private final boolean openRowHoverListener;
+
+    private XxbTableCellFactory(Consumer<XxbTableCell<S, T>> consumer, boolean openRowHoverListener) {
         this.consumer = consumer;
+        this.openRowHoverListener = openRowHoverListener;
     }
 
     /**
-     * 设置列表项图标
+     * cellFactory
      */
     public static <S, T> XxbTableCellFactory<S, T> cellFactory(Consumer<XxbTableCell<S, T>> consumer) {
-        return new XxbTableCellFactory<>(consumer);
+        return new XxbTableCellFactory<>(consumer, false);
+    }
+
+    /**
+     * cellFactory
+     */
+    public static <S, T> XxbTableCellFactory<S, T> cellFactoryWithRowHover(Consumer<XxbTableCell<S, T>> consumer) {
+        return new XxbTableCellFactory<>(consumer, true);
     }
 
     @Override
     public TableCell<S, T> call(TableColumn<S, T> tableColumn) {
-        return new XxbTableCell<>(consumer);
+        return new XxbTableCell<>(consumer, openRowHoverListener);
     }
 }

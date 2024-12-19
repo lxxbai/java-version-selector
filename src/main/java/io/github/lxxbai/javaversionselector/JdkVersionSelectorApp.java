@@ -23,8 +23,10 @@ public class JdkVersionSelectorApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        getHostServices().showDocument("https://github.com/lxxbai/java-version-selector");
         //保存stage
         StageUtil.setPrimaryStage(stage);
+        StageUtil.setHostServices(getHostServices());
         // 加载主页面
         JVSMainView jvsMainView = new JVSMainView();
         // 设置标题

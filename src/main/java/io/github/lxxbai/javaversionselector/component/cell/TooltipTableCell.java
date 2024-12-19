@@ -3,10 +3,9 @@
 package io.github.lxxbai.javaversionselector.component.cell;
 
 import cn.hutool.core.util.StrUtil;
-import com.jfoenix.controls.JFXTooltip;
-import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.Tooltip;
 import javafx.util.Callback;
 
 /**
@@ -29,12 +28,12 @@ public class TooltipTableCell<S, T> extends TableCell<S, T> {
         if (empty) {
             setText(null);
             setGraphic(null);
+            setTooltip(null);
         } else {
             String desc = StrUtil.toString(item);
-            JFXTooltip jfxTooltip = new JFXTooltip(desc);
             setText(desc);
-            jfxTooltip.setPos(Pos.BOTTOM_CENTER);
-            JFXTooltip.install(this, jfxTooltip);
+            setGraphic(null);
+            setTooltip(new Tooltip(desc));
         }
     }
 }

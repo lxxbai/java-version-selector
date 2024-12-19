@@ -12,6 +12,7 @@ import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 
 /**
@@ -50,6 +51,14 @@ public class SvgButton extends JFXButton {
 
     public SvgButton(String svgPath, String tooltip) {
         this(svgPath, 16, 16, tooltip);
+    }
+
+    public static SvgButton create(String svgPath, double size, String tooltip) {
+        return new SvgButton(svgPath, size, tooltip);
+    }
+
+    public static SvgButton create(String svgPath, String tooltip) {
+        return new SvgButton(svgPath, tooltip);
     }
 
     public SvgButton() {
