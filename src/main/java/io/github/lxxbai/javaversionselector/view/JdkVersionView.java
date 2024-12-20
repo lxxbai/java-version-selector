@@ -47,6 +47,8 @@ public class JdkVersionView {
     private TableColumn<JdkVersionVO, String> fileName;
     @FXML
     private TableColumn<JdkVersionVO, String> fileSize;
+    @FXML
+    private JFXButton downloadingStyleButton;
 
     @FXML
     public void initialize() {
