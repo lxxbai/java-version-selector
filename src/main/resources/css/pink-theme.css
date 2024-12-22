@@ -5,7 +5,8 @@
     /*tableview的选中背景颜色*/
     -fx-table-view-focused: derive(rgba(250, 224, 250, 0.16), -20%);
     /*字体颜色*/
-    -fx-font-color: rgb(92, 2, 87);
+    /*-fx-font-color: rgb(92, 2, 87);*/
+    -fx-font-color: black;
     /* 鼠标悬停时的背景颜色 */
     -fx-button-hover: rgba(243, 191, 243, 0.16);
 }
@@ -251,3 +252,34 @@
 }
 
 /******************************ERROR LABELS**********************/
+
+/*.jfx-badge{*/
+/*    -fx-max-width: 100;*/
+/*    -fx-pref-height: 40;*/
+/*}*/
+
+.jfx-badge .badge-pane {
+    -fx-background-color: #f40d0d;
+    -fx-background-radius: 16;
+    -fx-pref-width: 16;
+    -fx-pref-height: 16;
+    -fx-alignment: center;
+}
+/*alert*/
+.jfx-badge Label {
+    -fx-font-weight: BOLD;
+    -fx-font-size: 9;
+    -fx-text-fill: WHITE;
+}
+
+.jfx-alert-overlay{
+    -fx-background-color: #00000011;
+    -fx-padding: 0;
+}
+
+.jfx-alert-overlay > .depth-container > .jfx-alert-content-container,
+.jfx-alert-overlay > .jfx-alert-content-container{
+    -fx-background-color: pink;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}

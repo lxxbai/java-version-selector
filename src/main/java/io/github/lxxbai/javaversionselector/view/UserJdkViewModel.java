@@ -3,6 +3,7 @@ package io.github.lxxbai.javaversionselector.view;
 
 import cn.hutool.core.util.StrUtil;
 import io.github.lxxbai.javaversionselector.common.enums.ApplyStatusEnum;
+import io.github.lxxbai.javaversionselector.event.InstallEndEvent;
 import io.github.lxxbai.javaversionselector.event.InstallStatusEvent;
 import io.github.lxxbai.javaversionselector.model.UserJdkVersionVO;
 import io.github.lxxbai.javaversionselector.service.UserJdkVersionService;
@@ -85,6 +86,13 @@ public class UserJdkViewModel {
     public void changeStatus(InstallStatusEvent installStatusEvent) {
         String jdkHomePath = installStatusEvent.getJdkHomePath();
         userJdkVersionService.saveUserJdk(jdkHomePath);
+        // 刷新
+        refresh();
+    }
+
+    @EventListener(value = InstallEndEvent.class)
+    public void changeStatus(InstallEndEvent installEndEvent) {
+        userJdkVersionService.addUserJdk(installEndEvent.getInstallRecordVO());
         // 刷新
         refresh();
     }

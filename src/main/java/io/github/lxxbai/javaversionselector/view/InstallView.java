@@ -9,6 +9,8 @@ import io.github.lxxbai.javaversionselector.common.util.*;
 import io.github.lxxbai.javaversionselector.component.DownloadProgressBar;
 import io.github.lxxbai.javaversionselector.component.SvgButton;
 import io.github.lxxbai.javaversionselector.component.cell.XxbTableCellFactory;
+import io.github.lxxbai.javaversionselector.component.menu.MenuItem;
+import io.github.lxxbai.javaversionselector.component.menu.SvgBadgeMenuItem;
 import io.github.lxxbai.javaversionselector.model.InstallRecordVO;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
@@ -28,7 +30,7 @@ import java.util.Objects;
  */
 @FXView(url = "view/install_record.fxml")
 @Component
-public class InstallView {
+public class InstallView extends MenuContentView {
 
     @Resource
     private InstallViewModel installViewModel;
@@ -49,6 +51,11 @@ public class InstallView {
     @FXML
     private TableColumn<InstallRecordVO, String> status;
 
+    /**
+     * 菜单项
+     */
+    private final SvgBadgeMenuItem svgBadgeMenuItem = new SvgBadgeMenuItem("svg/download-solid.svg", "进度");
+
     @FXML
     public void initialize() throws Exception {
         vmVendor.setCellValueFactory(new PropertyValueFactory<>("vmVendor"));
@@ -62,6 +69,22 @@ public class InstallView {
         versionFilter.textProperty().bindBidirectional(installViewModel.getFilterJavaVersion());
         //变更事件
         versionFilter.textProperty().addListener(str -> installViewModel.filter());
+        svgBadgeMenuItem.getBadge().numProperty().bindBidirectional(installViewModel.downloadCountProperty());
+    }
+
+    @Override
+    public MenuItem getMenuItem() {
+        return svgBadgeMenuItem;
+    }
+
+    @Override
+    public int order() {
+        return 2;
+    }
+
+    @Override
+    public boolean lazyLoading() {
+        return false;
     }
 
     /**

@@ -6,6 +6,7 @@ import io.github.lxxbai.javaversionselector.common.util.StringUtil;
 import io.github.lxxbai.javaversionselector.event.InstallStatusEvent;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import io.github.lxxbai.javaversionselector.service.JavaVersionService;
+import io.github.lxxbai.javaversionselector.service.UserJdkVersionService;
 import jakarta.annotation.Resource;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -13,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -46,6 +48,8 @@ public class JdkVersionViewModel {
 
     // 创建 FilteredList
     private final FilteredList<JdkVersionVO> filteredData = new FilteredList<>(javaVersionList, p -> true);
+    @Autowired
+    private UserJdkVersionService userJdkVersionService;
 
 
     /**
@@ -149,5 +153,15 @@ public class JdkVersionViewModel {
                 changeStatus(i, installStatusEvent.getInstallStatus());
             }
         }
+    }
+
+    /**
+     * 判断版本是否存在
+     *
+     * @param ukVersion 版本号
+     * @return 是否存在
+     */
+    public boolean versionExists(String ukVersion) {
+        return userJdkVersionService.versionExists(ukVersion);
     }
 }

@@ -8,6 +8,8 @@ import io.github.lxxbai.javaversionselector.common.enums.ApplyStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.*;
 import io.github.lxxbai.javaversionselector.component.SvgButton;
 import io.github.lxxbai.javaversionselector.component.cell.XxbTableCellFactory;
+import io.github.lxxbai.javaversionselector.component.menu.MenuItem;
+import io.github.lxxbai.javaversionselector.component.menu.SvgMenuItem;
 import io.github.lxxbai.javaversionselector.model.UserJdkVersionVO;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
@@ -26,7 +28,7 @@ import java.util.Objects;
  */
 @FXView(url = "view/my_jdk.fxml")
 @Component
-public class UserJdkView {
+public class UserJdkView extends MenuContentView {
 
     @Resource
     private UserJdkViewModel userJdkViewModel;
@@ -54,6 +56,17 @@ public class UserJdkView {
         versionFilter.textProperty().bindBidirectional(userJdkViewModel.getFilterJavaVersion());
         //变更事件
         versionFilter.textProperty().addListener(str -> userJdkViewModel.filter());
+    }
+
+    @Override
+    public MenuItem getMenuItem() {
+        return new SvgMenuItem("svg/user-large-solid.svg", "我的");
+    }
+
+
+    @Override
+    public int order() {
+        return 3;
     }
 
     /**

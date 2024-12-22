@@ -6,6 +6,8 @@ import com.jfoenix.controls.JFXTextField;
 import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
 import io.github.lxxbai.javaversionselector.component.SvgButton;
 import io.github.lxxbai.javaversionselector.component.cell.XxbTableCellFactory;
+import io.github.lxxbai.javaversionselector.component.menu.MenuItem;
+import io.github.lxxbai.javaversionselector.component.menu.SvgMenuItem;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
@@ -21,7 +23,7 @@ import org.springframework.stereotype.Component;
  */
 @FXView(url = "view/java_version.fxml")
 @Component
-public class JdkVersionView {
+public class JdkVersionView extends MenuContentView {
 
     @Resource
     private JdkVersionViewModel jdkVersionViewModel;
@@ -71,6 +73,16 @@ public class JdkVersionView {
         releaseDate.setCellFactory(buildCellFactory());
     }
 
+    @Override
+    public MenuItem getMenuItem() {
+        return new SvgMenuItem("svg/home.svg", "版本");
+    }
+
+    @Override
+    public int order() {
+        return 1;
+    }
+
     /**
      * 下载替换发布日期的cell
      *
@@ -83,7 +95,16 @@ public class JdkVersionView {
             TableRow<JdkVersionVO> tableRow = cell.getTableRow();
             if (tableRow.isHover()) {
                 //下载
-                downloadButton.setOnAction(event -> installViewModel.download(jdkVersion));
+                downloadButton.setOnAction(event -> {
+                    //判断用户是否已经安装
+                    boolean b = jdkVersionViewModel.versionExists(jdkVersion.getUkVersion());
+                    if (b) {
+                        //todo 弹框选择
+                        installViewModel.download(jdkVersion);
+                    } else {
+                        installViewModel.download(jdkVersion);
+                    }
+                });
                 cell.setText("下载");
                 cell.setGraphic(downloadButton);
             } else {

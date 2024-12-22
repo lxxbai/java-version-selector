@@ -1,12 +1,16 @@
 package io.github.lxxbai.javaversionselector.view;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.jfoenix.controls.JFXListView;
 import io.github.lxxbai.javaversionselector.common.util.StageUtil;
 import io.github.lxxbai.javaversionselector.component.menu.MenuCellFactory;
-import io.github.lxxbai.javaversionselector.component.menu.MenuPageFactory;
-import io.github.lxxbai.javaversionselector.model.MenuPage;
+import io.github.lxxbai.javaversionselector.component.menu.MenuPage;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -25,7 +29,13 @@ public class JVSMainView extends BorderPane {
      */
     private void init() {
         getStyleClass().add("jvs-main");
-        //左侧菜单
+        //获取菜单
+        Map<String, MenuContentView> beans = SpringUtil.getBeansOfType(MenuContentView.class);
+        //排序
+        List<MenuPage> viewList = beans.values().stream().map(MenuContentView::toMenuPage)
+                .sorted(Comparator.comparingInt(MenuPage::getOrder))
+                .toList();
+        //左侧菜单和内容
         JFXListView<MenuPage> listView = new JFXListView<>();
         listView.setMinWidth(55);
         listView.setMaxWidth(55);
@@ -35,14 +45,8 @@ public class JVSMainView extends BorderPane {
         listView.setShowTooltip(true);
         //禁止焦点,不然好像有些问题
         listView.setFocusTraversable(false);
-        //首页
-        MenuPage homePage = MenuPageFactory.build("版本", "svg/home.svg", JdkVersionView.class);
-        //下载
-        MenuPage downloadPage = MenuPageFactory.build("进度", "svg/download-solid.svg", InstallView.class);
-        //我的
-        MenuPage myPage = MenuPageFactory.build("我的", "svg/user-large-solid.svg", UserJdkView.class);
+        listView.getItems().addAll(viewList);
         //配置
-        listView.getItems().addAll(homePage, downloadPage, myPage);
         BorderPane borderPane = new BorderPane();
         borderPane.setPadding(new Insets(0, 10, 0, 10));
         DecoratorView pane = new DecoratorView(StageUtil.getPrimaryStage(), borderPane);
@@ -55,13 +59,8 @@ public class JVSMainView extends BorderPane {
             borderPane.setCenter(newValue.getContent());
         });
         //默认选中
-        listView.getSelectionModel().select(homePage);
+        listView.getSelectionModel().select(viewList.get(0));
         setCenter(pane);
         setLeft(listView);
-    }
-
-
-    public void switchView() {
-
     }
 }

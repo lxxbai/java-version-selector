@@ -109,8 +109,11 @@ public class InstallRecordVO {
 
     private String ukInstallCode;
 
-
     public String getUkInstallCode() {
         return SecureUtil.md5(this.ukVersion + jdkPackageUrl);
+    }
+
+    public boolean isDownloading() {
+        return installStatus == InstallStatusEnum.DOWNLOADING || installStatus == InstallStatusEnum.DOWNLOAD_PAUSE;
     }
 }

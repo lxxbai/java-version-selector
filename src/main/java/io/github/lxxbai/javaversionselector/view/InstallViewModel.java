@@ -13,7 +13,9 @@ import io.github.lxxbai.javaversionselector.event.InstallStatusEvent;
 import io.github.lxxbai.javaversionselector.model.InstallRecordVO;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import io.github.lxxbai.javaversionselector.service.InstallService;
+import io.github.lxxbai.javaversionselector.service.UserJdkVersionService;
 import jakarta.annotation.Resource;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -39,10 +41,16 @@ public class InstallViewModel {
     @Resource
     private InstallService installService;
 
+    @Resource
+    private UserJdkVersionService userJdkVersionService;
+
+
     @Getter
     private final StringProperty filterJavaVersion = new SimpleStringProperty();
 
     private final ObservableList<InstallRecordVO> downLoadList = FXCollections.observableArrayList();
+
+    private final SimpleIntegerProperty downloadCount = new SimpleIntegerProperty();
 
     // 创建 FilteredList
     private final FilteredList<InstallRecordVO> filteredData = new FilteredList<>(downLoadList, p -> true);
@@ -61,9 +69,19 @@ public class InstallViewModel {
                     addedSubList.forEach(this::dealInstallProcess);
                 }
             }
+            refreshDownloadCount();
         });
         downLoadList.addAll(queryAll());
         return filteredData;
+    }
+
+    public void refreshDownloadCount() {
+        long count = downLoadList.stream().filter(InstallRecordVO::isDownloading).count();
+        downloadCount.set((int) count);
+    }
+
+    public SimpleIntegerProperty downloadCountProperty() {
+        return downloadCount;
     }
 
     /**
@@ -86,6 +104,9 @@ public class InstallViewModel {
      * @param vo 版本信息
      */
     private void dealInstallProcess(InstallRecordVO vo) {
+        if (Objects.isNull(vo)) {
+            return;
+        }
         InstallStatusEnum installStatus = vo.getInstallStatus();
         switch (installStatus) {
             //下载
@@ -167,6 +188,10 @@ public class InstallViewModel {
      */
     public void download(JdkVersionVO vo) {
         InstallRecordVO installRecordVO = installService.addDownloadRecord(vo);
+        if (Objects.isNull(installRecordVO)) {
+            AlertUtil.showInfo(StageUtil.getPrimaryStage(), "下载失败", "", "当前版本下载中，请勿重新下载！");
+            return;
+        }
         downLoadList.add(0, installRecordVO);
     }
 
@@ -184,6 +209,7 @@ public class InstallViewModel {
                 break;
             }
         }
+        refreshDownloadCount();
         //发送事件
         PublishUtil.publishEvent(new InstallStatusEvent(installRecordVO.getUkVersion(),
                 installRecordVO.getInstallStatus(), installRecordVO.getInstalledJavaHome()));
@@ -242,7 +268,10 @@ public class InstallViewModel {
      */
     private void zipInstall(InstallRecordVO installRecordVO) {
         try {
-            File zipFile = ZipUtil.unzip(installRecordVO.getJdkPackageUrl(), installRecordVO.getInstalledFolder());
+            //设置解压路径
+            String installPath = installRecordVO.getInstalledFolder() + File.separator
+                    + installRecordVO.getVmVendor() + File.separator + installRecordVO.getJavaVersion();
+            File zipFile = ZipUtil.unzip(installRecordVO.getJdkPackageUrl(), installPath);
             //设置解压路径
             String javaHomePath = JdkUtil.getJavaHomePath(zipFile);
             installRecordVO.setInstalledJavaHome(javaHomePath);

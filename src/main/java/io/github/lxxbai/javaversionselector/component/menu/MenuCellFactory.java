@@ -1,7 +1,6 @@
 package io.github.lxxbai.javaversionselector.component.menu;
 
 import com.jfoenix.controls.JFXTooltip;
-import io.github.lxxbai.javaversionselector.model.MenuPage;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -21,12 +20,13 @@ public class MenuCellFactory implements Callback<ListView<MenuPage>, ListCell<Me
                 if (item == null || empty) {
                     setText(null);
                     setGraphic(null);
+                    setTooltip(null);
                 } else {
                     //加载图标
-                    MenuIcon menuIcon = new MenuIcon(item.getPicPath());
-                    setGraphic(menuIcon);
+                    MenuItem menuItem = item.getMenuItem();
+                    setGraphic(menuItem.menuIcon());
                     //添加提示
-                    JFXTooltip tooltip = new JFXTooltip(item.getMenuName());
+                    JFXTooltip tooltip = new JFXTooltip(menuItem.getMenuName());
                     tooltip.setShowDelay(Duration.millis(100));
                     JFXTooltip.install(this, tooltip, Pos.BOTTOM_CENTER);
                 }
