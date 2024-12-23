@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
+import io.github.lxxbai.javaversionselector.common.util.JFXAlertUtil;
+import io.github.lxxbai.javaversionselector.common.util.StageUtil;
 import io.github.lxxbai.javaversionselector.component.SvgButton;
 import io.github.lxxbai.javaversionselector.component.cell.XxbTableCellFactory;
 import io.github.lxxbai.javaversionselector.component.menu.MenuItem;
@@ -49,8 +51,6 @@ public class JdkVersionView extends MenuContentView {
     private TableColumn<JdkVersionVO, String> fileName;
     @FXML
     private TableColumn<JdkVersionVO, String> fileSize;
-    @FXML
-    private JFXButton downloadingStyleButton;
 
     @FXML
     public void initialize() {
@@ -99,8 +99,9 @@ public class JdkVersionView extends MenuContentView {
                     //判断用户是否已经安装
                     boolean b = jdkVersionViewModel.versionExists(jdkVersion.getUkVersion());
                     if (b) {
-                        //todo 弹框选择
-                        installViewModel.download(jdkVersion);
+                        if (JFXAlertUtil.showSelectInfo(StageUtil.getPrimaryStage(), "提示", "您已经安装过该版本，是否覆盖安装？")) {
+                            installViewModel.download(jdkVersion);
+                        }
                     } else {
                         installViewModel.download(jdkVersion);
                     }

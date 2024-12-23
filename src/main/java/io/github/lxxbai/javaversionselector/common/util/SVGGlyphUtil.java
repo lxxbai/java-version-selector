@@ -1,8 +1,5 @@
 package io.github.lxxbai.javaversionselector.common.util;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.XmlUtil;
 import com.jfoenix.svg.SVGGlyph;
 import javafx.scene.paint.Color;
 import lombok.SneakyThrows;
@@ -12,12 +9,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.charset.Charset;
 
 /**
  * @author lxxbai
  */
 public class SVGGlyphUtil {
+
+    /**
+     * 加载SVG图标
+     *
+     * @param path path
+     * @return SVGGlyph
+     */
+    public static SVGGlyph loadGlyph(String path) {
+        URL url = ResourceUtil.getUrl(path);
+        return loadGlyph(url);
+    }
 
 
     /**
@@ -46,7 +53,7 @@ public class SVGGlyphUtil {
             br = new BufferedReader(new InputStreamReader(is));
 
             String line;
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
         } catch (IOException var13) {

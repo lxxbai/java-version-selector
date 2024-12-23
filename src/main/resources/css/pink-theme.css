@@ -1,5 +1,5 @@
 /********************************left-menu*********************************************/
-.jvs-main {
+.root {
     /*主要背景颜色*/
     -fx-base-background: derive(rgba(241, 194, 241, 0.97), -20%);
     /*tableview的选中背景颜色*/
@@ -89,7 +89,8 @@
     -fx-background-color: white;
     -fx-border-width: 0;
 }
-.main-center .table-view .filler{
+
+.main-center .table-view .filler {
     -fx-background-color: white;
 }
 
@@ -104,7 +105,8 @@
     -fx-text-fill: -fx-base-background;
     -fx-alignment: center-left;
 }
-.main-center .table-view .column-header:last-visible .label{
+
+.main-center .table-view .column-header:last-visible .label {
     -fx-alignment: center;
 }
 
@@ -131,9 +133,11 @@
 .main-center .jfx-combo-box .list-view {
     -fx-pref-width: 100;
 }
-.main-center .jfx-combo-box .list-cell{
+
+.main-center .jfx-combo-box .list-cell {
     -fx-text-fill: -fx-font-color;
 }
+
 .main-center .jfx-combo-box .list-view .list-cell:filled:selected,
 .main-center .jfx-combo-box .list-cell:hover {
     -fx-background-color: -fx-base-background;
@@ -145,18 +149,19 @@
 /******button**********/
 
 .custom-font-button {
-    -fx-border-radius: 8;
-    -fx-border-color: -fx-base-background;
-    -fx-background-color: transparent;
-    -fx-text-fill: -fx-font-color; /* 字体颜色 */
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-background-color: -fx-base-background;
+    -fx-text-fill: white;
     -fx-font-size: 12px; /* 字体大小 */
+    /*-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0.5, 0, 2);*/
+    -fx-transition: transform 0.3s ease; /* 平滑动画 */
 }
 
 .custom-font-button:hover {
-    -fx-background-color: -fx-base-background;
-    -fx-background-radius: 8;
-    -fx-text-fill: white;
     -fx-cursor: hand;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
 }
 
 /* 在 CSS 文件中 */
@@ -173,11 +178,11 @@
     -fx-background-radius: 5;
 }
 
-.warn-hover:hover .jfx-svg-glyph{
+.warn-hover:hover .jfx-svg-glyph {
     -fx-background-color: #dd0808;
 }
 
-.readonly-button{
+.readonly-button {
     -fx-background-radius: 10;
     -fx-text-fill: white; /* 字体颜色 */
     -fx-font-size: 12;
@@ -194,8 +199,6 @@
 *******************************************************************************/
 
 .jfx-decorator {
-    /*-fx-decorator-color: rgba(248, 213, 248, 0.84);*/
-    /*-fx-background-color: -fx-decorator-color;*/
     -fx-decorator-color: white;
 }
 
@@ -253,11 +256,6 @@
 
 /******************************ERROR LABELS**********************/
 
-/*.jfx-badge{*/
-/*    -fx-max-width: 100;*/
-/*    -fx-pref-height: 40;*/
-/*}*/
-
 .jfx-badge .badge-pane {
     -fx-background-color: #f40d0d;
     -fx-background-radius: 16;
@@ -265,21 +263,46 @@
     -fx-pref-height: 16;
     -fx-alignment: center;
 }
-/*alert*/
+
 .jfx-badge Label {
     -fx-font-weight: BOLD;
     -fx-font-size: 9;
     -fx-text-fill: WHITE;
 }
 
-.jfx-alert-overlay{
-    -fx-background-color: #00000011;
-    -fx-padding: 0;
-}
-
+/*alert*/
 .jfx-alert-overlay > .depth-container > .jfx-alert-content-container,
-.jfx-alert-overlay > .jfx-alert-content-container{
-    -fx-background-color: pink;
+.jfx-alert-overlay > .jfx-alert-content-container {
+    -fx-background-color: white;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
+}
+
+/**Layout*/
+.jfx-dialog-layout {
+    -fx-pref-width: 300;
+    -fx-pref-height: 130;
+}
+
+
+.jfx-dialog-layout > .jfx-layout-heading {
+    -fx-padding: 14 5 14 14;
+    -fx-alignment: center-left;
+}
+
+.jfx-dialog-layout > .jfx-layout-heading .label {
+    -fx-font-size: 14;
+}
+
+.jfx-dialog-layout > .jfx-layout-body {
+    -fx-padding: 0 14 10 20;
+}
+
+.jfx-dialog-layout > .jfx-layout-body .label {
+    -fx-text-fill: #757575;
+    -fx-font-size: 13;
+}
+
+.jfx-dialog-layout > .jfx-layout-heading .label .jfx-svg-glyph {
+    -fx-background-color: -fx-base-background;
 }
