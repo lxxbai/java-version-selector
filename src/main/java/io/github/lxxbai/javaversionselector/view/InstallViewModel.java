@@ -278,6 +278,7 @@ public class InstallViewModel {
             installRecordVO.setInstallStatus(InstallStatusEnum.INSTALLED);
             //发送事件,通知已安装
             PublishUtil.publishEvent(new InstallEndEvent(javaHomePath, installRecordVO));
+            AppContextUtil.sentSnackMessage("版本：%s，安装完成。".formatted(installRecordVO.getUkVersion()));
         } catch (Exception e) {
             installRecordVO.setInstallStatus(InstallStatusEnum.INSTALLED_FAILURE);
         }
@@ -295,6 +296,7 @@ public class InstallViewModel {
         try {
             int i = exec.waitFor();
             installRecordVO.setInstallStatus(i == 0 ? InstallStatusEnum.INSTALLED : InstallStatusEnum.INSTALLED_FAILURE);
+            AppContextUtil.sentSnackMessage("版本：%s，安装完成。".formatted(installRecordVO.getUkVersion()));
         } catch (Exception e) {
             installRecordVO.setInstallStatus(InstallStatusEnum.INSTALLED_FAILURE);
         }
@@ -342,6 +344,7 @@ public class InstallViewModel {
         //下载成功
         downloadProgressBar.setOnSucceeded(event -> {
             installRecordVO.setInstallStatus(InstallStatusEnum.DOWNLOADED);
+            AppContextUtil.sentSnackMessage("版本：%s，下载完成。".formatted(installRecordVO.getUkVersion()));
             //安装
             install(installRecordVO);
         });

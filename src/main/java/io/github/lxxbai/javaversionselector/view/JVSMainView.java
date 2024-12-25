@@ -4,6 +4,7 @@ import cn.hutool.extra.spring.SpringUtil;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSnackbarLayout;
+import io.github.lxxbai.javaversionselector.common.util.AppContextUtil;
 import io.github.lxxbai.javaversionselector.common.util.StageUtil;
 import io.github.lxxbai.javaversionselector.component.menu.MenuCellFactory;
 import io.github.lxxbai.javaversionselector.component.menu.MenuPage;
@@ -53,6 +54,8 @@ public class JVSMainView extends BorderPane {
         BorderPane borderPane = new BorderPane();
         borderPane.setPadding(new Insets(0, 10, 0, 10));
         JFXSnackbar snackbar = new JFXSnackbar(borderPane);
+        //设置snackbar
+        AppContextUtil.setSnackbar(snackbar);
         DecoratorView pane = new DecoratorView(StageUtil.getPrimaryStage(), borderPane);
         pane.getStyleClass().add("main-center");
         //菜单切换
