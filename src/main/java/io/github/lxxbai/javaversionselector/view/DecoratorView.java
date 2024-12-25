@@ -6,8 +6,8 @@ import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDecorator;
-import io.github.lxxbai.javaversionselector.common.util.AlertUtil;
 import io.github.lxxbai.javaversionselector.common.util.FXMLLoaderUtil;
+import io.github.lxxbai.javaversionselector.common.util.JFXAlertUtil;
 import io.github.lxxbai.javaversionselector.common.util.JFXButtonUtil;
 import io.github.lxxbai.javaversionselector.common.util.StageUtil;
 import io.github.lxxbai.javaversionselector.component.jdk.JdkScanner;
@@ -61,7 +61,7 @@ public class DecoratorView extends JFXDecorator {
             // 扫描
             List<File> files = jdkScanner.scanForJdks(selectedDirectory);
             if (CollUtil.isEmpty(files)) {
-                AlertUtil.showError(StageUtil.getPrimaryStage(), "", "", "未找到任何Jdk");
+                JFXAlertUtil.showWarning(StageUtil.getPrimaryStage(), "告警", "未找到任何Jdk");
                 return;
             }
             //将数据插入到数据库中

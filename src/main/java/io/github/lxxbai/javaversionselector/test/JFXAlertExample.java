@@ -1,6 +1,5 @@
 package io.github.lxxbai.javaversionselector.test;
 
-import io.github.lxxbai.javaversionselector.common.util.AlertUtil;
 import io.github.lxxbai.javaversionselector.common.util.JFXAlertUtil;
 import io.github.lxxbai.javaversionselector.common.util.ResourceUtil;
 import javafx.application.Application;
@@ -19,8 +18,7 @@ public class JFXAlertExample extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         scene.getStylesheets().addAll(ResourceUtil.toExternalForm("css/alert.css"));
-       JFXAlertUtil.showError(primaryStage, "下载提示", "您当前已存在相同版本的JDK，是否要重新下载？");
-        AlertUtil.showError(primaryStage, "下载提示", "您当前已存在相同版本的JDK，是否要重新下载？","ss");
+        JFXAlertUtil.showError(primaryStage, "下载提示", "您当前已存在相同版本的JDK，是否要重新下载？");
     }
 
     public static void main(String[] args) {

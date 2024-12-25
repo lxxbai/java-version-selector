@@ -142,7 +142,7 @@ public class UserJdkView extends MenuContentView {
                     try {
                         DesktopUtil.openFileDirectory(new File(vo.getLocalHomePath()));
                     } catch (Exception e) {
-                        AlertUtil.showError(StageUtil.getPrimaryStage(), "打开失败", "打开失败", "文件夹不存在!");
+                        JFXAlertUtil.showWarning(StageUtil.getPrimaryStage(), "告警", "文件夹不存在!");
                     }
                 }));
         return filePathButton;

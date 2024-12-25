@@ -2,6 +2,7 @@ package io.github.lxxbai.javaversionselector.view;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
 import io.github.lxxbai.javaversionselector.common.util.JFXAlertUtil;
@@ -54,6 +55,7 @@ public class JdkVersionView extends MenuContentView {
 
     @FXML
     public void initialize() {
+
         //绑定数据
         filterJavaVersion.textProperty().bindBidirectional(jdkVersionViewModel.getFilterJavaVersion());
         filterMainVersion.valueProperty().bindBidirectional(jdkVersionViewModel.getFilterMainVersion());
@@ -99,7 +101,7 @@ public class JdkVersionView extends MenuContentView {
                     //判断用户是否已经安装
                     boolean b = jdkVersionViewModel.versionExists(jdkVersion.getUkVersion());
                     if (b) {
-                        if (JFXAlertUtil.showSelectInfo(StageUtil.getPrimaryStage(), "提示", "您已经安装过该版本，是否覆盖安装？")) {
+                        if (JFXAlertUtil.showSelectInfo(StageUtil.getPrimaryStage(), "提示", "您本地已安装该版本，是否覆盖安装？")) {
                             installViewModel.download(jdkVersion);
                         }
                     } else {

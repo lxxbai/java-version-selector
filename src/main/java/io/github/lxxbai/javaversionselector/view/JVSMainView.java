@@ -2,11 +2,14 @@ package io.github.lxxbai.javaversionselector.view;
 
 import cn.hutool.extra.spring.SpringUtil;
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXSnackbarLayout;
 import io.github.lxxbai.javaversionselector.common.util.StageUtil;
 import io.github.lxxbai.javaversionselector.component.menu.MenuCellFactory;
 import io.github.lxxbai.javaversionselector.component.menu.MenuPage;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
+import javafx.util.Duration;
 
 import java.util.Comparator;
 import java.util.List;
@@ -49,10 +52,12 @@ public class JVSMainView extends BorderPane {
         //配置
         BorderPane borderPane = new BorderPane();
         borderPane.setPadding(new Insets(0, 10, 0, 10));
+        JFXSnackbar snackbar = new JFXSnackbar(borderPane);
         DecoratorView pane = new DecoratorView(StageUtil.getPrimaryStage(), borderPane);
         pane.getStyleClass().add("main-center");
         //菜单切换
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            snackbar.fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout("版本:17.0.4下载完成"), Duration.seconds(10)));
             if (newValue == null) {
                 return;
             }

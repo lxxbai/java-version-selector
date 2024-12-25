@@ -189,7 +189,7 @@ public class InstallViewModel {
     public void download(JdkVersionVO vo) {
         InstallRecordVO installRecordVO = installService.addDownloadRecord(vo);
         if (Objects.isNull(installRecordVO)) {
-            AlertUtil.showInfo(StageUtil.getPrimaryStage(), "下载失败", "", "当前版本下载中，请勿重新下载！");
+            JFXAlertUtil.showWarning(StageUtil.getPrimaryStage(), "告警", "当前版本下载中，请勿重新下载！");
             return;
         }
         downLoadList.add(0, installRecordVO);
@@ -334,7 +334,7 @@ public class InstallViewModel {
                 installRecordVO.getDownloadUrl(), installRecordVO.getJdkPackageUrl(), "");
         //失败
         downloadProgressBar.setOnFailed(event -> {
-            AlertUtil.showInfo(StageUtil.getPrimaryStage(), "下载失败", "下载失败", "下载失败");
+            JFXAlertUtil.showError(StageUtil.getPrimaryStage(), "失败", "下载失败！");
             installRecordVO.setInstallStatus(InstallStatusEnum.DOWNLOAD_FAILURE);
             //修改状态
             changeStatus(installRecordVO);

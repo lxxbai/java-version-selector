@@ -43,7 +43,7 @@ public class AppInitUtil {
                 Files.createDirectory(dbFolder);
             }
         } catch (Exception e) {
-            DialogUtils.showErrorDialog("初始化数据库失败", "请检查权限", e.getMessage());
+            JFXAlertUtil.showError(StageUtil.getPrimaryStage(), "失败", "初始化数据失败,请检查权限!");
         }
         SystemUtil.set("db.home", dbFolder.toString());
     }

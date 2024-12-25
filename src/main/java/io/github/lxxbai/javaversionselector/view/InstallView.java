@@ -172,7 +172,7 @@ public class InstallView extends MenuContentView {
                     try {
                         DesktopUtil.openFileDirectory(new File(installRecordVO.getJdkPackageUrl()));
                     } catch (Exception e) {
-                        AlertUtil.showError(StageUtil.getPrimaryStage(), "打开文件失败", "打开文件失败", "文件不存在!");
+                        JFXAlertUtil.showWarning(StageUtil.getPrimaryStage(), "告警", "文件不存在!");
                     }
                 }));
         return filePathButton;
