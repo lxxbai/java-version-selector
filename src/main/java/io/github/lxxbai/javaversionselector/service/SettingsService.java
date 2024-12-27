@@ -1,10 +1,15 @@
 package io.github.lxxbai.javaversionselector.service;
 
+import cn.hutool.core.util.StrUtil;
 import io.github.lxxbai.javaversionselector.common.Constants;
+import io.github.lxxbai.javaversionselector.common.util.ObjectMapperUtil;
 import io.github.lxxbai.javaversionselector.datasource.entity.UserConfigInfoDO;
 import io.github.lxxbai.javaversionselector.manager.UserConfigInfoManager;
+import io.github.lxxbai.javaversionselector.model.DownloadConfig;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 /**
  * @author lxxbai
@@ -30,6 +35,27 @@ public class SettingsService {
     }
 
     /**
+     * 系统基础默认配置是否保存过
+     *
+     * @return boolean
+     */
+    public boolean baseDefaultConfigured() {
+        // 查询数据库中键为"CONFIGURED"的配置信息，以确定系统是否已经配置
+        UserConfigInfoDO configInfo = userConfigInfoManager
+                .lambdaQuery()
+                .eq(UserConfigInfoDO::getDicKey, Constants.DOWNLOAD_CONFIG_KEY)
+                .one();
+        if (Objects.isNull(configInfo)) {
+            return false;
+        }
+        DownloadConfig downloadConfig = ObjectMapperUtil.toObj(configInfo.getDicValue(), DownloadConfig.class);
+        if (Objects.isNull(downloadConfig)) {
+            return false;
+        }
+        return StrUtil.isNotBlank(downloadConfig.getJdkSavePath()) && StrUtil.isNotBlank(downloadConfig.getJdkInstallPath());
+    }
+
+    /**
      * 查询配置信息
      *
      * @param dictKey 配置键
@@ -46,9 +72,8 @@ public class SettingsService {
      *
      * @param key   配置键
      * @param value 配置值
-     * @return 成功
      */
-    public boolean saveConfig(String key, String value) {
+    public void saveConfig(String key, String value) {
         //查询是否存在
         boolean exists = userConfigInfoManager
                 .lambdaQuery()
@@ -65,6 +90,5 @@ public class SettingsService {
             userConfigInfoDO.setDicValue(value);
             userConfigInfoManager.save(userConfigInfoDO);
         }
-        return true;
     }
 }

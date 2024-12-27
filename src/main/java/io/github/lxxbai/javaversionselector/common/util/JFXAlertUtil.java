@@ -31,7 +31,7 @@ public class JFXAlertUtil {
     public static Boolean showSelectInfo(Stage ownerStage, String title, String content) {
         XxbAlert alert = new XxbAlert(ownerStage, "svg/info.svg", title, content);
         alert.addOkButton();
-        alert.addCancelButton();
+        alert.addCancelButton(true);
         return alert.showAndWait().orElse(false);
     }
 

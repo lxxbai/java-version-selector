@@ -42,9 +42,12 @@ public class SettingsViewModel {
         DownloadConfig model = modelProperty.getModel();
         settingsService.saveConfig(Constants.DOWNLOAD_CONFIG_KEY, ObjectMapperUtil.toJsonString(model));
     }
-
+    public boolean baseDefaultConfigured() {
+        return settingsService.baseDefaultConfigured();
+    }
 
     public boolean configured() {
         return settingsService.configured();
     }
+
 }

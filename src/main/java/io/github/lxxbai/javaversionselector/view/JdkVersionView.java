@@ -2,7 +2,6 @@ package io.github.lxxbai.javaversionselector.view;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
 import io.github.lxxbai.javaversionselector.common.util.JFXAlertUtil;
@@ -12,6 +11,7 @@ import io.github.lxxbai.javaversionselector.component.cell.XxbTableCellFactory;
 import io.github.lxxbai.javaversionselector.component.menu.MenuItem;
 import io.github.lxxbai.javaversionselector.component.menu.SvgMenuItem;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
+import io.github.lxxbai.javaversionselector.service.SettingsService;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -115,6 +115,23 @@ public class JdkVersionView extends MenuContentView {
                 cell.setText(jdkVersion.getReleaseDate());
             }
         });
+    }
+
+    @Resource
+    private SettingsService settingsService;
+
+    private void onDownloadButtonClick(JdkVersionVO jdkVersion) {
+        //判断用户是否已经配置下载文件地址
+        boolean configured = settingsService.baseDefaultConfigured();
+        if (!configured) {
+            //todo 弹出配置框,成功就走下一步,失败就直接返回
+        }
+        boolean b = jdkVersionViewModel.versionExists(jdkVersion.getUkVersion());
+        if (b) {
+            if (JFXAlertUtil.showSelectInfo(StageUtil.getPrimaryStage(), "提示", "您本地已安装该版本，是否覆盖安装？")) {
+                installViewModel.download(jdkVersion);
+            }
+        }
     }
 
 

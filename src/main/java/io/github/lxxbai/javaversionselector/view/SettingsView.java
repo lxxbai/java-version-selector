@@ -49,9 +49,9 @@ public class SettingsView {
         parallelDownloadsComboBox.valueProperty()
                 .bindBidirectional(settingsViewModel.getModelProperty().buildProperty(DownloadConfig::getParallelDownloads));
         downloadPathField.textProperty()
-                .bindBidirectional(settingsViewModel.getModelProperty().buildProperty(DownloadConfig::getDownloadPath));
+                .bindBidirectional(settingsViewModel.getModelProperty().buildProperty(DownloadConfig::getJdkSavePath));
         jdkPathField.textProperty()
-                .bindBidirectional(settingsViewModel.getModelProperty().buildProperty(DownloadConfig::getJdkPathUrl));
+                .bindBidirectional(settingsViewModel.getModelProperty().buildProperty(DownloadConfig::getJdkInstallPath));
         //校验
         JFXValidUtil.defaultValidator(downloadPathField, "请选择下载文件存放地址");
         JFXValidUtil.defaultValidator(jdkPathField, "请选择JDK文件放置地址");

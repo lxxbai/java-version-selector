@@ -189,7 +189,6 @@ public class InstallViewModel {
     public void download(JdkVersionVO vo) {
         InstallRecordVO installRecordVO = installService.addDownloadRecord(vo);
         if (Objects.isNull(installRecordVO)) {
-            JFXAlertUtil.showWarning(StageUtil.getPrimaryStage(), "告警", "当前版本下载中，请勿重新下载！");
             return;
         }
         downLoadList.add(0, installRecordVO);

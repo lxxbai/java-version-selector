@@ -45,27 +45,27 @@ public class InstallService {
                 .eq(InstallRecordDO::getDownloadStatus, InstallStatusEnum.DOWNLOADING.getStatus())
                 .exists();
         if (exists) {
-            return null;
+            throw new ClientException("当前版本下载中，请勿重新下载！");
         }
         DownloadConfig downloadConfig = userConfigInfoManager.queryOneConfig(Constants.DOWNLOAD_CONFIG_KEY, DownloadConfig.class);
         if (Objects.isNull(downloadConfig)) {
             throw new ClientException("下载配置不存在");
         }
         //创建下载路径
-        FileUtil.mkdir(downloadConfig.getDownloadPath());
-        FileUtil.mkdir(downloadConfig.getJdkPathUrl());
+        FileUtil.mkdir(downloadConfig.getJdkSavePath());
+        FileUtil.mkdir(downloadConfig.getJdkInstallPath());
         //构建名称
-        String fileName = buildFileName(downloadConfig.getDownloadPath(), jdkVersionVO.getFileName(), 0);
+        String fileName = buildFileName(downloadConfig.getJdkSavePath(), jdkVersionVO.getFileName(), 0);
         InstallRecordDO record = new InstallRecordDO();
         record.setFileName(fileName);
         record.setFileSize(jdkVersionVO.getFileSize());
         record.setFileType(jdkVersionVO.getFileType());
         record.setDownloadStatus(InstallStatusEnum.DOWNLOADING.getStatus());
         record.setDownloadUrl(jdkVersionVO.getDownloadUrl());
-        record.setDownloadFileFolder(downloadConfig.getDownloadPath());
-        record.setInstalledFolder(downloadConfig.getJdkPathUrl());
+        record.setDownloadFileFolder(downloadConfig.getJdkSavePath());
+        record.setInstalledFolder(downloadConfig.getJdkInstallPath());
         //判断文件是否已经存在
-        record.setJdkPackageUrl(downloadConfig.getDownloadPath().concat(File.separator).concat(fileName));
+        record.setJdkPackageUrl(downloadConfig.getJdkSavePath().concat(File.separator).concat(fileName));
         record.setDownloadProgress(0.0D);
         record.setCreatedAt(DateUtil.now());
         record.setVmVendor(jdkVersionVO.getVmVendor());

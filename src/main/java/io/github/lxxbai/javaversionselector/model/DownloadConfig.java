@@ -9,16 +9,17 @@ import lombok.Data;
 public class DownloadConfig {
 
     /**
-     * 下载路径
+     * jdk保存地址
      */
-    private String downloadPath;
+    private String jdkSavePath;
+
     /**
      * 并行下载数量
      */
     private Integer parallelDownloads;
 
     /**
-     * jdk home路径
+     * jdk安装地址
      */
-    private String jdkPathUrl;
+    private String jdkInstallPath;
 }
