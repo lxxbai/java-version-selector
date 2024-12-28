@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import com.jfoenix.controls.*?>
+<?import io.github.lxxbai.javaversionselector.component.SvgButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<JFXDialogLayout xmlns:fx="http://javafx.com/fxml/1"
+                 fx:controller="io.github.lxxbai.javaversionselector.view.DownloadView">
+    <heading>
+        <Label>设置下载路径</Label>
+    </heading>
+    <body>
+        <GridPane vgap="20" hgap="10">
+            <Label text="下载到:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <JFXTextField fx:id="downloadPathField" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                          editable="false"/>
+            <SvgButton svgPath="svg/folder-regular.svg" onAction="#chooseDownloadDirectory" svgTooltip="选择文件夹"
+                       GridPane.columnIndex="2"
+                       GridPane.rowIndex="0"/>
+            <Label text="安装到:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <JFXTextField fx:id="jdkPathField" GridPane.columnIndex="1" GridPane.rowIndex="1" editable="false"/>
+            <SvgButton svgPath="svg/folder-regular.svg" onAction="#chooseJdkDirectory" svgTooltip="选择文件夹"
+                       svgHeight="10" svgWidth="10"
+                       GridPane.columnIndex="2"
+                       GridPane.rowIndex="1"/>
+            <JFXCheckBox fx:id="defaultPathCheckBox" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2">设为默认路径
+            </JFXCheckBox>
+        </GridPane>
+    </body>
+    <actions>
+        <JFXButton text="取消"/>
+        <JFXButton text="下载" onAction="#download"/>
+    </actions>
+</JFXDialogLayout>

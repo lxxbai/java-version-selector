@@ -6,7 +6,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="io.github.lxxbai.javaversionselector.view.JdkVersionView" stylesheets="">
+            fx:controller="io.github.lxxbai.javaversionselector.view.JdkVersionView">
     <top>
         <HBox spacing="5.0" styleClass="main-h-box" BorderPane.alignment="CENTER">
             <SvgButton svgPath="svg/search.svg" svgTooltip="查询" disable="true"/>

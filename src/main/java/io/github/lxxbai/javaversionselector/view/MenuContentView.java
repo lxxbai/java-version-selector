@@ -13,10 +13,6 @@ import javafx.scene.Node;
 public abstract class MenuContentView {
 
 
-    public boolean lazyLoading() {
-        return true;
-    }
-
     /**
      * 菜单
      *

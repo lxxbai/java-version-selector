@@ -1,9 +1,12 @@
 package io.github.lxxbai.javaversionselector.view;
 
+import com.jfoenix.animation.alert.JFXAlertAnimation;
+import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
+import io.github.lxxbai.javaversionselector.common.util.FXMLLoaderUtil;
 import io.github.lxxbai.javaversionselector.common.util.JFXAlertUtil;
 import io.github.lxxbai.javaversionselector.common.util.StageUtil;
 import io.github.lxxbai.javaversionselector.component.SvgButton;
@@ -11,9 +14,11 @@ import io.github.lxxbai.javaversionselector.component.cell.XxbTableCellFactory;
 import io.github.lxxbai.javaversionselector.component.menu.MenuItem;
 import io.github.lxxbai.javaversionselector.component.menu.SvgMenuItem;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
+import io.github.lxxbai.javaversionselector.model.ViewResult;
 import io.github.lxxbai.javaversionselector.service.SettingsService;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -98,15 +103,7 @@ public class JdkVersionView extends MenuContentView {
             if (tableRow.isHover()) {
                 //下载
                 downloadButton.setOnAction(event -> {
-                    //判断用户是否已经安装
-                    boolean b = jdkVersionViewModel.versionExists(jdkVersion.getUkVersion());
-                    if (b) {
-                        if (JFXAlertUtil.showSelectInfo(StageUtil.getPrimaryStage(), "提示", "您本地已安装该版本，是否覆盖安装？")) {
-                            installViewModel.download(jdkVersion);
-                        }
-                    } else {
-                        installViewModel.download(jdkVersion);
-                    }
+                    onDownloadButtonClick(jdkVersion);
                 });
                 cell.setText("下载");
                 cell.setGraphic(downloadButton);
@@ -124,6 +121,11 @@ public class JdkVersionView extends MenuContentView {
         //判断用户是否已经配置下载文件地址
         boolean configured = settingsService.baseDefaultConfigured();
         if (!configured) {
+            ViewResult<DownloadView, Node> result = FXMLLoaderUtil.loadFxView(DownloadView.class);
+            JFXAlert<Void>Alert = new JFXAlert<>(StageUtil.getPrimaryStage());
+            Alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+            Alert.setContent(result.getViewNode());
+            Alert.showAndWait();
             //todo 弹出配置框,成功就走下一步,失败就直接返回
         }
         boolean b = jdkVersionViewModel.versionExists(jdkVersion.getUkVersion());

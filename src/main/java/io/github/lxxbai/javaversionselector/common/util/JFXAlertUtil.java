@@ -1,6 +1,6 @@
 package io.github.lxxbai.javaversionselector.common.util;
 
-import io.github.lxxbai.javaversionselector.component.XxbAlert;
+import io.github.lxxbai.javaversionselector.component.XxbMsgAlert;
 import javafx.stage.Stage;
 
 
@@ -16,7 +16,7 @@ public class JFXAlertUtil {
      * @param content 对话框内容
      */
     public static void showInfo(Stage ownerStage, String title, String content) {
-        XxbAlert alert = new XxbAlert(ownerStage, "svg/info.svg", title, content);
+        XxbMsgAlert alert = new XxbMsgAlert(ownerStage, "svg/info.svg", title, content);
         alert.addOkButton();
         alert.showAndWait();
     }
@@ -29,7 +29,7 @@ public class JFXAlertUtil {
      * @param content 对话框内容
      */
     public static Boolean showSelectInfo(Stage ownerStage, String title, String content) {
-        XxbAlert alert = new XxbAlert(ownerStage, "svg/info.svg", title, content);
+        XxbMsgAlert alert = new XxbMsgAlert(ownerStage, "svg/info.svg", title, content);
         alert.addOkButton();
         alert.addCancelButton(true);
         return alert.showAndWait().orElse(false);
@@ -42,7 +42,7 @@ public class JFXAlertUtil {
      * @param content 对话框内容
      */
     public static void showWarning(Stage ownerStage, String title, String content) {
-        XxbAlert alert = new XxbAlert(ownerStage, "svg/warn.svg", title, content);
+        XxbMsgAlert alert = new XxbMsgAlert(ownerStage, "svg/warn.svg", title, content);
         alert.addOkButton();
         alert.showAndWait();
     }
@@ -54,7 +54,7 @@ public class JFXAlertUtil {
      * @param content 对话框内容
      */
     public static void showError(Stage ownerStage, String title, String content) {
-        XxbAlert alert = new XxbAlert(ownerStage, "svg/error.svg", title, content);
+        XxbMsgAlert alert = new XxbMsgAlert(ownerStage, "svg/error.svg", title, content);
         alert.addOkButton();
         alert.showAndWait();
     }

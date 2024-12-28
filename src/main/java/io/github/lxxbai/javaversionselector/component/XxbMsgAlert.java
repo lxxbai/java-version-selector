@@ -13,11 +13,11 @@ import javafx.stage.Window;
 /**
  * @author lxxbai
  */
-public class XxbAlert extends JFXAlert<Boolean> {
+public class XxbMsgAlert extends JFXAlert<Boolean> {
 
     private final JFXDialogLayout dialogLayout;
 
-    public XxbAlert(Window window, String svgPath, String title, String content) {
+    public XxbMsgAlert(Window window, String svgPath, String title, String content) {
         super(window);
         // 点击背景是否关闭对话框
         this.setOverlayClose(false);

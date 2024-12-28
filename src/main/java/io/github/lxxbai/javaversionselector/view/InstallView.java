@@ -82,11 +82,6 @@ public class InstallView extends MenuContentView {
         return 2;
     }
 
-    @Override
-    public boolean lazyLoading() {
-        return false;
-    }
-
     /**
      * 构建状态列
      *
