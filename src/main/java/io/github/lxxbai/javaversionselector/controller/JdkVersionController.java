@@ -1,4 +1,4 @@
-package io.github.lxxbai.javaversionselector.view;
+package io.github.lxxbai.javaversionselector.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
@@ -6,33 +6,36 @@ import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
 import io.github.lxxbai.javaversionselector.common.util.FXMLLoaderUtil;
 import io.github.lxxbai.javaversionselector.common.util.JFXAlertUtil;
 import io.github.lxxbai.javaversionselector.common.util.StageUtil;
 import io.github.lxxbai.javaversionselector.component.SvgButton;
 import io.github.lxxbai.javaversionselector.component.cell.XxbTableCellFactory;
-import io.github.lxxbai.javaversionselector.component.menu.MenuItem;
-import io.github.lxxbai.javaversionselector.component.menu.SvgMenuItem;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import io.github.lxxbai.javaversionselector.model.ViewResult;
 import io.github.lxxbai.javaversionselector.service.SettingsService;
+import io.github.lxxbai.javaversionselector.spring.FXMLController;
+import io.github.lxxbai.javaversionselector.spring.GUIState;
+import io.github.lxxbai.javaversionselector.view.DownloadView;
+import io.github.lxxbai.javaversionselector.view.InstallViewModel;
+import io.github.lxxbai.javaversionselector.view.JdkVersionViewModel;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.springframework.stereotype.Component;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * @author lxxbai
  */
-@FXView(url = "view/java_version.fxml")
-@Component
-public class JdkVersionView extends MenuContentView {
+@FXMLController
+public class JdkVersionController implements Initializable {
 
     @Resource
     private JdkVersionViewModel jdkVersionViewModel;
@@ -59,9 +62,8 @@ public class JdkVersionView extends MenuContentView {
     @FXML
     private TableColumn<JdkVersionVO, String> fileSize;
 
-    @FXML
-    public void initialize() {
-
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         //绑定数据
         filterJavaVersion.textProperty().bindBidirectional(jdkVersionViewModel.getFilterJavaVersion());
         filterMainVersion.valueProperty().bindBidirectional(jdkVersionViewModel.getFilterMainVersion());
@@ -81,15 +83,6 @@ public class JdkVersionView extends MenuContentView {
         releaseDate.setCellFactory(buildCellFactory());
     }
 
-    @Override
-    public MenuItem getMenuItem() {
-        return new SvgMenuItem("svg/home.svg", "版本");
-    }
-
-    @Override
-    public int order() {
-        return 1;
-    }
 
     /**
      * 下载替换发布日期的cell
@@ -121,7 +114,7 @@ public class JdkVersionView extends MenuContentView {
     private void onDownloadButtonClick(JdkVersionVO jdkVersion) {
         boolean b = jdkVersionViewModel.versionExists(jdkVersion.getUkVersion());
         if (b) {
-            if (!JFXAlertUtil.showSelectInfo(StageUtil.getPrimaryStage(), "提示", "您本地已安装该版本，是否覆盖安装？")) {
+            if (!JFXAlertUtil.showSelectInfo(GUIState.getStage(), "提示", "您本地已安装该版本，是否覆盖安装？")) {
                 return;
             }
         }

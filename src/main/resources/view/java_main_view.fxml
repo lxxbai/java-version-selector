@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXListView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.github.lxxbai.javaversionselector.controller.JvsMainController" fx:id="mainBorderPane">
+    <left>
+        <JFXListView fx:id="listView" minWidth="55" maxWidth="55" styleClass="main-left">
+        </JFXListView>
+    </left>
+</BorderPane>

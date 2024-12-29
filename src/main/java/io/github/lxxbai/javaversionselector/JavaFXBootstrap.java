@@ -5,6 +5,6 @@ package io.github.lxxbai.javaversionselector;
  */
 public class JavaFXBootstrap {
     public static void main(String[] args) throws Exception {
-        JdkVersionSelectorApp.main(args);
+        NewJdkVersionSelectorApp.main(args);
     }
 }

@@ -1,6 +1,7 @@
 package io.github.lxxbai.javaversionselector.view;
 
 import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTextField;
 import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
 import jakarta.annotation.Resource;
@@ -17,6 +18,9 @@ import java.io.File;
 @FXView(url = "view/download_settings.fxml")
 @Component
 public class DownloadView {
+
+    @FXML
+    private JFXDialogLayout downloadDialog;
 
     @Resource
     private SettingsViewModel settingsViewModel;

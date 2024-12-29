@@ -195,6 +195,19 @@ public class InstallViewModel {
     }
 
     /**
+     * 下载
+     *
+     * @param vo 版本信息
+     */
+    public void download(JdkVersionVO vo, String jdkSavePath, String jdkInstallPath) {
+        InstallRecordVO installRecordVO = installService.addDownloadRecord(vo, jdkSavePath, jdkInstallPath);
+        if (Objects.isNull(installRecordVO)) {
+            return;
+        }
+        downLoadList.add(0, installRecordVO);
+    }
+
+    /**
      * 修改状态
      *
      * @param installRecordVO 版本信息

@@ -3,7 +3,6 @@ package io.github.lxxbai.javaversionselector.common.annotations.base;
 import java.lang.annotation.*;
 
 /**
- *
  * @author lxxbai
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -18,4 +17,6 @@ public @interface FXView {
     double preWidth() default 0.0;
 
     double preHeight() default 0.0;
+
+    int order() default 0;
 }

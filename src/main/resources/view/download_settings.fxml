@@ -4,7 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 <JFXDialogLayout xmlns:fx="http://javafx.com/fxml/1"
-                 fx:controller="io.github.lxxbai.javaversionselector.view.DownloadView">
+                 fx:controller="io.github.lxxbai.javaversionselector.view.DownloadView"
+                 fx:id="downloadDialog">
     <heading>
         <Label>设置下载路径</Label>
     </heading>
@@ -22,12 +23,13 @@
                        svgHeight="10" svgWidth="10"
                        GridPane.columnIndex="2"
                        GridPane.rowIndex="1"/>
-            <JFXCheckBox fx:id="defaultPathCheckBox" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2">设为默认路径
+            <JFXCheckBox fx:id="defaultPathCheckBox" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                         GridPane.columnSpan="2">设为默认路径
             </JFXCheckBox>
         </GridPane>
     </body>
     <actions>
-        <JFXButton text="取消"/>
-        <JFXButton text="下载" onAction="#download"/>
+        <JFXButton text="取消" buttonType="RAISED" styleClass="custom-font-button"/>
+        <JFXButton text="下载" onAction="#download" styleClass="custom-font-button"/>
     </actions>
 </JFXDialogLayout>
