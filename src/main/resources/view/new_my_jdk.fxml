@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import io.github.lxxbai.javaversionselector.component.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.github.lxxbai.javaversionselector.controller.UserJdkController">
+    <top>
+        <HBox spacing="5.0">
+            <SvgButton svgPath="svg/search.svg" svgTooltip="查询" disable="true"/>
+            <JFXTextField fx:id="versionFilter" labelFloat="true" promptText="版本"/>
+            <padding>
+                <Insets bottom="10" top="20"/>
+            </padding>
+        </HBox>
+    </top>
+    <center>
+        <XxbTableView fx:id="tableView">
+            <columns>
+                <RateTableColumn fx:id="vmVendor" reorderable="false" sortable="false" text="供应商" rateWidth="0.25"/>
+                <RateTableColumn fx:id="mainVersion" reorderable="false" sortable="false" text="主版本"
+                                 rateWidth="0.25"/>
+                <RateTableColumn fx:id="javaVersion" reorderable="false" sortable="false" text="版本" rateWidth="0.25"/>
+                <RateTableColumn fx:id="status" reorderable="false" sortable="false" text="状态" rateWidth="0.25"/>
+            </columns>
+        </XxbTableView>
+    </center>
+</BorderPane>

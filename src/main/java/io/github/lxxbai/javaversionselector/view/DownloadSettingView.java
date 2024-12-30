@@ -6,6 +6,6 @@ import io.github.lxxbai.javaversionselector.spring.FXMLView;
 /**
  * @author lxxbai
  */
-@FXMLView(value = "/view/java_main_view.fxml")
-public class NewJvsMainView extends AbstractFxmlView {
+@FXMLView(value = "/view/download_settings.fxml")
+public class DownloadSettingView extends AbstractFxmlView {
 }

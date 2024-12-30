@@ -14,7 +14,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -48,7 +47,8 @@ public class JdkVersionViewModel {
 
     // 创建 FilteredList
     private final FilteredList<JdkVersionVO> filteredData = new FilteredList<>(javaVersionList, p -> true);
-    @Autowired
+
+    @Resource
     private UserJdkVersionService userJdkVersionService;
 
 

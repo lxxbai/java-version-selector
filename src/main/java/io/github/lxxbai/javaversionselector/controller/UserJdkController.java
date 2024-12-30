@@ -1,36 +1,33 @@
-
-package io.github.lxxbai.javaversionselector.view;
+package io.github.lxxbai.javaversionselector.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
 import io.github.lxxbai.javaversionselector.common.enums.ApplyStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.*;
 import io.github.lxxbai.javaversionselector.component.SvgButton;
 import io.github.lxxbai.javaversionselector.component.cell.XxbTableCellFactory;
-import io.github.lxxbai.javaversionselector.component.menu.MenuItem;
-import io.github.lxxbai.javaversionselector.component.menu.SvgMenuItem;
 import io.github.lxxbai.javaversionselector.model.UserJdkVersionVO;
+import io.github.lxxbai.javaversionselector.spring.FXMLController;
 import io.github.lxxbai.javaversionselector.spring.GUIState;
+import io.github.lxxbai.javaversionselector.view.UserJdkViewModel;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.net.URL;
 import java.util.Objects;
-
+import java.util.ResourceBundle;
 
 /**
  * @author lxxbai
  */
-@FXView(url = "view/my_jdk.fxml")
-@Component
-public class UserJdkView extends MenuContentView {
-
+@FXMLController
+public class UserJdkController implements Initializable {
     @Resource
     private UserJdkViewModel userJdkViewModel;
     @FXML
@@ -46,8 +43,8 @@ public class UserJdkView extends MenuContentView {
     @FXML
     private JFXTextField versionFilter;
 
-    @FXML
-    public void initialize() throws Exception {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         vmVendor.setCellValueFactory(new PropertyValueFactory<>("vmVendor"));
         mainVersion.setCellValueFactory(new PropertyValueFactory<>("mainVersion"));
         status.setCellFactory(buildStatusCellFactory());
@@ -57,17 +54,6 @@ public class UserJdkView extends MenuContentView {
         versionFilter.textProperty().bindBidirectional(userJdkViewModel.getFilterJavaVersion());
         //变更事件
         versionFilter.textProperty().addListener(str -> userJdkViewModel.filter());
-    }
-
-    @Override
-    public MenuItem getMenuItem() {
-        return new SvgMenuItem("svg/user-large-solid.svg", "我的");
-    }
-
-
-    @Override
-    public int order() {
-        return 3;
     }
 
     /**
@@ -148,4 +134,6 @@ public class UserJdkView extends MenuContentView {
                 }));
         return filePathButton;
     }
+
+
 }

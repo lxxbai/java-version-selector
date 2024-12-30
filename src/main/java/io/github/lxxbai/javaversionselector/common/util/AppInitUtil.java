@@ -5,6 +5,7 @@ import cn.hutool.system.SystemUtil;
 import io.github.lxxbai.javaversionselector.common.Constants;
 import io.github.lxxbai.javaversionselector.manager.JdkVersionManager;
 import io.github.lxxbai.javaversionselector.manager.UserJdkVersionManager;
+import io.github.lxxbai.javaversionselector.spring.GUIState;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,7 +44,7 @@ public class AppInitUtil {
                 Files.createDirectory(dbFolder);
             }
         } catch (Exception e) {
-            JFXAlertUtil.showError(StageUtil.getPrimaryStage(), "失败", "初始化数据失败,请检查权限!");
+            JFXAlertUtil.showError(GUIState.getStage(), "失败", "初始化数据失败,请检查权限!");
         }
         SystemUtil.set("db.home", dbFolder.toString());
     }

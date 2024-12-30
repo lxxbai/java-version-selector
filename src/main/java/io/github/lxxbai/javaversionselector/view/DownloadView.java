@@ -3,27 +3,20 @@ package io.github.lxxbai.javaversionselector.view;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTextField;
-import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
 import jakarta.annotation.Resource;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.DirectoryChooser;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 
 /**
  * @author lxxbai
  */
-@FXView(url = "view/download_settings.fxml")
-@Component
 public class DownloadView {
 
     @FXML
     private JFXDialogLayout downloadDialog;
-
-    @Resource
-    private SettingsViewModel settingsViewModel;
 
     @FXML
     private JFXCheckBox defaultPathCheckBox;

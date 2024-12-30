@@ -22,4 +22,9 @@ public class DownloadConfig {
      * jdk安装地址
      */
     private String jdkInstallPath;
+
+    /**
+     * 设置为默认开启
+     */
+    private boolean defaultConfigured;
 }

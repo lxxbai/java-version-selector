@@ -6,7 +6,6 @@ import io.github.lxxbai.javaversionselector.component.ModelProperty;
 import io.github.lxxbai.javaversionselector.model.DownloadConfig;
 import io.github.lxxbai.javaversionselector.service.SettingsService;
 import jakarta.annotation.Resource;
-import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -20,7 +19,6 @@ public class SettingsViewModel {
     @Resource
     private SettingsService settingsService;
 
-    @Getter
     private final ModelProperty<DownloadConfig> modelProperty = new ModelProperty<>();
 
     /**
@@ -31,8 +29,16 @@ public class SettingsViewModel {
         if (Objects.isNull(downloadConfig)) {
             downloadConfig = new DownloadConfig();
             downloadConfig.setParallelDownloads(2);
+            downloadConfig.setDefaultConfigured(false);
         }
         modelProperty.setModel(downloadConfig);
+    }
+
+    public ModelProperty<DownloadConfig> getModelProperty() {
+        if (Objects.isNull(modelProperty.getModel())) {
+            load();
+        }
+        return modelProperty;
     }
 
     /**
@@ -42,9 +48,7 @@ public class SettingsViewModel {
         DownloadConfig model = modelProperty.getModel();
         settingsService.saveConfig(Constants.DOWNLOAD_CONFIG_KEY, ObjectMapperUtil.toJsonString(model));
     }
-    public boolean baseDefaultConfigured() {
-        return settingsService.baseDefaultConfigured();
-    }
+
 
     public boolean configured() {
         return settingsService.configured();

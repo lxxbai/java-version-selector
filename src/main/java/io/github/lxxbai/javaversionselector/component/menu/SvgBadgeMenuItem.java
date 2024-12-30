@@ -1,7 +1,6 @@
 
 package io.github.lxxbai.javaversionselector.component.menu;
 
-import io.github.lxxbai.javaversionselector.component.XxbBadge;
 import io.github.lxxbai.javaversionselector.component.XxbNumBadge;
 import javafx.scene.Node;
 import lombok.Getter;

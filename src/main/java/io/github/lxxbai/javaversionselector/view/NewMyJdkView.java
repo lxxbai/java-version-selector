@@ -5,20 +5,20 @@ import io.github.lxxbai.javaversionselector.component.menu.SvgMenuItem;
 import io.github.lxxbai.javaversionselector.spring.FXMLView;
 import io.github.lxxbai.javaversionselector.view.base.MenuView;
 
-
 /**
  * @author lxxbai
  */
-@FXMLView(value = "/view/new_java_version.fxml")
-public class NewJdkVersionView extends MenuView {
+@FXMLView(value = "/view/new_my_jdk.fxml")
+public class NewMyJdkView extends MenuView {
 
     @Override
     public MenuItem getMenuItem() {
-        return new SvgMenuItem("svg/home.svg", "版本");
+        return new SvgMenuItem("svg/user-large-solid.svg", "我的");
     }
+
 
     @Override
     public int order() {
-        return 0;
+        return 3;
     }
 }

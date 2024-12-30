@@ -11,9 +11,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Shape;
-import javafx.util.Duration;
 
 /**
  * svg构建的button
@@ -117,17 +114,16 @@ public class SvgButton extends JFXButton {
     private void initialize() {
         this.getStyleClass().add(DEFAULT_STYLE_CLASS);
         JFXTooltip tooltip = new JFXTooltip();
-        tooltip.setShowDelay(Duration.millis(100));
         tooltip.textProperty().bind(svgTooltip);
         JFXTooltip.install(this, tooltip, Pos.BOTTOM_CENTER);
         svgPath.addListener((observableValue, old, newPath) -> {
             //加载图标
             svgGlyph = SVGGlyphUtil.loadGlyph(ResourceUtil.getUrl(newPath));
-            svgGlyph.prefWidthProperty().bind(svgWidth);
-            svgGlyph.prefHeightProperty().bind(svgHeight);
+            svgGlyph.setSize(svgWidth.get(), svgHeight.get());
             this.setCursor(Cursor.HAND);
-            this.setRipplerFill(Color.WHITE);
             this.setGraphic(svgGlyph);
         });
+        svgHeight.addListener((observableValue, old, newHeight) -> svgGlyph.setSizeForHeight(newHeight.doubleValue()));
+        svgWidth.addListener((observableValue, old, newWidth) -> svgGlyph.setSizeForWidth(newWidth.doubleValue()));
     }
 }

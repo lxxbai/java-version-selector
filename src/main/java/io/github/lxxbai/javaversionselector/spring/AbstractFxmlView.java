@@ -95,7 +95,7 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
      * @return the URL resource
      */
     private URL getURLResource(final FXMLView annotation) {
-        if (annotation != null && !annotation.value().equals("")) {
+        if (annotation != null && !annotation.value().isEmpty()) {
             return getClass().getResource(annotation.value());
         } else {
             return getClass().getResource(getFxmlPath());
@@ -109,8 +109,7 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
      */
     private FXMLView getFXMLAnnotation() {
         final Class<? extends AbstractFxmlView> theClass = this.getClass();
-        final FXMLView annotation = theClass.getAnnotation(FXMLView.class);
-        return annotation;
+        return theClass.getAnnotation(FXMLView.class);
     }
 
     /**
@@ -283,6 +282,20 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
         final Parent parent = fxmlLoader.getRoot();
         addCSSIfAvailable(parent);
         return parent;
+    }
+
+    /**
+     * Initializes the view by loading the FXML (if not happened yet) and
+     * returns the top Node (parent) specified in the FXML file.
+     *
+     * @return the root view as determined from {@link FXMLLoader}.
+     */
+    public <T> T getDetailView() {
+
+        ensureFxmlLoaderInitialized();
+        final Parent parent = fxmlLoader.getRoot();
+        addCSSIfAvailable(parent);
+        return (T) parent;
     }
 
     /**

@@ -6,23 +6,21 @@ import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import io.github.lxxbai.javaversionselector.common.util.FXMLLoaderUtil;
 import io.github.lxxbai.javaversionselector.common.util.JFXAlertUtil;
-import io.github.lxxbai.javaversionselector.common.util.StageUtil;
 import io.github.lxxbai.javaversionselector.component.SvgButton;
+import io.github.lxxbai.javaversionselector.component.XxbAlert;
 import io.github.lxxbai.javaversionselector.component.cell.XxbTableCellFactory;
+import io.github.lxxbai.javaversionselector.model.DownloadConfig;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
-import io.github.lxxbai.javaversionselector.model.ViewResult;
-import io.github.lxxbai.javaversionselector.service.SettingsService;
 import io.github.lxxbai.javaversionselector.spring.FXMLController;
 import io.github.lxxbai.javaversionselector.spring.GUIState;
-import io.github.lxxbai.javaversionselector.view.DownloadView;
+import io.github.lxxbai.javaversionselector.view.DownloadSettingView;
 import io.github.lxxbai.javaversionselector.view.InstallViewModel;
 import io.github.lxxbai.javaversionselector.view.JdkVersionViewModel;
+import io.github.lxxbai.javaversionselector.view.SettingsViewModel;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -41,6 +39,10 @@ public class JdkVersionController implements Initializable {
     private JdkVersionViewModel jdkVersionViewModel;
     @Resource
     private InstallViewModel installViewModel;
+    @Resource
+    private SettingsViewModel settingsViewModel;
+    @Resource
+    private DownloadSettingView downloadSettingView;
     @FXML
     private JFXTextField filterJavaVersion;
     @FXML
@@ -96,9 +98,7 @@ public class JdkVersionController implements Initializable {
             TableRow<JdkVersionVO> tableRow = cell.getTableRow();
             if (tableRow.isHover()) {
                 //下载
-                downloadButton.setOnAction(event -> {
-                    onDownloadButtonClick(jdkVersion);
-                });
+                downloadButton.setOnAction(event -> onDownloadButtonClick(jdkVersion));
                 cell.setText("下载");
                 cell.setGraphic(downloadButton);
             } else {
@@ -108,9 +108,12 @@ public class JdkVersionController implements Initializable {
         });
     }
 
-    @Resource
-    private SettingsService settingsService;
 
+    /**
+     * 点击下载按钮
+     *
+     * @param jdkVersion java版本
+     */
     private void onDownloadButtonClick(JdkVersionVO jdkVersion) {
         boolean b = jdkVersionViewModel.versionExists(jdkVersion.getUkVersion());
         if (b) {
@@ -118,23 +121,26 @@ public class JdkVersionController implements Initializable {
                 return;
             }
         }
-        //判断用户是否已经配置下载文件地址
-        boolean configured = settingsService.baseDefaultConfigured();
-        if (configured) {
-            installViewModel.download(jdkVersion);
+        //获取下载配置
+        DownloadConfig model = settingsViewModel.getModelProperty().getModel();
+        //判断用户是否已经配置下载文件地址,已配置
+        if (model.isDefaultConfigured()) {
+            installViewModel.download(jdkVersion, model.getJdkSavePath(), model.getJdkInstallPath());
             return;
         }
-        ViewResult<DownloadView, Node> result = FXMLLoaderUtil.loadFxView(DownloadView.class);
-        JFXAlert<Boolean> alert = new JFXAlert<>(StageUtil.getPrimaryStage());
-        alert.setResultConverter(button -> {
+        JFXAlert<Boolean> downloadSettingsAlert = new JFXAlert<>(GUIState.getStage());
+        downloadSettingsAlert.setContent(downloadSettingView.getView());
+        downloadSettingsAlert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        downloadSettingsAlert.setOverlayClose(false);
+        downloadSettingsAlert.setResultConverter(button -> {
             String text = button.getText();
-            return StrUtil.equals(text, "下载");
+            System.out.println("Button clicked: " + text); // 添加日
+            return StrUtil.equalsAnyIgnoreCase(text, "下载");
         });
-        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-        alert.setContent(result.getViewNode());
-        Boolean chooseDownload = alert.showAndWait().orElse(false);
+        //未配置,出弹框
+        Boolean chooseDownload = downloadSettingsAlert.showAndWait().orElse(false);
         if (chooseDownload) {
-            installViewModel.download(jdkVersion);
+            installViewModel.download(jdkVersion, model.getJdkSavePath(), model.getJdkInstallPath());
         }
     }
 

@@ -16,10 +16,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,7 +31,7 @@ import java.util.function.Consumer;
 @SuppressWarnings("WeakerAccess")
 public abstract class AbstractJavaFxApplicationSupport extends Application {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(AbstractJavaFxApplicationSupport.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractJavaFxApplicationSupport.class);
 
     private static String[] savedArgs = new String[0];
 
@@ -43,7 +41,7 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
 
     private static ConfigurableApplicationContext applicationContext;
 
-    private static List<Image> icons = new ArrayList<>();
+    private static final List<Image> ICONS = new ArrayList<>();
 
     private static Consumer<Throwable> errorAction = defaultErrorAction();
 
@@ -51,8 +49,11 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
 
     private final CompletableFuture<Runnable> splashIsShowing;
 
+    public static String[] GLOBAL_STYLES;
+
     protected AbstractJavaFxApplicationSupport() {
         splashIsShowing = new CompletableFuture<>();
+        GLOBAL_STYLES = new String[]{};
     }
 
     public static Stage getStage() {
@@ -77,10 +78,10 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
             if (!fsImages.isEmpty()) {
                 fsImages.forEach((s) -> {
                     Image img = new Image(getClass().getResource(s).toExternalForm());
-                    icons.add(img);
+                    ICONS.add(img);
                 });
             } else { // add factory images
-                icons.addAll(defaultIcons);
+                ICONS.addAll(defaultIcons);
             }
         } catch (Exception e) {
             LOGGER.error("Failed to load icons: ", e);
@@ -125,7 +126,6 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
      */
     @Override
     public void start(final Stage stage) throws Exception {
-
         GUIState.setStage(stage);
         GUIState.setHostServices(this.getHostServices());
         final Stage splashStage = new Stage(StageStyle.TRANSPARENT);
@@ -138,7 +138,6 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
             beforeShowingSplash(splashStage);
             splashStage.show();
         }
-
         splashIsShowing.complete(() -> {
             showInitialView();
             if (AbstractJavaFxApplicationSupport.splashScreen.visible()) {
@@ -158,9 +157,7 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
         } else {
             GUIState.getStage().initStyle(StageStyle.DECORATED);
         }
-
         beforeInitialView(GUIState.getStage(), applicationContext);
-
         showInitialView(savedInitialView);
     }
 
@@ -181,15 +178,21 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
         try {
             final AbstractFxmlView view = applicationContext.getBean(newView);
             view.initFirstView();
+            // add global styles
+            if (Objects.nonNull(GLOBAL_STYLES) && GLOBAL_STYLES.length > 0) {
+                GUIState.getScene().getStylesheets().addAll(GLOBAL_STYLES);
+            }
             applyEnvPropsToView();
-
-            GUIState.getStage().getIcons().addAll(icons);
+            GUIState.getStage().getIcons().addAll(ICONS);
             GUIState.getStage().show();
-
         } catch (Throwable t) {
             LOGGER.error("Failed to load application: ", t);
             errorAction.accept(t);
         }
+    }
+
+    protected static void setGlobalStyle(String... styles) {
+        GLOBAL_STYLES = styles;
     }
 
     protected static void setErrorAction(Consumer<Throwable> callback) {

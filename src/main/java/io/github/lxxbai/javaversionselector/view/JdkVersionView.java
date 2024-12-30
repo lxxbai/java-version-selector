@@ -17,6 +17,7 @@ import io.github.lxxbai.javaversionselector.component.menu.SvgMenuItem;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import io.github.lxxbai.javaversionselector.model.ViewResult;
 import io.github.lxxbai.javaversionselector.service.SettingsService;
+import io.github.lxxbai.javaversionselector.spring.GUIState;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -121,7 +122,7 @@ public class JdkVersionView extends MenuContentView {
     private void onDownloadButtonClick(JdkVersionVO jdkVersion) {
         boolean b = jdkVersionViewModel.versionExists(jdkVersion.getUkVersion());
         if (b) {
-            if (!JFXAlertUtil.showSelectInfo(StageUtil.getPrimaryStage(), "提示", "您本地已安装该版本，是否覆盖安装？")) {
+            if (!JFXAlertUtil.showSelectInfo(GUIState.getStage(), "提示", "您本地已安装该版本，是否覆盖安装？")) {
                 return;
             }
         }

@@ -1,37 +1,39 @@
-
-package io.github.lxxbai.javaversionselector.view;
+package io.github.lxxbai.javaversionselector.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import io.github.lxxbai.javaversionselector.common.annotations.base.FXView;
 import io.github.lxxbai.javaversionselector.common.enums.InstallStatusEnum;
 import io.github.lxxbai.javaversionselector.common.util.*;
 import io.github.lxxbai.javaversionselector.component.DownloadProgressBar;
 import io.github.lxxbai.javaversionselector.component.SvgButton;
 import io.github.lxxbai.javaversionselector.component.cell.XxbTableCellFactory;
-import io.github.lxxbai.javaversionselector.component.menu.MenuItem;
-import io.github.lxxbai.javaversionselector.component.menu.SvgBadgeMenuItem;
 import io.github.lxxbai.javaversionselector.model.InstallRecordVO;
+import io.github.lxxbai.javaversionselector.spring.FXMLController;
 import io.github.lxxbai.javaversionselector.spring.GUIState;
+import io.github.lxxbai.javaversionselector.view.InstallViewModel;
+import io.github.lxxbai.javaversionselector.view.NewInstallView;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.net.URL;
 import java.util.Objects;
-
+import java.util.ResourceBundle;
 
 /**
  * @author lxxbai
  */
-@FXView(url = "view/install_record.fxml")
-@Component
-public class InstallView extends MenuContentView {
+@FXMLController
+public class JdkInstallController implements Initializable {
+
+    @Resource
+    private NewInstallView newInstallView;
 
     @Resource
     private InstallViewModel installViewModel;
@@ -52,13 +54,9 @@ public class InstallView extends MenuContentView {
     @FXML
     private TableColumn<InstallRecordVO, String> status;
 
-    /**
-     * 菜单项
-     */
-    private final SvgBadgeMenuItem svgBadgeMenuItem = new SvgBadgeMenuItem("svg/download-solid.svg", "进度");
 
-    @FXML
-    public void initialize() throws Exception {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         vmVendor.setCellValueFactory(new PropertyValueFactory<>("vmVendor"));
         mainVersion.setCellValueFactory(new PropertyValueFactory<>("mainVersion"));
         javaVersion.setCellValueFactory(new PropertyValueFactory<>("javaVersion"));
@@ -70,17 +68,7 @@ public class InstallView extends MenuContentView {
         versionFilter.textProperty().bindBidirectional(installViewModel.getFilterJavaVersion());
         //变更事件
         versionFilter.textProperty().addListener(str -> installViewModel.filter());
-        svgBadgeMenuItem.getBadge().numProperty().bindBidirectional(installViewModel.downloadCountProperty());
-    }
-
-    @Override
-    public MenuItem getMenuItem() {
-        return svgBadgeMenuItem;
-    }
-
-    @Override
-    public int order() {
-        return 2;
+        newInstallView.getSvgBadgeMenuItem().getBadge().numProperty().bindBidirectional(installViewModel.downloadCountProperty());
     }
 
     /**

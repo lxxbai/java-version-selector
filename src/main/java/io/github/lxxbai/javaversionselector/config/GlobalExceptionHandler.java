@@ -1,7 +1,7 @@
 package io.github.lxxbai.javaversionselector.config;
 
 import io.github.lxxbai.javaversionselector.common.util.JFXAlertUtil;
-import io.github.lxxbai.javaversionselector.common.util.StageUtil;
+import io.github.lxxbai.javaversionselector.spring.GUIState;
 import javafx.application.Platform;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +15,6 @@ public class GlobalExceptionHandler implements Thread.UncaughtExceptionHandler {
     @Override
     public void uncaughtException(Thread t, Throwable e) {
         log.error("异常:", e);
-        Platform.runLater(() -> JFXAlertUtil.showError(StageUtil.getPrimaryStage(), "程序出现异常", e.getMessage()));
+        Platform.runLater(() -> JFXAlertUtil.showError(GUIState.getStage(), "程序出现异常", e.getMessage()));
     }
 }

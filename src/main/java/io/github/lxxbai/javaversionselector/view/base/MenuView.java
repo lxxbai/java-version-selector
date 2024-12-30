@@ -10,7 +10,19 @@ import io.github.lxxbai.javaversionselector.spring.AbstractFxmlView;
  */
 public abstract class MenuView extends AbstractFxmlView {
 
+    private MenuItem menuItem;
+
+    /**
+     * 获取菜单项
+     *
+     * @return 菜单项
+     */
     public abstract MenuItem getMenuItem();
 
+    /**
+     * 获取菜单项的顺序
+     *
+     * @return 菜单项的顺序
+     */
     public abstract int order();
 }

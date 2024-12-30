@@ -1,5 +1,6 @@
 package io.github.lxxbai.javaversionselector.controller;
 
+import com.jfoenix.controls.JFXDecorator;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSnackbarLayout;
@@ -7,7 +8,6 @@ import io.github.lxxbai.javaversionselector.common.util.AppContextUtil;
 import io.github.lxxbai.javaversionselector.component.menu.MenuItemCellFactory;
 import io.github.lxxbai.javaversionselector.spring.FXMLController;
 import io.github.lxxbai.javaversionselector.spring.GUIState;
-import io.github.lxxbai.javaversionselector.view.DecoratorView;
 import io.github.lxxbai.javaversionselector.view.base.MenuView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -50,7 +50,7 @@ public class JvsMainController implements Initializable {
         JFXSnackbar snackbar = new JFXSnackbar(mainPane);
         //设置snackbar
         AppContextUtil.setSnackbar(snackbar);
-        DecoratorView decoratorView = new DecoratorView(GUIState.getStage(), mainPane);
+        JFXDecorator decoratorView = new JFXDecorator(GUIState.getStage(), mainPane);
         decoratorView.getStyleClass().add("main-center");
         //菜单切换
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {

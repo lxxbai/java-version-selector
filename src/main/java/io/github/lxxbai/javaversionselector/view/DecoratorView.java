@@ -13,6 +13,7 @@ import io.github.lxxbai.javaversionselector.common.util.StageUtil;
 import io.github.lxxbai.javaversionselector.component.jdk.JdkScanner;
 import io.github.lxxbai.javaversionselector.manager.UserJdkVersionManager;
 import io.github.lxxbai.javaversionselector.model.ViewResult;
+import io.github.lxxbai.javaversionselector.spring.GUIState;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
@@ -53,7 +54,7 @@ public class DecoratorView extends JFXDecorator {
         scanButton.setOnAction(even -> {
             DirectoryChooser directoryChooser = new DirectoryChooser();
             directoryChooser.setTitle("请选择要扫描的文件夹");
-            File selectedDirectory = directoryChooser.showDialog(StageUtil.getPrimaryStage().getScene().getWindow());
+            File selectedDirectory = directoryChooser.showDialog(GUIState.getStage().getScene().getWindow());
             if (Objects.isNull(selectedDirectory)) {
                 return;
             }
@@ -61,7 +62,7 @@ public class DecoratorView extends JFXDecorator {
             // 扫描
             List<File> files = jdkScanner.scanForJdks(selectedDirectory);
             if (CollUtil.isEmpty(files)) {
-                JFXAlertUtil.showWarning(StageUtil.getPrimaryStage(), "告警", "未找到任何Jdk");
+                JFXAlertUtil.showWarning(GUIState.getStage(), "告警", "未找到任何Jdk");
                 return;
             }
             //将数据插入到数据库中

@@ -14,6 +14,7 @@ import io.github.lxxbai.javaversionselector.model.InstallRecordVO;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
 import io.github.lxxbai.javaversionselector.service.InstallService;
 import io.github.lxxbai.javaversionselector.service.UserJdkVersionService;
+import io.github.lxxbai.javaversionselector.spring.GUIState;
 import jakarta.annotation.Resource;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -348,7 +349,7 @@ public class InstallViewModel {
                 installRecordVO.getDownloadUrl(), installRecordVO.getJdkPackageUrl(), "");
         //失败
         downloadProgressBar.setOnFailed(event -> {
-            JFXAlertUtil.showError(StageUtil.getPrimaryStage(), "失败", "下载失败！");
+            JFXAlertUtil.showError(GUIState.getStage(), "失败", "下载失败！");
             installRecordVO.setInstallStatus(InstallStatusEnum.DOWNLOAD_FAILURE);
             //修改状态
             changeStatus(installRecordVO);
