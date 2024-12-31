@@ -53,15 +53,10 @@ public class XxbMsgAlert extends JFXAlert<Boolean> {
 
     public void addCancelButton(boolean focus) {
         JFXButton cancelButton = new JFXButton("取消");
+        cancelButton.setCancelButton(true);
         cancelButton.getStyleClass().add("custom-font-button");
         cancelButton.setOnAction(e -> setResult(false));
+        cancelButton.setDefaultButton(focus);
         dialogLayout.getActions().add(cancelButton);
-        if (focus) {
-            cancelButton.requestFocus();
-        }
-    }
-
-    public void addCancelButton() {
-        addCancelButton(false);
     }
 }

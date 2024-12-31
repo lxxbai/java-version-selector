@@ -8,7 +8,6 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import io.github.lxxbai.javaversionselector.common.util.JFXAlertUtil;
 import io.github.lxxbai.javaversionselector.component.SvgButton;
-import io.github.lxxbai.javaversionselector.component.XxbAlert;
 import io.github.lxxbai.javaversionselector.component.cell.XxbTableCellFactory;
 import io.github.lxxbai.javaversionselector.model.DownloadConfig;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;

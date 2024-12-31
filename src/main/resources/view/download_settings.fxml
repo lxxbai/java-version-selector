@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import com.jfoenix.controls.*?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXDialogLayout?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import io.github.lxxbai.javaversionselector.component.SvgButton?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
@@ -25,8 +27,4 @@
             </JFXCheckBox>
         </GridPane>
     </body>
-    <actions>
-        <JFXButton text="取消" styleClass="custom-font-button"/>
-        <JFXButton text="下载" onAction="#download" styleClass="custom-font-button"/>
-    </actions>
 </JFXDialogLayout>

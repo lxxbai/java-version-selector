@@ -4,8 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialogLayout;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
 import javafx.stage.Window;
 
 /**
@@ -23,12 +21,14 @@ public class XxbAlert extends JFXAlert<Boolean> {
         super(window);
         this.dialogLayout = dialogLayout;
         setContent(dialogLayout);
+        //移除button
+        dialogLayout.getActions().clear();
+        //设置结果转换器
         setResultConverter(button -> {
             String text = button.getText();
             return StrUtil.equalsAnyIgnoreCase(okText, text);
         });
     }
-
 
     public void addOkButton(String text, boolean focus) {
         addButton(true, text, focus);
@@ -40,9 +40,7 @@ public class XxbAlert extends JFXAlert<Boolean> {
         button.getStyleClass().add(BUTTON_STYLE_CLASS);
         button.setOnAction(e -> setResult(result));
         dialogLayout.getActions().add(button);
-        if (focus) {
-            button.requestFocus();
-        }
+        button.setDefaultButton(focus);
     }
 
     public void addCancelButton(String text, boolean focus) {
