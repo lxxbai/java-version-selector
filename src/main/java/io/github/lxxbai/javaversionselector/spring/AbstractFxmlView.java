@@ -291,8 +291,19 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
      * @return the root view as determined from {@link FXMLLoader}.
      */
     public <T> T getDetailView() {
-
         ensureFxmlLoaderInitialized();
+        final Parent parent = fxmlLoader.getRoot();
+        addCSSIfAvailable(parent);
+        return (T) parent;
+    }
+
+    /**
+     * 每次都是新的
+     *
+     * @return the root view as determined from {@link FXMLLoader}.
+     */
+    public <T> T getNewDetailView() {
+        FXMLLoader fxmlLoader = loadSynchronously(resource, bundle);
         final Parent parent = fxmlLoader.getRoot();
         addCSSIfAvailable(parent);
         return (T) parent;

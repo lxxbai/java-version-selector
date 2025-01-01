@@ -7,8 +7,11 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.svg.SVGGlyph;
 import io.github.lxxbai.javaversionselector.common.util.SVGGlyphUtil;
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.stage.Window;
+
+import java.util.Objects;
 
 /**
  * @author lxxbai
@@ -31,32 +34,38 @@ public class XxbMsgAlert extends JFXAlert<Boolean> {
             headingLabel.setGraphic(svgGlyph);
         }
         dialogLayout.setBody(new Label(content));
+        setResultConverter(buttonType -> {
+            if (Objects.nonNull(getResult())) {
+                return getResult();
+            }
+            return !buttonType.getButtonData().isCancelButton();
+        });
         //设置数据
         this.setContent(dialogLayout);
         //设置动画
         this.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-        setResultConverter(button -> {
-            String text = button.getText();
-            if (StrUtil.equalsAnyIgnoreCase(text, "确定", "是", "yes", "ok")) {
-                return Boolean.TRUE;
-            }
-            return Boolean.FALSE;
-        });
     }
 
     public void addOkButton() {
-        JFXButton button = new JFXButton("确定");
-        button.getStyleClass().add("custom-font-button");
-        button.setOnAction(e -> setResult(true));
-        dialogLayout.getActions().add(button);
+        addButton(false, true, "确定");
+    }
+
+    public void addOkButton(boolean focus) {
+        addButton(focus, true, "确定");
     }
 
     public void addCancelButton(boolean focus) {
-        JFXButton cancelButton = new JFXButton("取消");
-        cancelButton.setCancelButton(true);
-        cancelButton.getStyleClass().add("custom-font-button");
-        cancelButton.setOnAction(e -> setResult(false));
-        cancelButton.setDefaultButton(focus);
-        dialogLayout.getActions().add(cancelButton);
+        addButton(focus, false, "取消");
+    }
+
+    public JFXButton addButton(boolean focus, boolean result, String text) {
+        JFXButton button = new JFXButton(text);
+        button.getStyleClass().add("custom-font-button");
+        button.setOnAction(e -> setResult(result));
+        if (focus) {
+            Platform.runLater(button::requestFocus);
+        }
+        dialogLayout.getActions().add(button);
+        return button;
     }
 }

@@ -1,13 +1,11 @@
 package io.github.lxxbai.javaversionselector.controller;
 
-import cn.hutool.core.util.StrUtil;
-import com.jfoenix.animation.alert.JFXAlertAnimation;
-import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import io.github.lxxbai.javaversionselector.common.util.JFXAlertUtil;
 import io.github.lxxbai.javaversionselector.component.SvgButton;
+import io.github.lxxbai.javaversionselector.component.XxbStaticAlert;
 import io.github.lxxbai.javaversionselector.component.cell.XxbTableCellFactory;
 import io.github.lxxbai.javaversionselector.model.DownloadConfig;
 import io.github.lxxbai.javaversionselector.model.JdkVersionVO;
@@ -127,17 +125,10 @@ public class JdkVersionController implements Initializable {
             installViewModel.download(jdkVersion, model.getJdkSavePath(), model.getJdkInstallPath());
             return;
         }
-        JFXAlert<Boolean> downloadSettingsAlert = new JFXAlert<>(GUIState.getStage());
-        downloadSettingsAlert.setContent(downloadSettingView.getView());
-        downloadSettingsAlert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-        downloadSettingsAlert.setOverlayClose(false);
-        downloadSettingsAlert.setResultConverter(button -> {
-            String text = button.getText();
-            System.out.println("Button clicked: " + text); // 添加日
-            return StrUtil.equalsAnyIgnoreCase(text, "下载");
-        });
+        //弹框
+        XxbStaticAlert staticAlert = new XxbStaticAlert(GUIState.getStage(), downloadSettingView.getDetailView());
         //未配置,出弹框
-        Boolean chooseDownload = downloadSettingsAlert.showAndWait().orElse(false);
+        Boolean chooseDownload = staticAlert.showAndWait().orElse(false);
         if (chooseDownload) {
             installViewModel.download(jdkVersion, model.getJdkSavePath(), model.getJdkInstallPath());
         }

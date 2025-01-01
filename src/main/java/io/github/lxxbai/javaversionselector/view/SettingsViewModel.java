@@ -30,6 +30,8 @@ public class SettingsViewModel {
             downloadConfig = new DownloadConfig();
             downloadConfig.setParallelDownloads(2);
             downloadConfig.setDefaultConfigured(false);
+            downloadConfig.setJdkSavePath("");
+            downloadConfig.setJdkInstallPath("");
         }
         modelProperty.setModel(downloadConfig);
     }
@@ -40,6 +42,7 @@ public class SettingsViewModel {
         }
         return modelProperty;
     }
+
 
     /**
      * 保存配置

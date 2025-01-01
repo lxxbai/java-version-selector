@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import com.jfoenix.controls.JFXCheckBox?>
-<?import com.jfoenix.controls.JFXDialogLayout?>
-<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.*?>
 <?import io.github.lxxbai.javaversionselector.component.SvgButton?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
-<JFXDialogLayout xmlns:fx="http://javafx.com/fxml/1"
+<?import io.github.lxxbai.javaversionselector.component.XxbDialogLayout?>
+<XxbDialogLayout xmlns:fx="http://javafx.com/fxml/1"
                  fx:controller="io.github.lxxbai.javaversionselector.controller.DownloadSettingsController"
                  fx:id="downloadDialog">
     <heading>
@@ -27,4 +26,8 @@
             </JFXCheckBox>
         </GridPane>
     </body>
-</JFXDialogLayout>
+    <actions>
+        <JFXButton text="取消" onAction="#cancel" cancelButton="true" styleClass="custom-font-button"/>
+        <JFXButton text="下载" onAction="#download" styleClass="custom-font-button" fx:id="downloadButton"/>
+    </actions>
+</XxbDialogLayout>
