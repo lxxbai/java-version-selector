@@ -151,7 +151,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                io.github.lxxbai.javaversionselector/io.github.lxxbai.javaversionselector.HelloApplication
+                                io.github.lxxbai.javaversionselector/io.github.lxxbai.jvs.HelloApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

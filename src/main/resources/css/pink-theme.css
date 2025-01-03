@@ -5,13 +5,12 @@
     /*主要背景颜色2*/
     -fx-base-background2: derive(rgba(241, 194, 241, 1.5), -20%);
     /*主要背景颜色3*/
-    -fx-base-background3:  derive(rgba(241, 194, 241, 0.5), -20%);
+    -fx-base-background3: derive(rgba(241, 194, 241, 0.5), -20%);
     /*主要背景颜色3*/
-    -fx-base-background4:  derive(rgba(241, 194, 241, 0.5), -20%);
+    -fx-base-background4: derive(rgba(241, 194, 241, 0.5), -20%);
     /*tableview的选中背景颜色*/
     -fx-table-view-focused: derive(rgba(250, 224, 250, 0.16), -20%);
     /*字体颜色*/
-    /*-fx-font-color: rgb(92, 2, 87);*/
     -fx-font-color: black;
     /* 鼠标悬停时的背景颜色 */
     -fx-button-hover: rgba(243, 191, 243, 0.16);
@@ -100,12 +99,6 @@
     -fx-background-color: white;
 }
 
-
-/*没多大作用*/
-/*.main-center .table-view .scroll-bar:horizontal {*/
-/*    visibility: hidden;*/
-/*}*/
-
 /* 修改 TableView 表头的字体颜色 */
 .main-center .table-view .column-header .label {
     -fx-text-fill: -fx-base-background;
@@ -162,35 +155,36 @@
     -fx-font-size: 12px; /* 字体大小 */
 }
 
-.custom-font-button:focused {
+.custom-default-select-button {
+    -fx-border-color: -fx-base-background;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-font-size: 12px; /* 字体大小 */
     -fx-background-color: -fx-base-background;
     -fx-text-fill: white;
 }
 
-.custom-font-button:hover {
-    -fx-cursor: hand;
-    -fx-scale-x: 1.1;
-    -fx-scale-y: 1.1;
-}
-
 /* 在 CSS 文件中 */
 .svg-button {
-    -fx-effect: dropshadow(gaussian, -fx-base-background, 12, 0, 0, 6);
+    /*-fx-effect: dropshadow(gaussian, -fx-base-background, 12, 0, 0, 6);*/
+    /*-fx-background-color: red;*/
+    -fx-background-radius: 50%;
+    -fx-padding: 3;
 }
 
 .svg-button .jfx-svg-glyph {
     -fx-background-color: -fx-base-background;
 }
 
-.svg-button:hover {
-    -fx-background-color: -fx-button-hover;
-    -fx-background-radius: 5;
+.jfx-button:hover {
+    -fx-cursor: hand;
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
 }
 
+
 .warn-hover:hover .jfx-svg-glyph {
-    -fx-background-color: #dd0808;
+    -fx-background-color: #e52c2c;
 }
 
 .readonly-button {
@@ -211,6 +205,8 @@
 
 .jfx-decorator {
     -fx-decorator-color: white;
+    -fx-border-color: -fx-base-background;
+    -fx-border-width: 0.334 0.334 0.334 0;
 }
 
 .jfx-decorator .jfx-decorator-buttons-container {
@@ -229,8 +225,7 @@
 }
 
 .jfx-decorator .jfx-decorator-title-container .jfx-svg-glyph {
-    -fx-shape: "M512 682c-128.024-99.309-255.626-199.040-384-298l384-298 384 298c-128.375 98.958-255.974 198.693-384 298zM512 792l314-246 70 54-384 298-384-298 70-54z";
-    -jfx-size: 15;
+    -jfx-size: 12;
     -fx-background-color: -fx-base-background;
 }
 
@@ -289,14 +284,9 @@
     -fx-border-radius: 10;
 }
 
-/**Layout*/
-.jfx-dialog-layout {
-    -fx-pref-width: 300;
-    -fx-pref-height: 130;
-}
 
 .jfx-dialog-layout > .jfx-layout-heading {
-    -fx-padding: 14 5 14 14;
+    -fx-padding: 14 15 14 15;
     -fx-alignment: center-left;
 }
 
@@ -305,7 +295,8 @@
 }
 
 .jfx-dialog-layout > .jfx-layout-body {
-    -fx-padding: 0 14 10 20;
+    -fx-padding: 0 15 6 15;
+    -fx-alignment: center-left;
 }
 
 .jfx-dialog-layout > .jfx-layout-body .label {
@@ -315,6 +306,10 @@
 
 .jfx-dialog-layout > .jfx-layout-heading .label .jfx-svg-glyph {
     -fx-background-color: -fx-base-background;
+}
+.jfx-dialog-layout >.jfx-layout-actions {
+    -fx-alignment: center-right;
+    -fx-padding: 6 15 8 15;
 }
 
 .jfx-snackbar-toast {
@@ -350,11 +345,16 @@
     -fx-background-radius: 2em;
 }
 
-.table-view:hover .scroll-bar:vertical .thumb{
+.table-view:hover .scroll-bar:vertical .thumb {
     -fx-background-color: -fx-base-background3;
 }
 
-.table-view .scroll-bar:vertical .thumb:pressed ,
-.table-view .scroll-bar:vertical .thumb:hover{
+.table-view .scroll-bar:vertical .thumb:pressed,
+.table-view .scroll-bar:vertical .thumb:hover {
     -fx-background-color: -fx-base-background;
+}
+
+.jfx-check-box {
+    -jfx-unchecked-color: #5A5A5A;
+    -jfx-checked-color: -fx-base-background;
 }

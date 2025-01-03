@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import io.github.lxxbai.javaversionselector.component.*?>
+<?import io.github.lxxbai.jvs.component.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="io.github.lxxbai.javaversionselector.controller.JdkInstallController">
+            fx:controller="io.github.lxxbai.jvs.controller.JdkInstallController">
     <top>
         <HBox spacing="5.0" styleClass="main-h-box" BorderPane.alignment="CENTER">
             <SvgButton svgPath="svg/search.svg" svgTooltip="查询" disable="true"/>
