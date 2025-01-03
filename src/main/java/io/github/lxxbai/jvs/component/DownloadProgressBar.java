@@ -1,7 +1,6 @@
 package io.github.lxxbai.jvs.component;
 
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXProgressBar;
 import io.github.lxxbai.jvs.common.util.ThreadPoolUtil;
 import javafx.concurrent.WorkerStateEvent;
@@ -10,8 +9,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 /**
@@ -21,7 +20,7 @@ import lombok.Getter;
  */
 public class DownloadProgressBar implements BaseNode {
 
-    private final HBox node;
+    private final VBox node;
 
     /**
      * 下载任务
@@ -46,26 +45,18 @@ public class DownloadProgressBar implements BaseNode {
      * @param fileName    文件名称
      */
     public DownloadProgressBar(int width, int height, String downloadUrl, String fileName, String detailDesc) {
-        this.node = new HBox();
+        this.node = new VBox();
         node.setAlignment(Pos.CENTER_LEFT);
-        StackPane stackPane = new StackPane();
         // 创建进度条
         progressBar = new JFXProgressBar();
         progressBar.setPrefWidth(width);
         progressBar.setPrefHeight(height);
         // 创建显示进度的标签
         progressLabel = new Label("0%");
-        progressLabel.setStyle("-fx-text-fill: #0b0a0a; -fx-font-size: " + (height - 2) + "px;");
-        // 将标签放在进度条上
-        stackPane.getChildren().addAll(progressBar, progressLabel);
         // 确保标签在进度条上方居中显示
-        StackPane.setAlignment(progressLabel, Pos.CENTER);
-        // 下方的描述
-        JFXButton jfxButton = new JFXButton(detailDesc);
-        jfxButton.setButtonType(JFXButton.ButtonType.FLAT);
-        jfxButton.setDisable(true);
+        StackPane.setAlignment(progressLabel, Pos.CENTER_LEFT);
         // 将标签放在进度条下方居中显示
-        node.getChildren().addAll(jfxButton, stackPane);
+        node.getChildren().addAll(progressLabel, progressBar);
         //创建一个下载任务
         this.task = new DownloadTask(downloadUrl, fileName);
         progressBar.progressProperty().bind(task.progressProperty());
