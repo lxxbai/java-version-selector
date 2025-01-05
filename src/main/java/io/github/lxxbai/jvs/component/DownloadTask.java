@@ -115,13 +115,20 @@ public class DownloadTask extends Task<Void> {
     }
 
     /**
-     * 启动任务执行
-     * <p>
-     * 本方法通过线程池调度给定的任务，实现异步执行
+     * 更新进度
      */
     public void updateProgress(double downloadedBytes, long totalBytes) {
         double progress = downloadedBytes / totalBytes;
         super.updateProgress(downloadedBytes, totalBytes);
         super.updateMessage(String.format("%.2f%%", progress * 100));
     }
+
+
+    /**
+     * 更新消息
+     */
+    public void setMessage(String message) {
+        super.updateMessage(message);
+    }
+
 }

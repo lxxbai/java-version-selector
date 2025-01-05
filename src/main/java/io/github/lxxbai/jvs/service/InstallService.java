@@ -116,9 +116,8 @@ public class InstallService {
         List<InstallRecordDO> list = installRecordManager.lambdaQuery().list();
         //数据转换，下载中的排在前面
         return list.stream().map(this::converter)
-                .sorted(Comparator.comparing(InstallRecordVO::getCreatedAt).thenComparing((p1) ->
-                        p1.getInstallStatus().equals(InstallStatusEnum.DOWNLOADING) ? -1 : 0
-                )).toList();
+                .sorted(Comparator.comparing((x) ->
+                        x.getInstallStatus().equals(InstallStatusEnum.DOWNLOADING) ? -1 : 0)).toList();
     }
 
     /**

@@ -7,14 +7,14 @@ import io.github.lxxbai.jvs.common.util.DesktopUtil;
 import io.github.lxxbai.jvs.common.util.JFXButtonUtil;
 import io.github.lxxbai.jvs.common.util.JFXMsgAlertUtil;
 import io.github.lxxbai.jvs.common.util.ThreadPoolUtil;
-import io.github.lxxbai.jvs.component.DownloadProgressBar;
 import io.github.lxxbai.jvs.component.SvgButton;
+import io.github.lxxbai.jvs.component.XxbDownloadBar;
 import io.github.lxxbai.jvs.component.cell.XxbTableCellFactory;
 import io.github.lxxbai.jvs.model.InstallRecordVO;
 import io.github.lxxbai.jvs.spring.FXMLController;
 import io.github.lxxbai.jvs.spring.GUIState;
-import io.github.lxxbai.jvs.view.InstallViewModel;
 import io.github.lxxbai.jvs.view.NewInstallView;
+import io.github.lxxbai.jvs.view.NewInstallViewModel;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -40,7 +40,7 @@ public class JdkInstallController implements Initializable {
     private NewInstallView newInstallView;
 
     @Resource
-    private InstallViewModel installViewModel;
+    private NewInstallViewModel newInstallViewModel;
     @FXML
     public JFXTextField versionFilter;
     @FXML
@@ -67,12 +67,12 @@ public class JdkInstallController implements Initializable {
         fileName.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         status.setCellFactory(buildStatusCellFactory());
         fileSize.setCellFactory(buildActionCellFactory());
-        tableView.setItems(installViewModel.getDownLoadList());
+        tableView.setItems(newInstallViewModel.getDownLoadList());
         //绑定数据
-        versionFilter.textProperty().bindBidirectional(installViewModel.getFilterJavaVersion());
+        versionFilter.textProperty().bindBidirectional(newInstallViewModel.getFilterJavaVersion());
         //变更事件
-        versionFilter.textProperty().addListener(str -> installViewModel.filter());
-        newInstallView.getSvgBadgeMenuItem().getBadge().numProperty().bindBidirectional(installViewModel.downloadCountProperty());
+        versionFilter.textProperty().addListener(str -> newInstallViewModel.filter());
+        newInstallView.getSvgBadgeMenuItem().getBadge().numProperty().bindBidirectional(newInstallViewModel.downloadCountProperty());
     }
 
     /**
@@ -85,8 +85,8 @@ public class JdkInstallController implements Initializable {
             InstallRecordVO installRecordVO = cell.getData();
             // 获取当前行数据
             InstallStatusEnum downloadStatus = installRecordVO.getInstallStatus();
-            Node button = switch (downloadStatus) {
-                case DOWNLOADING, DOWNLOAD_PAUSE -> installRecordVO.getDownloadProgressBar().getContent();
+            Node node = switch (downloadStatus) {
+                case DOWNLOADING, DOWNLOAD_PAUSE->newInstallViewModel.dealDownloadProgressBar(installRecordVO);
                 case DOWNLOAD_FAILURE -> JFXButtonUtil.buildReadOnlyButton("下载失败", "red");
                 case DOWNLOADED -> JFXButtonUtil.buildReadOnlyButton("下载完成", "green");
                 case INSTALLING -> JFXButtonUtil.buildReadOnlyButton("安装中", "pink");
@@ -94,7 +94,7 @@ public class JdkInstallController implements Initializable {
                 case INSTALLED_FAILURE -> JFXButtonUtil.buildReadOnlyButton("安装失败", "red");
                 default -> JFXButtonUtil.buildReadOnlyButton("安装失败", "red");
             };
-            cell.setGraphic(button);
+            cell.setGraphic(node);
             cell.setText(null);
         });
     }
@@ -116,7 +116,7 @@ public class JdkInstallController implements Initializable {
             InstallStatusEnum downloadStatus = installRecordVO.getInstallStatus();
             //开始下载按钮，暂停按钮，文件位置按钮，删除按钮
             HBox hBox = new HBox();
-            hBox.setSpacing(3);
+            hBox.setSpacing(10);
             hBox.setAlignment(Pos.CENTER_LEFT);
             JFXButton filePathButton = buildFilePathButton(installRecordVO);
             JFXButton deleteButton = buildDeleteButton(cell.getCurrentIndex(), installRecordVO);
@@ -181,7 +181,7 @@ public class JdkInstallController implements Initializable {
             Boolean deleteFlag = JFXMsgAlertUtil.showSelectInfo(GUIState.getStage(), "提示", "确定删除吗？");
             if (deleteFlag) {
                 //删除文件
-                installViewModel.deleteRecord(index, installRecordVO);
+                newInstallViewModel.deleteRecord(index, installRecordVO);
             }
         });
         return deleteButton;
@@ -197,12 +197,12 @@ public class JdkInstallController implements Initializable {
     private JFXButton buildPauseButtonButton(int index, InstallRecordVO installRecordVO) {
         SvgButton pauseButton = new SvgButton("svg/pause-solid.svg", "暂停");
         pauseButton.setOnAction(event -> {
-            DownloadProgressBar downloadProgressBar = installRecordVO.getDownloadProgressBar();
-            if (Objects.nonNull(downloadProgressBar)) {
-                downloadProgressBar.cancel();
+            XxbDownloadBar xxDownloadBar = installRecordVO.getXxbDownloadBar();
+            if (Objects.nonNull(xxDownloadBar)) {
+                xxDownloadBar.cancel();
             }
             installRecordVO.setInstallStatus(InstallStatusEnum.DOWNLOAD_PAUSE);
-            installViewModel.changeStatus(index, installRecordVO);
+            newInstallViewModel.changeStatus(index, installRecordVO);
         });
         return pauseButton;
     }
@@ -217,7 +217,7 @@ public class JdkInstallController implements Initializable {
         SvgButton startButton = new SvgButton("svg/play-solid.svg", "开始");
         startButton.setOnAction(event -> {
             installRecordVO.setInstallStatus(InstallStatusEnum.DOWNLOADING);
-            installViewModel.changeStatus(installRecordVO);
+            newInstallViewModel.changeStatus(installRecordVO);
         });
         return startButton;
     }
@@ -232,7 +232,7 @@ public class JdkInstallController implements Initializable {
         SvgButton retryButton = new SvgButton("svg/repeat-solid.svg", "重新下载");
         retryButton.setOnAction(event -> {
             installRecordVO.setInstallStatus(InstallStatusEnum.DOWNLOADING);
-            installViewModel.changeStatus(installRecordVO);
+            newInstallViewModel.changeStatus(installRecordVO);
         });
         return retryButton;
     }
@@ -247,7 +247,7 @@ public class JdkInstallController implements Initializable {
         SvgButton installButton = new SvgButton("svg/install-solid.svg", "安装");
         installButton.setOnAction(event -> {
             installRecordVO.setInstallStatus(InstallStatusEnum.INSTALLING);
-            installViewModel.install(installRecordVO);
+            newInstallViewModel.install(installRecordVO);
         });
         return installButton;
     }

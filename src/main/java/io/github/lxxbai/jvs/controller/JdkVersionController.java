@@ -11,10 +11,7 @@ import io.github.lxxbai.jvs.model.DownloadConfig;
 import io.github.lxxbai.jvs.model.JdkVersionVO;
 import io.github.lxxbai.jvs.spring.FXMLController;
 import io.github.lxxbai.jvs.spring.GUIState;
-import io.github.lxxbai.jvs.view.DownloadSettingView;
-import io.github.lxxbai.jvs.view.InstallViewModel;
-import io.github.lxxbai.jvs.view.JdkVersionViewModel;
-import io.github.lxxbai.jvs.view.SettingsViewModel;
+import io.github.lxxbai.jvs.view.*;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,7 +32,7 @@ public class JdkVersionController implements Initializable {
     @Resource
     private JdkVersionViewModel jdkVersionViewModel;
     @Resource
-    private InstallViewModel installViewModel;
+    private NewInstallViewModel newInstallViewModel;
     @Resource
     private SettingsViewModel settingsViewModel;
     @Resource
@@ -122,7 +119,7 @@ public class JdkVersionController implements Initializable {
         DownloadConfig model = settingsViewModel.getModelProperty().getModel();
         //判断用户是否已经配置下载文件地址,已配置
         if (model.isDefaultConfigured()) {
-            installViewModel.download(jdkVersion, model.getJdkSavePath(), model.getJdkInstallPath());
+            newInstallViewModel.download(jdkVersion, model.getJdkSavePath(), model.getJdkInstallPath());
             return;
         }
         //弹框
@@ -137,7 +134,7 @@ public class JdkVersionController implements Initializable {
             //保存配置
             settingsViewModel.save();
             //下载
-            installViewModel.download(jdkVersion, model.getJdkSavePath(), model.getJdkInstallPath());
+            newInstallViewModel.download(jdkVersion, model.getJdkSavePath(), model.getJdkInstallPath());
         } else {
             settingsViewModel.load();
         }

@@ -17,7 +17,7 @@ public class JFXMsgAlertUtil {
      */
     public static void showInfo(Stage ownerStage, String title, String content) {
         XxbMsgAlert alert = new XxbMsgAlert(ownerStage, "svg/info.svg", title, content);
-        alert.addOkButton();
+        alert.addOkButton(true);
         alert.showAndWait();
     }
 
@@ -43,7 +43,7 @@ public class JFXMsgAlertUtil {
      */
     public static void showWarning(Stage ownerStage, String title, String content) {
         XxbMsgAlert alert = new XxbMsgAlert(ownerStage, "svg/warn.svg", title, content);
-        alert.addOkButton();
+        alert.addOkButton(true);
         alert.showAndWait();
     }
 
@@ -55,7 +55,7 @@ public class JFXMsgAlertUtil {
      */
     public static void showError(Stage ownerStage, String title, String content) {
         XxbMsgAlert alert = new XxbMsgAlert(ownerStage, "svg/error.svg", title, content);
-        alert.addOkButton();
+        alert.addOkButton(true);
         alert.showAndWait();
     }
 }

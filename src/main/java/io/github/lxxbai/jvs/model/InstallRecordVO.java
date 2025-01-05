@@ -2,6 +2,7 @@ package io.github.lxxbai.jvs.model;
 
 import io.github.lxxbai.jvs.common.enums.InstallStatusEnum;
 import io.github.lxxbai.jvs.component.DownloadProgressBar;
+import io.github.lxxbai.jvs.component.XxbDownloadBar;
 import lombok.Data;
 
 /**
@@ -102,6 +103,8 @@ public class InstallRecordVO {
 
 
     private DownloadProgressBar downloadProgressBar;
+
+    private XxbDownloadBar xxbDownloadBar;
 
     private Runnable installTask;
 

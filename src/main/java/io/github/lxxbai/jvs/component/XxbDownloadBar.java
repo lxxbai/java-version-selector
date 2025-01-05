@@ -2,11 +2,12 @@ package io.github.lxxbai.jvs.component;
 
 
 import com.jfoenix.controls.JFXProgressBar;
+import io.github.lxxbai.jvs.common.util.ThreadPoolUtil;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.geometry.Pos;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
@@ -16,7 +17,6 @@ import lombok.Getter;
  * @author lxxbai
  */
 public class XxbDownloadBar extends VBox {
-
 
     private static final String DEFAULT_STYLE_CLASS = "xxb-download-bar";
 
@@ -47,16 +47,12 @@ public class XxbDownloadBar extends VBox {
      */
     public XxbDownloadBar(int width, int height, String downloadUrl, String fileName) {
         this.getStyleClass().add(DEFAULT_STYLE_CLASS);
-        this.setAlignment(Pos.CENTER_LEFT);
         this.barWidth = new SimpleDoubleProperty(0);
         this.barHeight = new SimpleDoubleProperty(0);
         // 创建进度条
         this.progressBar = new JFXProgressBar();
         // 创建显示进度的标签
         this.progressLabel = new Label("0%");
-        // 确保标签在进度条上方居中显示
-        StackPane.setAlignment(progressLabel, Pos.CENTER_LEFT);
-        // 将标签放在进度条下方居中显示
         this.getChildren().addAll(progressLabel, progressBar);
         //创建一个下载任务
         this.task = new DownloadTask(downloadUrl, fileName);
@@ -66,6 +62,63 @@ public class XxbDownloadBar extends VBox {
         setBarHeight(height);
     }
 
+    /**
+     * 设置进度
+     *
+     * @param downloadedBytes 已下载
+     * @param totalBytes      总字节数
+     */
+    public void updateProgress(double downloadedBytes, long totalBytes) {
+        task.updateProgress(downloadedBytes, totalBytes);
+    }
+
+    /**
+     * 启动任务执行
+     * <p>
+     * 本方法通过线程池调度给定的任务，实现异步执行
+     */
+    public void start() {
+        if (task.isRunning()) {
+            return;
+        }
+        if (task.isCancelled()) {
+            unbind();
+            DownloadTask newTask = new DownloadTask(task.getDownloadUrl(), task.getFileName());
+            bind(newTask);
+            this.task = newTask;
+        }
+        ThreadPoolUtil.execute(task);
+    }
+
+    private void unbind() {
+        progressBar.progressProperty().unbind();
+        progressLabel.textProperty().unbind();
+    }
+
+
+    private void bind(DownloadTask newTask) {
+        progressBar.progressProperty().bind(newTask.progressProperty());
+        progressLabel.textProperty().bind(newTask.messageProperty());
+    }
+
+    /**
+     * 暂停或退出
+     */
+    public void cancel() {
+        task.pauseOrCancel();
+    }
+
+    public void setOnSucceeded(EventHandler<WorkerStateEvent> eventHandler) {
+        task.setOnSucceeded(eventHandler);
+    }
+
+    public void setOnFailed(EventHandler<WorkerStateEvent> eventHandler) {
+        task.setOnFailed(eventHandler);
+    }
+
+    public void setOnCancelled(EventHandler<WorkerStateEvent> eventHandler) {
+        task.setOnCancelled(eventHandler);
+    }
 
     public double getBarWidth() {
         return barWidth.get();
@@ -78,6 +131,7 @@ public class XxbDownloadBar extends VBox {
     public void setBarWidth(double barWidth) {
         this.barWidth.setValue(barWidth);
     }
+
     public void setBarHeight(double barHeight) {
         this.barHeight.setValue(barHeight);
     }
@@ -88,5 +142,9 @@ public class XxbDownloadBar extends VBox {
 
     public SimpleDoubleProperty barWidthProperty() {
         return barWidth;
+    }
+
+    public void setMessage(String message) {
+        task.setMessage(message);
     }
 }
