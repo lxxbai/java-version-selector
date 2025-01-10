@@ -29,7 +29,6 @@ public class ThreadPoolUtil {
 
     /**
      * 执行任务
-     *
      */
     public static boolean havingRunningTasks() {
         return TASK_POOL_EXECUTOR.getActiveCount() > 0;

@@ -3,7 +3,6 @@ package io.github.lxxbai.jvs.view;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.RuntimeUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
 import cn.hutool.core.util.ZipUtil;
 import io.github.lxxbai.jvs.common.enums.InstallStatusEnum;
 import io.github.lxxbai.jvs.common.util.*;
@@ -27,7 +26,6 @@ import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 
@@ -59,6 +57,12 @@ public class NewInstallViewModel {
      */
     public ObservableList<InstallRecordVO> getDownLoadList() {
         downLoadList.addListener((ListChangeListener<InstallRecordVO>) change -> {
+            while (change.next()) {
+                if (change.wasAdded()) {
+                    List<? extends InstallRecordVO> addedSubList = change.getAddedSubList();
+                    addedSubList.forEach(this::dealInstallProcess);
+                }
+            }
             refreshDownloadCount();
         });
         downLoadList.addAll(queryAll());
@@ -100,7 +104,7 @@ public class NewInstallViewModel {
         InstallStatusEnum installStatus = vo.getInstallStatus();
         switch (installStatus) {
             //下载
-//            case DOWNLOADING, DOWNLOAD_PAUSE -> dealDownloadProgressBar(vo);
+            case DOWNLOADING, DOWNLOAD_PAUSE -> dealDownloadProgressBar(vo);
             //安装
             case INSTALLING -> dealInstallingProcess(vo);
         }
@@ -111,27 +115,21 @@ public class NewInstallViewModel {
      *
      * @param vo 版本信息
      */
-    public XxbDownloadBar dealDownloadProgressBar(InstallRecordVO vo) {
-        //构建进度条
-        XxbDownloadBar xxbDownloadBar = buildDownloadProgressBar(vo);
+    public void dealDownloadProgressBar(InstallRecordVO vo) {
+        XxbDownloadBar xxbDownloadBar = vo.getXxbDownloadBar();
+        if (Objects.isNull(xxbDownloadBar)) {
+            xxbDownloadBar = buildDownloadProgressBar(vo);
+            vo.setXxbDownloadBar(xxbDownloadBar);
+        }
         if (InstallStatusEnum.DOWNLOADING.equals(vo.getInstallStatus())) {
+            if (!xxbDownloadBar.isRunning()) {
+                xxbDownloadBar.setMessage("初始化...");
+            }
             //判断是否已经开始
             xxbDownloadBar.start();
-            xxbDownloadBar.setMessage("初始化...");
         } else {
-            long downloadBytes = FileUtil.size(new File(vo.getJdkPackageUrl()));
-            try {
-                URL url = new URL(vo.getDownloadUrl());
-                long contentLength = URLUtil.getContentLength(url);
-                xxbDownloadBar.updateProgress(downloadBytes, contentLength);
-                xxbDownloadBar.setMessage("已暂停");
-            } catch (Exception e) {
-                xxbDownloadBar.updateProgress(0, 1);
-                xxbDownloadBar.setMessage("已暂停");
-            }
+            xxbDownloadBar.setMessage("已暂停");
         }
-        vo.setXxbDownloadBar(xxbDownloadBar);
-        return xxbDownloadBar;
     }
 
 
@@ -163,13 +161,6 @@ public class NewInstallViewModel {
         return installService.queryAll();
     }
 
-    /**
-     * 获取所有下载信息
-     */
-    public void refresh() {
-        downLoadList.clear();
-        downLoadList.addAll(queryAll());
-    }
 
     /**
      * 下载
@@ -312,7 +303,6 @@ public class NewInstallViewModel {
         };
     }
 
-
     /**
      * 构建下载进度条
      *
@@ -339,10 +329,10 @@ public class NewInstallViewModel {
         });
         //当做暂停
         xxbDownloadBar.setOnCancelled(event -> {
+            xxbDownloadBar.setMessage("已暂停");
             installRecordVO.setInstallStatus(InstallStatusEnum.DOWNLOAD_PAUSE);
             //修改状态
             changeStatus(installRecordVO);
-            xxbDownloadBar.setMessage("已暂停");
         });
         return xxbDownloadBar;
     }

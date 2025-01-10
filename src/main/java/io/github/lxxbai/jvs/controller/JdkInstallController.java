@@ -10,6 +10,7 @@ import io.github.lxxbai.jvs.common.util.ThreadPoolUtil;
 import io.github.lxxbai.jvs.component.SvgButton;
 import io.github.lxxbai.jvs.component.XxbDownloadBar;
 import io.github.lxxbai.jvs.component.cell.XxbTableCellFactory;
+import io.github.lxxbai.jvs.manager.DownloadTaskManager;
 import io.github.lxxbai.jvs.model.InstallRecordVO;
 import io.github.lxxbai.jvs.spring.FXMLController;
 import io.github.lxxbai.jvs.spring.GUIState;
@@ -38,6 +39,9 @@ public class JdkInstallController implements Initializable {
 
     @Resource
     private NewInstallView newInstallView;
+
+    @Resource
+    private DownloadTaskManager downloadTaskManager;
 
     @Resource
     private NewInstallViewModel newInstallViewModel;
@@ -71,7 +75,8 @@ public class JdkInstallController implements Initializable {
         //绑定数据
         versionFilter.textProperty().bindBidirectional(newInstallViewModel.getFilterJavaVersion());
         //变更事件
-        versionFilter.textProperty().addListener(str -> newInstallViewModel.filter());
+        versionFilter.textProperty().addListener((observable, oldValue, newValue) -> newInstallViewModel.filter());
+        //绑定下载数量
         newInstallView.getSvgBadgeMenuItem().getBadge().numProperty().bindBidirectional(newInstallViewModel.downloadCountProperty());
     }
 
@@ -83,10 +88,11 @@ public class JdkInstallController implements Initializable {
     private XxbTableCellFactory<InstallRecordVO, String> buildStatusCellFactory() {
         return XxbTableCellFactory.cellFactory(cell -> {
             InstallRecordVO installRecordVO = cell.getData();
+            System.out.println("id：" + installRecordVO.getId() + "加载一次");
             // 获取当前行数据
             InstallStatusEnum downloadStatus = installRecordVO.getInstallStatus();
             Node node = switch (downloadStatus) {
-                case DOWNLOADING, DOWNLOAD_PAUSE->newInstallViewModel.dealDownloadProgressBar(installRecordVO);
+                case DOWNLOADING, DOWNLOAD_PAUSE -> installRecordVO.getXxbDownloadBar().getDownloadBar();
                 case DOWNLOAD_FAILURE -> JFXButtonUtil.buildReadOnlyButton("下载失败", "red");
                 case DOWNLOADED -> JFXButtonUtil.buildReadOnlyButton("下载完成", "green");
                 case INSTALLING -> JFXButtonUtil.buildReadOnlyButton("安装中", "pink");
@@ -197,12 +203,12 @@ public class JdkInstallController implements Initializable {
     private JFXButton buildPauseButtonButton(int index, InstallRecordVO installRecordVO) {
         SvgButton pauseButton = new SvgButton("svg/pause-solid.svg", "暂停");
         pauseButton.setOnAction(event -> {
+            installRecordVO.setInstallStatus(InstallStatusEnum.DOWNLOAD_PAUSE);
+            newInstallViewModel.changeStatus(index, installRecordVO);
             XxbDownloadBar xxDownloadBar = installRecordVO.getXxbDownloadBar();
             if (Objects.nonNull(xxDownloadBar)) {
                 xxDownloadBar.cancel();
             }
-            installRecordVO.setInstallStatus(InstallStatusEnum.DOWNLOAD_PAUSE);
-            newInstallViewModel.changeStatus(index, installRecordVO);
         });
         return pauseButton;
     }

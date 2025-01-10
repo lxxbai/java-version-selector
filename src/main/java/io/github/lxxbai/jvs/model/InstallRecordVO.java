@@ -101,13 +101,11 @@ public class InstallRecordVO {
      */
     private String downloadEndAt;
 
-
     private DownloadProgressBar downloadProgressBar;
 
     private XxbDownloadBar xxbDownloadBar;
 
     private Runnable installTask;
-
 
     private String ukInstallCode;
 

@@ -1,5 +1,6 @@
 package io.github.lxxbai.jvs.component;
 
+import cn.hutool.http.HttpUtil;
 import javafx.concurrent.Task;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +30,17 @@ public class DownloadTask extends Task<Void> {
     private final String fileName;
 
     /**
-     * 缓冲区大小
+     * 缓冲区大小,1kb
      */
     private static final int BUFFER_SIZE = 1024;
 
     protected volatile boolean cancelled = false;
+
+    private final long ONE_SECOND = 1000L;
+
+    private long downloadedBytes = 0L;
+
+    private long totalBytes = 0L;
 
     public DownloadTask(String downloadUrl, String fileName) {
         this.downloadUrl = downloadUrl;
@@ -41,7 +48,7 @@ public class DownloadTask extends Task<Void> {
     }
 
 
-    public String getLocalPath() {
+    public String getKey() {
         return fileName;
     }
 
@@ -49,13 +56,15 @@ public class DownloadTask extends Task<Void> {
     @Override
     protected Void call() throws Exception {
         URL url = new URL(downloadUrl);
+//        HttpUtil.downloadFile()
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+        httpConn.setConnectTimeout(3000);
         // 校验文件是否存在并获取长度
         Path outputPath = Paths.get(fileName);
-        long downloadedBytes = Files.exists(outputPath) ? Files.size(outputPath) : 0;
+        downloadedBytes = Files.exists(outputPath) ? Files.size(outputPath) : 0;
         // 计算文件大小
-        long contentLength = httpConn.getContentLength();
-        if (downloadedBytes >= contentLength) {
+        totalBytes = httpConn.getContentLength();
+        if (downloadedBytes >= totalBytes) {
             log.warn("已经下载完成");
             return null;
         }
@@ -70,7 +79,8 @@ public class DownloadTask extends Task<Void> {
             throw new IOException("Server returned HTTP response code: " + responseCode);
         }
         //更新已下载的大小
-        updateProgress(downloadedBytes, contentLength);
+        updateProgress(downloadedBytes, totalBytes);
+        long lastUpdateTime = System.currentTimeMillis();
         //开始下载
         try (InputStream inputStream = httpConn.getInputStream();
              ReadableByteChannel readableByteChannel = Channels.newChannel(inputStream);
@@ -78,19 +88,29 @@ public class DownloadTask extends Task<Void> {
                      StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND)) {
             // 读取数据并写入文件
             ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
-            long totalBytesRead = downloadedBytes;
             long bytesRead;
+            //前一秒下载的字节数
+            long lastSecondBytesRead = downloadedBytes;
+            double speed = 0;
             //运行中
             while (!cancelled && (bytesRead = readableByteChannel.read(buffer)) != -1) {
                 //开始读取数据
                 buffer.flip();
                 fileChannel.write(buffer);
                 buffer.clear();
-                totalBytesRead += bytesRead;
+                downloadedBytes += bytesRead;
+                // 计算下载速度
+                long currentTime = System.currentTimeMillis();
+                long timeElapsed = currentTime - lastUpdateTime;
+                if (timeElapsed > ONE_SECOND) {
+                    long bytesDownloadedInLastSecond = downloadedBytes - lastSecondBytesRead;
+                    // KB/s
+                    speed = bytesDownloadedInLastSecond / 1024.0;
+                    lastSecondBytesRead = downloadedBytes;
+                    lastUpdateTime = currentTime;
+                }
                 // 更新进度
-                double progress = (double) totalBytesRead / contentLength;
-                updateProgress(totalBytesRead, contentLength);
-                updateMessage(String.format("%.2f%%", progress * 100));
+                updateProgressInfo(downloadedBytes, totalBytes, speed);
             }
         }
         if (cancelled) {
@@ -101,7 +121,7 @@ public class DownloadTask extends Task<Void> {
     }
 
     /**
-     * 启动任务执行
+     * 暂停任务
      * <p>
      * 本方法通过线程池调度给定的任务，实现异步执行
      */
@@ -117,12 +137,20 @@ public class DownloadTask extends Task<Void> {
     /**
      * 更新进度
      */
+    public void updateProgressInfo(double downloadedBytes, long totalBytes, double speed) {
+        double progress = downloadedBytes / totalBytes;
+        super.updateProgress(downloadedBytes, totalBytes);
+        super.updateMessage(String.format("%.2f%% %.2f KB/s", progress * 100, speed));
+    }
+
+    /**
+     * 更新进度
+     */
     public void updateProgress(double downloadedBytes, long totalBytes) {
         double progress = downloadedBytes / totalBytes;
         super.updateProgress(downloadedBytes, totalBytes);
         super.updateMessage(String.format("%.2f%%", progress * 100));
     }
-
 
     /**
      * 更新消息
@@ -130,5 +158,4 @@ public class DownloadTask extends Task<Void> {
     public void setMessage(String message) {
         super.updateMessage(message);
     }
-
 }

@@ -15,7 +15,7 @@ import javafx.util.Callback;
  * @param <S> The type of the elements contained within the TableView.
  * @since JavaFX 2.2
  */
-public class ProgressBarTableCell<S> extends TableCell<S, Double> {
+public class XxbProgressBarTableCell<S> extends TableCell<S, Double> {
 
     /* *************************************************************************
      *                                                                         *
@@ -24,7 +24,7 @@ public class ProgressBarTableCell<S> extends TableCell<S, Double> {
      **************************************************************************/
 
     public static <S> Callback<TableColumn<S,Double>, TableCell<S,Double>> forTableColumn() {
-        return param -> new ProgressBarTableCell<S>();
+        return param -> new XxbProgressBarTableCell<S>();
     }
 
 
@@ -48,9 +48,9 @@ public class ProgressBarTableCell<S> extends TableCell<S, Double> {
      **************************************************************************/
 
     /**
-     * Creates a default {@link ProgressBarTableCell} instance
+     * Creates a default {@link XxbProgressBarTableCell} instance
      */
-    public ProgressBarTableCell() {
+    public XxbProgressBarTableCell() {
         this.getStyleClass().add("progress-bar-table-cell");
         this.progressBar = new JFXProgressBar();
         this.progressBar.setMaxWidth(Double.MAX_VALUE);

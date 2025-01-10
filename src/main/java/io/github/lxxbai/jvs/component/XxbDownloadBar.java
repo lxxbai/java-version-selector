@@ -9,21 +9,19 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.VBox;
-import lombok.Getter;
 
 /**
  * 下载进度条
  *
  * @author lxxbai
  */
-public class XxbDownloadBar extends VBox {
+public class XxbDownloadBar {
 
     private static final String DEFAULT_STYLE_CLASS = "xxb-download-bar";
 
     /**
      * 下载任务
      */
-    @Getter
     private DownloadTask task;
 
     // 创建进度条
@@ -46,14 +44,12 @@ public class XxbDownloadBar extends VBox {
      * @param fileName    文件名称
      */
     public XxbDownloadBar(int width, int height, String downloadUrl, String fileName) {
-        this.getStyleClass().add(DEFAULT_STYLE_CLASS);
         this.barWidth = new SimpleDoubleProperty(0);
         this.barHeight = new SimpleDoubleProperty(0);
         // 创建进度条
         this.progressBar = new JFXProgressBar();
         // 创建显示进度的标签
         this.progressLabel = new Label("0%");
-        this.getChildren().addAll(progressLabel, progressBar);
         //创建一个下载任务
         this.task = new DownloadTask(downloadUrl, fileName);
         progressBar.progressProperty().bind(task.progressProperty());
@@ -72,6 +68,11 @@ public class XxbDownloadBar extends VBox {
         task.updateProgress(downloadedBytes, totalBytes);
     }
 
+
+    public boolean isRunning() {
+        return task.isRunning();
+    }
+
     /**
      * 启动任务执行
      * <p>
@@ -82,13 +83,27 @@ public class XxbDownloadBar extends VBox {
             return;
         }
         if (task.isCancelled()) {
+            //解绑任务
             unbind();
-            DownloadTask newTask = new DownloadTask(task.getDownloadUrl(), task.getFileName());
-            bind(newTask);
-            this.task = newTask;
+            String oldMessage = task.getMessage();
+            EventHandler<WorkerStateEvent> onSucceeded = task.getOnSucceeded();
+            EventHandler<WorkerStateEvent> onFailed = task.getOnFailed();
+            EventHandler<WorkerStateEvent> onCancelled = task.getOnCancelled();
+            long totalBytes = task.getTotalBytes();
+//            long downloadedBytes = task.getDownloadedBytes();
+            //重新创建下载任务
+            this.task = new DownloadTask(task.getDownloadUrl(), task.getFileName());
+            //绑定任务
+            bind();
+            //重新绑定事件
+            task.setMessage(oldMessage);
+            task.setOnSucceeded(onSucceeded);
+            task.setOnFailed(onFailed);
+            task.setOnCancelled(onCancelled);
         }
         ThreadPoolUtil.execute(task);
     }
+
 
     private void unbind() {
         progressBar.progressProperty().unbind();
@@ -96,9 +111,9 @@ public class XxbDownloadBar extends VBox {
     }
 
 
-    private void bind(DownloadTask newTask) {
-        progressBar.progressProperty().bind(newTask.progressProperty());
-        progressLabel.textProperty().bind(newTask.messageProperty());
+    private void bind() {
+        progressBar.progressProperty().bind(task.progressProperty());
+        progressLabel.textProperty().bind(task.messageProperty());
     }
 
     /**
@@ -146,5 +161,16 @@ public class XxbDownloadBar extends VBox {
 
     public void setMessage(String message) {
         task.setMessage(message);
+    }
+
+    /**
+     * 获取下载进度条
+     *
+     * @return 下载进度条
+     */
+    public VBox getDownloadBar() {
+        VBox vBox = new VBox(progressLabel, progressBar);
+        vBox.getStyleClass().add(DEFAULT_STYLE_CLASS);
+        return vBox;
     }
 }
