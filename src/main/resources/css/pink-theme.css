@@ -106,10 +106,23 @@
 /*}*/
 
 .xxb-download-bar {
-    /*-fx-background-color: -fx-base-background;*/
-    /*-fx-border-color: red;*/
-    /*-fx-border-width: 1px;*/
+    -fx-padding: 0 0 2 0;
 }
+
+.xxb-download-bar .label {
+    -fx-text-fill: rgba(7, 7, 7, 0.5);
+    -fx-font-size: 10;
+}
+
+.xxb-download-bar .jfx-progress-bar > .bar {
+    -fx-background-color: -fx-base-background;
+    -fx-background-radius: 1;
+}
+
+.xxb-download-bar .jfx-progress-bar > .track {
+    -fx-background-radius: 1;
+}
+
 
 .main-center .table-view .last-column {
     -fx-alignment: center-left;
@@ -322,6 +335,25 @@
     -fx-background-color: -fx-base-background2;
     -fx-background-radius: 12;
 }
+
+/* 修改 TableView 的滚动条样式 */
+.table-view .scroll-bar:horizontal {
+    -fx-background-color: transparent; /* 设置滚动条背景为透明 */
+}
+/*滚动条轨道（Track）*/
+.table-view .scroll-bar:horizontal .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+    -fx-border-radius: 2em;
+}
+.table-view .scroll-bar:horizontal .thumb {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0, 0, 0;
+    -fx-background-radius: 0em;
+}
+
+
 
 /* 修改 TableView 的滚动条样式 */
 .table-view .scroll-bar:vertical {

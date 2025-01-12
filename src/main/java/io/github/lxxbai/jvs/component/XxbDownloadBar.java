@@ -25,7 +25,7 @@ public class XxbDownloadBar {
     private DownloadTask task;
 
     // 创建进度条
-    private final ProgressBar progressBar;
+    private final JFXProgressBar progressBar;
 
     //描述加进度
     private final Label progressLabel;
@@ -89,10 +89,8 @@ public class XxbDownloadBar {
             EventHandler<WorkerStateEvent> onSucceeded = task.getOnSucceeded();
             EventHandler<WorkerStateEvent> onFailed = task.getOnFailed();
             EventHandler<WorkerStateEvent> onCancelled = task.getOnCancelled();
-            long totalBytes = task.getTotalBytes();
-//            long downloadedBytes = task.getDownloadedBytes();
             //重新创建下载任务
-            this.task = new DownloadTask(task.getDownloadUrl(), task.getFileName());
+            this.task = new DownloadTask(task.getDownloadUrl(), task.getFileName(), task.getTotalBytes(), task.getDownloadedBytes());
             //绑定任务
             bind();
             //重新绑定事件

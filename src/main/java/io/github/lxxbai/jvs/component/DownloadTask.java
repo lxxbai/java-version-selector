@@ -1,6 +1,7 @@
 package io.github.lxxbai.jvs.component;
 
-import cn.hutool.http.HttpUtil;
+import cn.hutool.core.util.URLUtil;
+import io.github.lxxbai.jvs.common.exception.ClientException;
 import javafx.concurrent.Task;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Objects;
 
 /**
  * @author lxxbai
@@ -45,31 +47,54 @@ public class DownloadTask extends Task<Void> {
     public DownloadTask(String downloadUrl, String fileName) {
         this.downloadUrl = downloadUrl;
         this.fileName = fileName;
+        init();
+    }
+
+    public DownloadTask(String downloadUrl, String fileName, long totalBytes, long downloadedBytes) {
+        this.downloadUrl = downloadUrl;
+        this.fileName = fileName;
+        this.totalBytes = totalBytes;
+        this.downloadedBytes = downloadedBytes;
     }
 
 
-    public String getKey() {
-        return fileName;
+    /**
+     * 初始化
+     * 加载文件信息
+     * <p>
+     */
+    private void init() {
+        try {
+            totalBytes = URLUtil.getContentLength(new URL(downloadUrl));
+            // 校验文件是否存在并获取长度
+            Path outputPath = Paths.get(fileName);
+            downloadedBytes = Files.exists(outputPath) ? Files.size(outputPath) : 0;
+            if (Objects.equals(totalBytes, -1L)) {
+                updateProgress(0, totalBytes);
+            } else {
+                updateProgress(downloadedBytes, totalBytes);
+            }
+        } catch (Exception e) {
+            log.error("下载异常：", e);
+            throw new ClientException("网络异常!");
+        }
     }
 
 
     @Override
     protected Void call() throws Exception {
-        URL url = new URL(downloadUrl);
-//        HttpUtil.downloadFile()
-        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-        httpConn.setConnectTimeout(3000);
-        // 校验文件是否存在并获取长度
-        Path outputPath = Paths.get(fileName);
-        downloadedBytes = Files.exists(outputPath) ? Files.size(outputPath) : 0;
-        // 计算文件大小
-        totalBytes = httpConn.getContentLength();
+        if (Objects.equals(totalBytes, -1L)) {
+            throw new ClientException("网络异常!");
+        }
         if (downloadedBytes >= totalBytes) {
             log.warn("已经下载完成");
             return null;
         }
         // 重新连接
-        httpConn = (HttpURLConnection) url.openConnection();
+        HttpURLConnection httpConn = (HttpURLConnection) new URL(downloadUrl).openConnection();
+        httpConn.setConnectTimeout(3000);
+        // 校验文件是否存在并获取长度
+        Path outputPath = Paths.get(fileName);
         //设置开始的下载位置
         if (downloadedBytes > 0) {
             httpConn.setRequestProperty("Range", "bytes=" + downloadedBytes + "-");

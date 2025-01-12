@@ -3,7 +3,6 @@ package io.github.lxxbai.jvs.controller;
 import com.jfoenix.controls.JFXDecorator;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSnackbar;
-import com.jfoenix.controls.JFXSnackbarLayout;
 import io.github.lxxbai.jvs.common.util.AppContextUtil;
 import io.github.lxxbai.jvs.component.menu.MenuItemCellFactory;
 import io.github.lxxbai.jvs.spring.FXMLController;
@@ -13,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
-import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
@@ -54,7 +52,6 @@ public class JvsMainController implements Initializable {
         decoratorView.getStyleClass().add("main-center");
         //菜单切换
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            snackbar.fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout("版本:17.0.4下载完成"), Duration.seconds(3)));
             if (newValue == null) {
                 return;
             }

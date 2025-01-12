@@ -10,7 +10,6 @@ import io.github.lxxbai.jvs.common.util.ThreadPoolUtil;
 import io.github.lxxbai.jvs.component.SvgButton;
 import io.github.lxxbai.jvs.component.XxbDownloadBar;
 import io.github.lxxbai.jvs.component.cell.XxbTableCellFactory;
-import io.github.lxxbai.jvs.manager.DownloadTaskManager;
 import io.github.lxxbai.jvs.model.InstallRecordVO;
 import io.github.lxxbai.jvs.spring.FXMLController;
 import io.github.lxxbai.jvs.spring.GUIState;
@@ -39,9 +38,6 @@ public class JdkInstallController implements Initializable {
 
     @Resource
     private NewInstallView newInstallView;
-
-    @Resource
-    private DownloadTaskManager downloadTaskManager;
 
     @Resource
     private NewInstallViewModel newInstallViewModel;
@@ -88,7 +84,6 @@ public class JdkInstallController implements Initializable {
     private XxbTableCellFactory<InstallRecordVO, String> buildStatusCellFactory() {
         return XxbTableCellFactory.cellFactory(cell -> {
             InstallRecordVO installRecordVO = cell.getData();
-            System.out.println("id：" + installRecordVO.getId() + "加载一次");
             // 获取当前行数据
             InstallStatusEnum downloadStatus = installRecordVO.getInstallStatus();
             Node node = switch (downloadStatus) {

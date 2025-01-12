@@ -222,12 +222,16 @@ public class NewInstallViewModel {
      * @param installRecordVO 版本信息
      */
     public void deleteRecord(int index, InstallRecordVO installRecordVO) {
+        this.downLoadList.remove(index);
+        //暂停
+        if (Objects.nonNull(installRecordVO.getXxbDownloadBar())) {
+            installRecordVO.getXxbDownloadBar().cancel();
+        }
         installService.deleteRecord(installRecordVO.getId());
         //移除
         if (FileUtil.exist(installRecordVO.getJdkPackageUrl())) {
             FileUtil.del(installRecordVO.getJdkPackageUrl());
         }
-        this.downLoadList.remove(index);
     }
 
 
@@ -258,7 +262,7 @@ public class NewInstallViewModel {
             installRecordVO.setInstallStatus(InstallStatusEnum.INSTALLED);
             //发送事件,通知已安装
             PublishUtil.publishEvent(new InstallEndEvent(javaHomePath, installRecordVO));
-            AppContextUtil.sentSnackMessage("版本：%s，安装完成。".formatted(installRecordVO.getUkVersion()));
+            AppContextUtil.sentSnackMessage("版本：%s，安装完成。".formatted(installRecordVO.getJavaVersion()));
         } catch (Exception e) {
             installRecordVO.setInstallStatus(InstallStatusEnum.INSTALLED_FAILURE);
         }
@@ -276,7 +280,7 @@ public class NewInstallViewModel {
         try {
             int i = exec.waitFor();
             installRecordVO.setInstallStatus(i == 0 ? InstallStatusEnum.INSTALLED : InstallStatusEnum.INSTALLED_FAILURE);
-            AppContextUtil.sentSnackMessage("版本：%s，安装完成。".formatted(installRecordVO.getUkVersion()));
+            AppContextUtil.sentSnackMessage("版本：%s，安装完成。".formatted(installRecordVO.getJavaVersion()));
         } catch (Exception e) {
             installRecordVO.setInstallStatus(InstallStatusEnum.INSTALLED_FAILURE);
         }
@@ -323,7 +327,7 @@ public class NewInstallViewModel {
         //下载成功
         xxbDownloadBar.setOnSucceeded(event -> {
             installRecordVO.setInstallStatus(InstallStatusEnum.DOWNLOADED);
-            AppContextUtil.sentSnackMessage("版本：%s，下载完成。".formatted(installRecordVO.getUkVersion()));
+            AppContextUtil.sentSnackMessage("版本：%s，下载完成。".formatted(installRecordVO.getJavaVersion()));
             //安装
             install(installRecordVO);
         });

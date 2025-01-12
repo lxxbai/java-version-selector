@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import io.github.lxxbai.jvs.common.enums.ApplyStatusEnum;
 import io.github.lxxbai.jvs.common.util.*;
+import io.github.lxxbai.jvs.component.RateTableColumn;
 import io.github.lxxbai.jvs.component.SvgButton;
 import io.github.lxxbai.jvs.component.cell.XxbTableCellFactory;
 import io.github.lxxbai.jvs.model.UserJdkVersionVO;
@@ -11,6 +12,8 @@ import io.github.lxxbai.jvs.spring.FXMLController;
 import io.github.lxxbai.jvs.spring.GUIState;
 import io.github.lxxbai.jvs.view.UserJdkViewModel;
 import jakarta.annotation.Resource;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -29,6 +32,7 @@ import java.util.ResourceBundle;
  */
 @FXMLController
 public class UserJdkController implements Initializable {
+
     @Resource
     private UserJdkViewModel userJdkViewModel;
     @FXML
@@ -40,6 +44,8 @@ public class UserJdkController implements Initializable {
     @FXML
     private TableColumn<UserJdkVersionVO, String> javaVersion;
     @FXML
+    private TableColumn<UserJdkVersionVO,String> javaHome;
+    @FXML
     private TableColumn<UserJdkVersionVO, String> status;
     @FXML
     private JFXTextField versionFilter;
@@ -48,6 +54,7 @@ public class UserJdkController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         vmVendor.setCellValueFactory(new PropertyValueFactory<>("vmVendor"));
         mainVersion.setCellValueFactory(new PropertyValueFactory<>("mainVersion"));
+        javaHome.setCellValueFactory(new PropertyValueFactory<>("localHomePath"));
         status.setCellFactory(buildStatusCellFactory());
         tableView.setItems(userJdkViewModel.getJdkList());
         javaVersion.setCellFactory(buildActionCellFactory());
@@ -113,7 +120,11 @@ public class UserJdkController implements Initializable {
         installButton.setOnAction(event -> {
             userJdkViewModel.applyJdk(vo);
             //添加环境变量
-            ThreadPoolUtil.execute(() -> UserEnvUtil.addWindowsJdkHome(vo.getLocalHomePath()));
+            ThreadPoolUtil.execute(() -> {
+                UserEnvUtil.addWindowsJdkHome(vo.getLocalHomePath());
+                Platform.runLater(() -> JFXMsgAlertUtil
+                        .showInfo(GUIState.getStage(), "提示", "已切换到 " + vo.getMainVersion() + " 版本"));
+            });
 
         });
         return installButton;
@@ -139,4 +150,6 @@ public class UserJdkController implements Initializable {
     }
 
 
+    public void scanLocalJdk(ActionEvent actionEvent) {
+    }
 }
