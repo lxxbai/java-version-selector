@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.lxxbai.jvs.component.*?>
+<XxbTableView fx:id="tableView" xmlns:fx="http://javafx.com/fxml/1"
+              fx:controller="io.github.lxxbai.jvs.control.JdkScannerControl"
+              prefHeight="250">
+    <columns>
+        <RateTableColumn fx:id="selectedFlag" reorderable="false" sortable="false" editable="true" text="选择"
+                         rateWidth="0.10"/>
+        <RateTableColumn fx:id="vmVendor" reorderable="false" sortable="false" text="供应商" rateWidth="0.24"/>
+        <RateTableColumn fx:id="mainVersion" reorderable="false" sortable="false" text="主版本"
+                         rateWidth="0.18"/>
+        <RateTableColumn fx:id="javaVersion" reorderable="false" sortable="false" text="版本" rateWidth="0.18"/>
+        <RateTableColumn fx:id="javaHome" reorderable="false" sortable="false" text="Java Home" rateWidth="0.3"
+                         openTooltip="true"/>
+    </columns>
+</XxbTableView>

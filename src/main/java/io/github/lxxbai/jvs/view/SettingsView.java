@@ -8,6 +8,7 @@ import io.github.lxxbai.jvs.common.util.ResourceUtil;
 import io.github.lxxbai.jvs.common.util.SVGGlyphUtil;
 import io.github.lxxbai.jvs.common.util.StageUtil;
 import io.github.lxxbai.jvs.model.DownloadConfig;
+import io.github.lxxbai.jvs.view.model.SettingsViewModel;
 import jakarta.annotation.Resource;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

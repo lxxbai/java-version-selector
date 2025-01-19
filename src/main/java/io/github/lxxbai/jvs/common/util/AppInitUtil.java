@@ -24,7 +24,7 @@ public class AppInitUtil {
      */
     public static void initUserData() {
         //初始化全部Java版本
-        SpringUtil.getBean(JdkVersionManager.class).refresh();
+        SpringUtil.getBean(JdkVersionManager.class).refresh(false);
         // 初始化用户已安装的Java版本
         SpringUtil.getBean(UserJdkVersionManager.class).initInstalledUserJdk();
     }

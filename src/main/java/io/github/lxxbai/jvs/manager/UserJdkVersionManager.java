@@ -8,7 +8,7 @@ import io.github.lxxbai.jvs.common.Constants;
 import io.github.lxxbai.jvs.common.enums.ApplyStatusEnum;
 import io.github.lxxbai.jvs.common.enums.SourceEnum;
 import io.github.lxxbai.jvs.common.enums.VmVendorEnum;
-import io.github.lxxbai.jvs.common.util.JdkPropertiesUtil;
+import io.github.lxxbai.jvs.common.util.JdkUtil;
 import io.github.lxxbai.jvs.datasource.entity.UserJdkVersionDO;
 import io.github.lxxbai.jvs.datasource.mapper.UserJdkVersionMapper;
 import org.springframework.stereotype.Component;
@@ -44,6 +44,10 @@ public class UserJdkVersionManager extends ServiceImpl<UserJdkVersionMapper, Use
         buildUserJdk(javaHome);
     }
 
+    public boolean exists(String localHomePath) {
+        return lambdaQuery().eq(UserJdkVersionDO::getLocalHomePath, localHomePath).exists();
+    }
+
     /**
      * 构建用户版本
      *
@@ -59,7 +63,7 @@ public class UserJdkVersionManager extends ServiceImpl<UserJdkVersionMapper, Use
             current = true;
         }
         // 获取JVM属性
-        Map<String, String> jvmProperties = JdkPropertiesUtil.getJvmProperties(javaHome);
+        Map<String, String> jvmProperties = JdkUtil.getJvmProperties(javaHome);
         //获取版本信息
         String javaVersion = jvmProperties.get("java.version");
         String vendor = jvmProperties.get("java.vm.vendor");

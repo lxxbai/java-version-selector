@@ -3,7 +3,7 @@
 <?import com.jfoenix.controls.JFXListView?>
 <?import javafx.scene.layout.BorderPane?>
 <BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="io.github.lxxbai.jvs.controller.JvsMainController" fx:id="mainBorderPane">
+            fx:controller="io.github.lxxbai.jvs.control.JvsMainControl" fx:id="mainBorderPane">
     <left>
         <JFXListView fx:id="listView" minWidth="55" maxWidth="55" styleClass="main-left">
         </JFXListView>

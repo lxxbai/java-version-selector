@@ -1,14 +1,18 @@
 package io.github.lxxbai.jvs.service;
 
+import cn.hutool.core.date.DateUtil;
 import io.github.lxxbai.jvs.common.enums.ApplyStatusEnum;
 import io.github.lxxbai.jvs.common.enums.SourceEnum;
 import io.github.lxxbai.jvs.datasource.entity.UserJdkVersionDO;
 import io.github.lxxbai.jvs.manager.UserJdkVersionManager;
 import io.github.lxxbai.jvs.model.InstallRecordVO;
+import io.github.lxxbai.jvs.model.JdkInfoVO;
 import io.github.lxxbai.jvs.model.UserJdkVersionVO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -35,6 +39,39 @@ public class UserJdkVersionService {
                 .exists();
     }
 
+    /**
+     * 保存用户版本信息
+     */
+    public void saveUserJdk(List<JdkInfoVO> jdkInfoList) {
+        List<UserJdkVersionDO> jdkList = new ArrayList<>();
+        for (JdkInfoVO jdkInfoVO : jdkInfoList) {
+            boolean exists = userJdkVersionManager.exists(jdkInfoVO.getLocalHomePath());
+            //校验数据是否存在
+            if (exists) {
+                continue;
+            }
+            jdkList.add(getJdkVersionDO(jdkInfoVO));
+        }
+        userJdkVersionManager.saveBatch(jdkList);
+    }
+
+    /**
+     * 获取用户版本信息
+     *
+     * @param jdkInfoVO jdkInfoVO
+     * @return 入库对象
+     */
+    private UserJdkVersionDO getJdkVersionDO(JdkInfoVO jdkInfoVO) {
+        UserJdkVersionDO userJdkVersionDO = new UserJdkVersionDO();
+        userJdkVersionDO.setLocalHomePath(jdkInfoVO.getLocalHomePath());
+        userJdkVersionDO.setStatus(ApplyStatusEnum.NOT_APPLY.getStatus());
+        userJdkVersionDO.setCurrent(false);
+        userJdkVersionDO.setSource(SourceEnum.LOCAL.getCode());
+        userJdkVersionDO.setVmVendor(jdkInfoVO.getVmVendor());
+        userJdkVersionDO.setMainVersion(jdkInfoVO.getMainVersion());
+        userJdkVersionDO.setJavaVersion(jdkInfoVO.getJavaVersion());
+        return userJdkVersionDO;
+    }
 
     /**
      * 保存用户版本信息
@@ -76,7 +113,8 @@ public class UserJdkVersionService {
      * @return List
      */
     public List<UserJdkVersionVO> queryAll() {
-        List<UserJdkVersionDO> jdkList = userJdkVersionManager.list();
+        List<UserJdkVersionDO> jdkList = userJdkVersionManager.lambdaQuery()
+                .orderByDesc(UserJdkVersionDO::getId).list();
         return jdkList.stream().map(v -> {
             UserJdkVersionVO vo = new UserJdkVersionVO();
             vo.setId(v.getId());
@@ -86,8 +124,10 @@ public class UserJdkVersionService {
             vo.setUkVersion(v.getUkVersion());
             vo.setLocalHomePath(v.getLocalHomePath());
             vo.setStatus(ApplyStatusEnum.valueOf(v.getStatus()));
+            //创建时间是2日内的
+            vo.setNewJdk(DateUtil.betweenDay(v.getCreatedAt(), DateUtil.date(), true) <= 2);
             return vo;
-        }).toList();
+        }).sorted(Comparator.comparing((x) -> x.getStatus().equals(ApplyStatusEnum.CURRENT) ? -1 : 0)).toList();
     }
 
 
@@ -100,5 +140,16 @@ public class UserJdkVersionService {
         userJdkVersionManager.lambdaUpdate()
                 .eq(UserJdkVersionDO::getId, jdkVersionVO.getId())
                 .set(UserJdkVersionDO::getStatus, jdkVersionVO.getStatus());
+    }
+
+    /**
+     * 删除记录
+     *
+     * @param userJdkVersion 版本信息
+     */
+    public void deleteRecord(UserJdkVersionVO userJdkVersion) {
+        userJdkVersionManager.lambdaUpdate()
+                .eq(UserJdkVersionDO::getId, userJdkVersion.getId())
+                .remove();
     }
 }

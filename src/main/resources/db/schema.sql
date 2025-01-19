@@ -10,7 +10,9 @@ CREATE TABLE IF NOT EXISTS "T_JDK_VERSION" (
   "FILE_SIZE" TEXT(16) NOT NULL, -- 文件大小
   "FILE_TYPE" TEXT(16) NOT NULL, -- 文件类型
   "CAN_DOWNLOAD" integer NOT NULL, -- 是否可以下载
-  "DOWNLOAD_URL" TEXT NOT NULL -- 下载地址
+  "DOWNLOAD_URL" TEXT NOT NULL, -- 下载地址
+  "CREATED_AT" TEXT(32), -- 创建时间
+  "UPDATED_AT" TEXT(32) -- 更新时间
 );
 
 -- 用户版本列表
@@ -23,7 +25,8 @@ CREATE TABLE IF NOT EXISTS "T_USER_JDK_VERSION" (
   "LOCAL_HOME_PATH" TEXT, -- 本地存放路径
   "STATUS" TEXT(16) NOT NULL, -- 状态
   "SOURCE" TEXT(8) NOT NULL, -- 来源
-  "CREATED_AT" TEXT(32) -- 创建时间
+  "CREATED_AT" TEXT(32), -- 创建时间
+  "UPDATED_AT" TEXT(32) -- 更新时间
 );
 
 -- 用户版本下载记录表
@@ -44,14 +47,16 @@ CREATE TABLE IF NOT EXISTS "T_INSTALL_RECORD" (
     "INSTALLED_JAVA_HOME" TEXT, -- jdk安装成功后的home路径
     "DOWNLOAD_PROGRESS" REAL NOT NULL, -- 下载的进度
     "DOWNLOAD_END_AT" TEXT(32), -- 下载的进度
-    "CREATED_AT" TEXT(32) -- 创建时间
+    "CREATED_AT" TEXT(32), -- 创建时间
+    "UPDATED_AT" TEXT(32) -- 更新时间
     );
 
 -- 用户配置
 CREATE TABLE IF NOT EXISTS "T_USER_CONFIG_INFO" (
   "ID" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "DIC_KEY" TEXT(16) NOT NULL, -- 配置key
-  "DIC_VALUE" TEXT -- 配置值
+  "DIC_VALUE" TEXT, -- 配置值
   "CREATED_AT" TEXT(32), -- 创建时间
+  "UPDATED_AT" TEXT(32), -- 更新时间
   CONSTRAINT "UK_KEY" UNIQUE ("DIC_KEY")
 );

@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <JFXDialogLayout xmlns:fx="http://javafx.com/fxml/1"
-                 fx:controller="io.github.lxxbai.jvs.controller.DownloadSettingsController" prefWidth="300">
+                 fx:controller="io.github.lxxbai.jvs.control.DownloadSettingsControl" prefWidth="300">
     <heading>
         <Label fx:id="headLabel">设置下载路径</Label>
     </heading>

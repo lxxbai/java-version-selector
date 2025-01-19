@@ -11,7 +11,7 @@
     /*tableview的选中背景颜色*/
     -fx-table-view-focused: derive(rgba(250, 224, 250, 0.16), -20%);
     /*字体颜色*/
-    -fx-font-color: black;
+    -fx-font-color: rgba(0, 0, 0, 0.65);
     /* 鼠标悬停时的背景颜色 */
     -fx-button-hover: rgba(243, 191, 243, 0.16);
 }
@@ -48,62 +48,64 @@
 
 /*********************************left-menu******************************************/
 /**********************************center*****************************************/
-
-
-.main-center .table-view,
 .main-center {
     -fx-background-color: white;
 }
 
-.main-center .table-view {
+.table-view {
+    -fx-background-color: white;
     -fx-border-width: 0;
 }
 
-.main-center .table-view .table-cell {
+.table-view .table-cell {
     -fx-alignment: center-left;
     -fx-text-fill: -fx-font-color;
 }
 
-.main-center .table-view .table-row-cell {
+.table-view .table-row-cell {
     -fx-cell-size: 35;
 }
 
-.main-center .table-view .table-cell,
-.main-center .table-row-cell:empty,
-.main-center .table-view .table-row-cell:empty:hover {
+.table-view .table-cell,
+.table-row-cell:empty,
+.table-view .table-row-cell:empty:hover {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-border-width: 0 0 0 0;
 }
 
-.main-center .table-view .table-row-cell:focused {
+.table-view .table-row-cell:focused {
     -fx-background-color: -fx-table-view-focused;
 }
 
-.main-center .table-view .column-header-background {
+.table-view .column-header-background {
     -fx-background-color: white;
     -fx-border-width: 1 0 1 0; /* top, right, bottom, left */
     -fx-border-color: -fx-base-background;
 }
 
-.main-center .table-view .column-header {
+.table-view .column-header {
     -fx-background-color: white;
     -fx-border-width: 0;
 }
 
-.main-center .table-view .filler {
+.table-view .filler {
     -fx-background-color: white;
 }
 
 /* 修改 TableView 表头的字体颜色 */
-.main-center .table-view .column-header .label {
+.table-view .column-header .label {
     -fx-text-fill: -fx-base-background;
     -fx-alignment: center-left;
 }
 
-/*.main-center .table-view .column-header:last-visible .label {*/
-/*    -fx-alignment: center;*/
-/*}*/
+.main-center .table-view .last-column {
+    -fx-alignment: center-left;
+}
+
+.main-center .table-row-cell:hover {
+    -fx-background-color: -fx-table-view-focused;
+}
 
 .xxb-download-bar {
     -fx-padding: 0 0 2 0;
@@ -121,15 +123,6 @@
 
 .xxb-download-bar .jfx-progress-bar > .track {
     -fx-background-radius: 1;
-}
-
-
-.main-center .table-view .last-column {
-    -fx-alignment: center-left;
-}
-
-.main-center .table-row-cell:hover {
-    -fx-background-color: -fx-table-view-focused;
 }
 
 .main-center .jfx-text-field,
@@ -248,35 +241,6 @@
     -fx-background-color: -fx-base-background;
 }
 
-/******************************ERROR LABELS**********************/
-.error-label {
-    -fx-text-fill: #D34336;
-    -fx-font-size: 0.75em;
-    -fx-font-weight: bold;
-}
-
-.error-icon {
-    -fx-fill: #D34336;
-    -fx-font-size: 1.0em;
-}
-
-.jfx-text-field:error, .jfx-password-field:error, .jfx-text-area:error, .jfx-combo-box:error {
-    -jfx-focus-color: #D34336;
-    -jfx-unfocus-color: #D34336;
-}
-
-.jfx-text-field .error-label, .jfx-password-field .error-label, .jfx-text-area .error-label {
-    -fx-text-fill: #D34336;
-    -fx-font-size: 0.75em;
-}
-
-.jfx-text-field .error-icon, .jfx-password-field .error-icon, .jfx-text-area .error-icon {
-    -fx-fill: #D34336;
-    -fx-font-size: 1.0em;
-}
-
-/******************************ERROR LABELS**********************/
-
 .jfx-badge .badge-pane {
     -fx-background-color: #f40d0d;
     -fx-background-radius: 16;
@@ -340,6 +304,7 @@
 .table-view .scroll-bar:horizontal {
     -fx-background-color: transparent; /* 设置滚动条背景为透明 */
 }
+
 /*滚动条轨道（Track）*/
 .table-view .scroll-bar:horizontal .track {
     -fx-background-color: transparent;
@@ -347,12 +312,12 @@
     -fx-background-radius: 0em;
     -fx-border-radius: 2em;
 }
+
 .table-view .scroll-bar:horizontal .thumb {
     -fx-background-color: transparent;
     -fx-background-insets: 0, 0, 0;
     -fx-background-radius: 0em;
 }
-
 
 
 /* 修改 TableView 的滚动条样式 */
@@ -392,4 +357,8 @@
 .jfx-check-box {
     -jfx-unchecked-color: #5A5A5A;
     -jfx-checked-color: -fx-base-background;
+}
+
+.jfx-check-box .box{
+    -fx-border-width: 1;
 }

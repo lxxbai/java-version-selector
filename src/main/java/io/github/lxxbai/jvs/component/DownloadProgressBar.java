@@ -3,6 +3,7 @@ package io.github.lxxbai.jvs.component;
 
 import com.jfoenix.controls.JFXProgressBar;
 import io.github.lxxbai.jvs.common.util.ThreadPoolUtil;
+import io.github.lxxbai.jvs.component.task.DownloadTask;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;

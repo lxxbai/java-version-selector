@@ -5,17 +5,18 @@
 <?import io.github.lxxbai.jvs.component.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="io.github.lxxbai.jvs.view.JdkVersionView">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.github.lxxbai.jvs.control.JdkVersionControl">
     <top>
         <HBox spacing="5.0" styleClass="main-h-box" BorderPane.alignment="CENTER">
-            <SvgButton svgPath="svg/search.svg" svgTooltip="查询" disable="true"/>
+            <SvgButton svgPath="svg/search.svg" svgTooltip="查询" disable="true" svgSize="18"/>
             <JFXComboBox fx:id="filterVmVendor" labelFloat="true" promptText="供应商"/>
             <JFXComboBox fx:id="filterMainVersion" labelFloat="true" promptText="主版本"/>
             <JFXTextField fx:id="filterJavaVersion" labelFloat="true" promptText="版本"/>
-            <SvgButton svgPath="svg/filter-xmark.svg" onAction="#resetFilter" svgTooltip="Clear"/>
+            <SvgButton svgPath="svg/filter-xmark.svg" onAction="#resetFilter" svgTooltip="Clear" svgSize="18"/>
             <Region HBox.hgrow="ALWAYS"/>
-            <SvgButton svgPath="svg/rotate-solid.svg" onAction="#onUpdateDataButtonClick" svgTooltip="刷新"/>
+            <SvgButton svgPath="svg/rotate-solid.svg" onAction="#onUpdateDataButtonClick" svgTooltip="刷新"
+                       svgSize="18"/>
             <padding>
                 <Insets bottom="10" top="20"/>
             </padding>

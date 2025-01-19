@@ -33,7 +33,7 @@ public class JdkVersionManager extends ServiceImpl<JdkVersionMapper, JdkVersionD
     /**
      * 刷新版本列表
      */
-    public void refresh() {
+    public void refresh(boolean force) {
         UserConfigInfoDO lastLoadDate = userConfigInfoMapper.selectOne(Wrappers.<UserConfigInfoDO>lambdaQuery()
                 .eq(UserConfigInfoDO::getDicKey, "LAST_LOAD_DATE"));
         if (Objects.isNull(lastLoadDate)) {
@@ -43,7 +43,7 @@ public class JdkVersionManager extends ServiceImpl<JdkVersionMapper, JdkVersionD
             userConfigInfoMapper.insert(lastLoadDate);
         }
         //存在并且刷新过的数据
-        if (StrUtil.equals(lastLoadDate.getDicValue(), DateUtil.formatDate(DateUtil.date()))) {
+        if (StrUtil.equals(lastLoadDate.getDicValue(), DateUtil.formatDate(DateUtil.date())) && !force) {
             return;
         }
         // 获取版本列表

@@ -1,6 +1,7 @@
 package io.github.lxxbai.jvs.common.util;
 
-import io.github.lxxbai.jvs.component.XxbMsgAlert;
+import io.github.lxxbai.jvs.component.XxbAlert;
+import io.github.lxxbai.jvs.component.XxbAlertBuilder;
 import javafx.stage.Stage;
 
 
@@ -16,7 +17,11 @@ public class JFXMsgAlertUtil {
      * @param content 对话框内容
      */
     public static void showInfo(Stage ownerStage, String title, String content) {
-        XxbMsgAlert alert = new XxbMsgAlert(ownerStage, "svg/info.svg", title, content);
+        XxbAlert alert = XxbAlertBuilder.builder()
+                .title(title, "svg/info.svg")
+                .window(ownerStage)
+                .content(content)
+                .build();
         alert.addOkButton(true);
         alert.showAndWait();
     }
@@ -29,7 +34,11 @@ public class JFXMsgAlertUtil {
      * @param content 对话框内容
      */
     public static Boolean showSelectInfo(Stage ownerStage, String title, String content) {
-        XxbMsgAlert alert = new XxbMsgAlert(ownerStage, "svg/info.svg", title, content);
+        XxbAlert alert = XxbAlertBuilder.builder()
+                .title(title, "svg/info.svg")
+                .window(ownerStage)
+                .content(content)
+                .build();
         alert.addOkButton();
         alert.addCancelButton(true);
         return alert.showAndWait().orElse(false);
@@ -42,7 +51,11 @@ public class JFXMsgAlertUtil {
      * @param content 对话框内容
      */
     public static void showWarning(Stage ownerStage, String title, String content) {
-        XxbMsgAlert alert = new XxbMsgAlert(ownerStage, "svg/warn.svg", title, content);
+        XxbAlert alert = XxbAlertBuilder.builder()
+                .title(title, "svg/warn.svg")
+                .window(ownerStage)
+                .content(content)
+                .build();
         alert.addOkButton(true);
         alert.showAndWait();
     }
@@ -54,7 +67,11 @@ public class JFXMsgAlertUtil {
      * @param content 对话框内容
      */
     public static void showError(Stage ownerStage, String title, String content) {
-        XxbMsgAlert alert = new XxbMsgAlert(ownerStage, "svg/error.svg", title, content);
+        XxbAlert alert = XxbAlertBuilder.builder()
+                .title(title, "svg/error.svg")
+                .window(ownerStage)
+                .content(content)
+                .build();
         alert.addOkButton(true);
         alert.showAndWait();
     }

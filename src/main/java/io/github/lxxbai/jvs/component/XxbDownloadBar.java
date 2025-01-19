@@ -3,12 +3,15 @@ package io.github.lxxbai.jvs.component;
 
 import com.jfoenix.controls.JFXProgressBar;
 import io.github.lxxbai.jvs.common.util.ThreadPoolUtil;
+import io.github.lxxbai.jvs.component.task.DownloadTask;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.concurrent.Worker;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.VBox;
+
+import java.util.Objects;
 
 /**
  * 下载进度条
@@ -82,7 +85,8 @@ public class XxbDownloadBar {
         if (task.isRunning()) {
             return;
         }
-        if (task.isCancelled()) {
+        if (task.isCancelled() || Objects.equals(task.getState(), Worker.State.FAILED)
+                || Objects.equals(task.getState(), Worker.State.CANCELLED)) {
             //解绑任务
             unbind();
             String oldMessage = task.getMessage();
@@ -90,7 +94,7 @@ public class XxbDownloadBar {
             EventHandler<WorkerStateEvent> onFailed = task.getOnFailed();
             EventHandler<WorkerStateEvent> onCancelled = task.getOnCancelled();
             //重新创建下载任务
-            this.task = new DownloadTask(task.getDownloadUrl(), task.getFileName(), task.getTotalBytes(), task.getDownloadedBytes());
+            this.task = new DownloadTask(task.getDownloadUrl(), task.getFileName());
             //绑定任务
             bind();
             //重新绑定事件

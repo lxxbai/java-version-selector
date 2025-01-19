@@ -76,7 +76,6 @@ public class InstallService {
         //判断文件是否已经存在
         record.setJdkPackageUrl(jdkSavePath.concat(File.separator).concat(fileName));
         record.setDownloadProgress(0.0D);
-        record.setCreatedAt(DateUtil.now());
         record.setVmVendor(jdkVersionVO.getVmVendor());
         record.setMainVersion(jdkVersionVO.getMainVersion());
         record.setJavaVersion(jdkVersionVO.getJavaVersion());
@@ -140,7 +139,6 @@ public class InstallService {
         vo.setInstallStatus(InstallStatusEnum.getByStatus(record.getDownloadStatus()));
         vo.setDownloadProgress(record.getDownloadProgress());
         vo.setJdkPackageUrl(record.getJdkPackageUrl());
-        vo.setCreatedAt(record.getCreatedAt());
         vo.setDownloadEndAt(record.getDownloadEndAt());
         vo.setDownloadFileFolder(record.getDownloadFileFolder());
         vo.setInstalledFolder(record.getInstalledFolder());

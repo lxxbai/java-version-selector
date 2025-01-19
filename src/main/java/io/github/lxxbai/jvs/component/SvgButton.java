@@ -70,6 +70,10 @@ public class SvgButton extends JFXButton {
         this(svgPath, 14, tooltip);
     }
 
+    public SvgButton(String svgPath, double size) {
+        this(svgPath, size, null);
+    }
+
 
     public SvgButton() {
         this(null, 14, null);

@@ -41,7 +41,7 @@ public class JavaVersionService {
      */
     public List<JdkVersionVO> queryAll(boolean refresh) {
         if (refresh) {
-            jdkVersionManager.refresh();
+            jdkVersionManager.refresh(true);
         }
         //获取所有版本信息
         List<JdkVersionDO> javaVersionList = jdkVersionManager.list();

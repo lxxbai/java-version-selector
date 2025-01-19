@@ -56,7 +56,7 @@ public class MySystemTray {
         }
 
         //此处不能选择ico格式的图片,要使用16*16的png格式的图片
-        URL url = ResourceUtil.getUrl("pic/jv.png");
+        URL url = ResourceUtil.getUrl("pic/jvs.png");
         Image image = Toolkit.getDefaultToolkit().getImage(url);
         //系统托盘图标
         trayIcon = new TrayIcon(image);

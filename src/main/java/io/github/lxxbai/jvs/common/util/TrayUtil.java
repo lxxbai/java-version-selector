@@ -26,7 +26,7 @@ public class TrayUtil {
         Platform.setImplicitExit(false);
         SystemTray tray = SystemTray.getSystemTray();
         // 使用合适的图标路径
-        Image image = Toolkit.getDefaultToolkit().getImage(TrayUtil.class.getClassLoader().getResource("pic/jv.png"));
+        Image image = Toolkit.getDefaultToolkit().getImage(TrayUtil.class.getClassLoader().getResource("pic/jvs.png"));
         PopupMenu popupMenu = new PopupMenu();
         MenuItem showItem = new MenuItem("Main");
         showItem.addActionListener(e -> showStage(primaryStage));

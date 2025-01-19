@@ -10,8 +10,6 @@ import io.github.lxxbai.jvs.spring.AbstractFxmlView;
  */
 public abstract class MenuView extends AbstractFxmlView {
 
-    private MenuItem menuItem;
-
     /**
      * 获取菜单项
      *

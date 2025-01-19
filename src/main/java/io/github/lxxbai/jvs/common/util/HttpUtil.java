@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.Map;
 
 /**
@@ -17,7 +18,10 @@ import java.util.Map;
 @Slf4j
 public class HttpUtil {
 
-    private static final HttpClient CLIENT = HttpClient.newHttpClient();
+    private static final HttpClient CLIENT = HttpClient.newBuilder()
+            // 连接超时时间,2s
+            .connectTimeout(Duration.ofSeconds(2))
+            .build();
 
 
     public static <T> T get(String url, Class<T> clazz) {

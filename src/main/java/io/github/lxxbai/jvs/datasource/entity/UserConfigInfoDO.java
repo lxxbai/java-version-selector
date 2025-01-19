@@ -1,7 +1,5 @@
 package io.github.lxxbai.jvs.datasource.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -10,10 +8,7 @@ import lombok.Data;
  */
 @Data
 @TableName("T_USER_CONFIG_INFO")
-public class UserConfigInfoDO {
-
-    @TableId(value = "ID", type = IdType.AUTO)
-    private Integer id;
+public class UserConfigInfoDO extends BaseDO {
 
     /**
      * 配置key
@@ -24,9 +19,4 @@ public class UserConfigInfoDO {
      * 配置值
      */
     private String dicValue;
-
-    /**
-     * 创建时间
-     */
-    private String createdAt;
 }

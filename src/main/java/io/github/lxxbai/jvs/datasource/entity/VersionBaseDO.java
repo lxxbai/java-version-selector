@@ -1,19 +1,13 @@
 package io.github.lxxbai.jvs.datasource.entity;
 
 import cn.hutool.crypto.SecureUtil;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
  * @author lxxbai
  */
 @Data
-public class VersionBaseDO {
-
-    @TableId(value = "ID", type = IdType.AUTO)
-    private Integer id;
-
+public class VersionBaseDO extends BaseDO {
 
     /**
      * 供应商  oracle jdk or openjdk or other

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="io.github.lxxbai.jvs.view.InstallView">
+            fx:controller="io.github.lxxbai.jvs.control.JdkInstallControl">
     <top>
         <HBox spacing="5.0" styleClass="main-h-box" BorderPane.alignment="CENTER">
             <SvgButton svgPath="svg/search.svg" svgTooltip="查询" disable="true"/>

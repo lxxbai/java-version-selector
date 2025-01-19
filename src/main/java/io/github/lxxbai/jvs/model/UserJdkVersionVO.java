@@ -44,10 +44,9 @@ public class UserJdkVersionVO {
      */
     private String localHomePath;
 
+    /**
+     * 是否是新的jdk
+     */
+    private boolean isNewJdk;
 
-    private String ukCode;
-
-    public String getUkCode() {
-        return ukVersion + localHomePath;
-    }
 }
