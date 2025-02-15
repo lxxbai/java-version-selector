@@ -37,16 +37,14 @@ public class SvgButton extends JFXButton {
     private SVGGlyph svgGlyph;
 
     public SvgButton(String svgPath, double size, String tooltip) {
-        this.getStyleClass().addAll(DEFAULT_STYLE_CLASS);
+        this.getStyleClass().add(DEFAULT_STYLE_CLASS);
         this.svgGlyph = new SVGGlyph();
-        this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         this.setPadding(new Insets(3));
         this.svgPath.addListener((observableValue, old, newPath) -> {
             if (StrUtil.isNotBlank(newPath)) {
                 //加载图标
                 this.svgGlyph = SVGGlyphUtil.loadGlyph(ResourceUtil.getUrl(newPath));
                 this.svgGlyph.setSize(svgSize.get(), svgSize.get());
-                this.setRipplerFill(Color.WHITE);
                 this.setCursor(Cursor.HAND);
                 this.setGraphic(svgGlyph);
             }

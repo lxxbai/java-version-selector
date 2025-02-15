@@ -1,9 +1,10 @@
-package io.github.lxxbai.jvs.component;
+package io.github.lxxbai.jvs.component.builder;
 
 import cn.hutool.core.util.StrUtil;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.svg.SVGGlyph;
 import io.github.lxxbai.jvs.common.util.SVGGlyphUtil;
+import io.github.lxxbai.jvs.component.XxbAlert;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.stage.Window;

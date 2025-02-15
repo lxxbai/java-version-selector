@@ -7,7 +7,7 @@ import io.github.lxxbai.jvs.common.model.JdkInfo;
 import io.github.lxxbai.jvs.common.util.JFXMsgAlertUtil;
 import io.github.lxxbai.jvs.common.util.ThreadPoolUtil;
 import io.github.lxxbai.jvs.component.XxbAlert;
-import io.github.lxxbai.jvs.component.XxbAlertBuilder;
+import io.github.lxxbai.jvs.component.builder.XxbAlertBuilder;
 import io.github.lxxbai.jvs.component.cell.XxbTableCellFactory;
 import io.github.lxxbai.jvs.component.task.JdkScannerTask;
 import io.github.lxxbai.jvs.event.JdkScannerEvent;

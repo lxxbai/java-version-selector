@@ -1,7 +1,7 @@
 package io.github.lxxbai.jvs.common.util;
 
 import io.github.lxxbai.jvs.component.XxbAlert;
-import io.github.lxxbai.jvs.component.XxbAlertBuilder;
+import io.github.lxxbai.jvs.component.builder.XxbAlertBuilder;
 import javafx.stage.Stage;
 
 

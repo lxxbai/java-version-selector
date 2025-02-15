@@ -49,8 +49,8 @@ public class JdkScannerTask extends Task<Void> {
 
     @Override
     protected Void call() throws Exception {
-        // 等待1秒，让进度条显示完成
-        ThreadUtil.sleep(1000);
+        // 等待0.5秒，让进度条显示完成
+        ThreadUtil.sleep(500);
         scan();
         return null;
     }

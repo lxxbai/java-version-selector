@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.HPos?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<GridPane vgap="20" hgap="30" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="io.github.lxxbai.jvs.control.AboutControl" styleClass="about">
+    <Label text="版本信息" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <Label fx:id="versionInfo" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+    <JFXButton onAction="#checkVersion"  GridPane.columnIndex="1" GridPane.rowIndex="1"  text="检查更新"/>
+    <Label text="帮助信息" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <JFXButton GridPane.columnIndex="1" GridPane.rowIndex="2"  text="查看帮助"/>
+    <BorderPane.margin>
+        <Insets left="50"/>
+    </BorderPane.margin>
+    <GridPane.halignment>
+        <HPos fx:constant="LEFT"/>
+    </GridPane.halignment>
+</GridPane>

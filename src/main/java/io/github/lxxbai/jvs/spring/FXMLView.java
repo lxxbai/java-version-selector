@@ -59,7 +59,20 @@ public @interface FXMLView {
     String stageStyle() default "UTILITY";
 
     /**
+     * The svg icon to be applied to the underlying stage
+     * when using this view as a modal window.
+     */
+    String svgIcon() default "";
+
+    /**
+     * The order of the view.
+     */
+    int order() default 0;
+
+    /**
      * Whether the view should be loaded lazy or not.
      */
     boolean lazy() default true;
+
+    String groupKey() default "";
 }

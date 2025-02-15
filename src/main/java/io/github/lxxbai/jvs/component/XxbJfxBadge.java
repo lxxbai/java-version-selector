@@ -35,7 +35,6 @@ public class XxbJfxBadge extends StackPane {
         this(null, 10D, 10D);
     }
 
-
     public XxbJfxBadge(Node control, Double x, Double y) {
         this.enabled = true;
         this.x = x;

@@ -192,8 +192,9 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
     }
 
     public void hide() {
-        if (stage != null)
+        if (stage != null) {
             stage.hide();
+        }
     }
 
     /**
@@ -231,7 +232,8 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
      */
     public void showViewAndWait(Window window, Modality modality) {
         if (isPrimaryStageView) {
-            showView(modality); // this modality will be ignored anyway
+            // this modality will be ignored anyway
+            showView(modality);
             return;
         }
         if (stage == null || currentStageModality != modality || !Objects.equals(stage.getOwner(), window)) {

@@ -3,6 +3,7 @@ package io.github.lxxbai.jvs.view;
 import io.github.lxxbai.jvs.component.menu.MenuItem;
 import io.github.lxxbai.jvs.component.menu.SvgBadgeMenuItem;
 import io.github.lxxbai.jvs.spring.FXMLView;
+import io.github.lxxbai.jvs.view.base.MenuFxmlView;
 import io.github.lxxbai.jvs.view.base.MenuView;
 import lombok.Getter;
 
@@ -11,7 +12,7 @@ import lombok.Getter;
  */
 @Getter
 @FXMLView(value = "/view/install_record.fxml", lazy = false)
-public class InstallView extends MenuView {
+public class InstallView extends MenuFxmlView {
 
     private final SvgBadgeMenuItem svgBadgeMenuItem;
 

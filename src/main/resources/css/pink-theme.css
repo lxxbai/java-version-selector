@@ -8,10 +8,13 @@
     -fx-base-background3: derive(rgba(241, 194, 241, 0.5), -20%);
     /*主要背景颜色3*/
     -fx-base-background4: derive(rgba(241, 194, 241, 0.5), -20%);
+    /*主要背景颜色3*/
+    -fx-base-background5: derive(rgba(241, 194, 241, 0.2), -20%);
     /*tableview的选中背景颜色*/
     -fx-table-view-focused: derive(rgba(250, 224, 250, 0.16), -20%);
     /*字体颜色*/
-    -fx-font-color: rgba(0, 0, 0, 0.65);
+    -fx-font-color: rgba(0, 0, 0, 0.75);
+    -fx-font-color2: derive(rgb(92, 5, 92), -20%);
     /* 鼠标悬停时的背景颜色 */
     -fx-button-hover: rgba(243, 191, 243, 0.16);
 }
@@ -22,6 +25,7 @@
 }
 
 /*main-view左侧背景*/
+.main-left .list-view,
 .main-left {
     -fx-background-color: -fx-base-background;
 }
@@ -36,8 +40,8 @@
 }
 
 .main-left .jfx-svg-glyph:hover {
-    -fx-background-color: #5c6a6c; /* 鼠标悬停时的背景颜色 */
-    -fx-cursor: hand; /* 鼠标悬停时的指针样式 */
+    -fx-background-color: rgba(85, 88, 90, 0.34);
+    -fx-cursor: hand;
 }
 
 /*选中后的颜色修改*/
@@ -63,7 +67,7 @@
 }
 
 .table-view .table-row-cell {
-    -fx-cell-size: 35;
+    -fx-cell-size: 40;
 }
 
 .table-view .table-cell,
@@ -178,6 +182,10 @@
     /*-fx-background-color: red;*/
     -fx-background-radius: 50%;
     -fx-padding: 3;
+}
+
+.svg-button .jfx-rippler {
+    -jfx-rippler-fill: rgba(31, 25, 25, 0);
 }
 
 .svg-button .jfx-svg-glyph {
@@ -359,6 +367,69 @@
     -jfx-checked-color: -fx-base-background;
 }
 
-.jfx-check-box .box{
+.jfx-check-box .box {
     -fx-border-width: 1;
+}
+
+
+.settings-popup {
+    -fx-border-width: 0.5;
+    -fx-border-color: -fx-base-background5;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-background-color: -fx-base-background5;
+    -fx-control-inner-background: transparent;
+    -fx-control-inner-background-alt: transparent;
+}
+
+.settings-popup .list-cell:hover {
+    -fx-background-color: -fx-base-background4;
+    -fx-background-radius: 5;
+    -fx-text-fill: white;
+}
+
+.settings-popup .list-cell {
+    -fx-text-fill: -fx-font-color;
+    -fx-font-size: 13;
+}
+
+.new-stage-decorator {
+    -fx-decorator-color: transparent;
+    -fx-border-color: #d3d3d3;
+    -fx-border-width: 0.3;
+}
+
+.new-stage-decorator .resize-border {
+    -fx-border-width: 0;
+}
+
+.settings-list-view {
+    -fx-background-color: transparent;
+}
+
+.settings-list-view .list-cell {
+    -fx-background-color: transparent;
+    /*-fx-text-fill: -fx-font-color;*/
+    -fx-border-width: 0 0.3 0 0;
+    -fx-border-color: -fx-base-background;
+}
+
+.settings-list-view .list-cell:selected {
+    -fx-text-fill: -fx-base-background;
+}
+
+.settings-list-view .list-cell:hover {
+    -fx-cursor: hand;
+}
+
+.settings-style {
+    -fx-font-size: 14;
+}
+
+.about .button {
+    -fx-background-color: rgba(184, 183, 183, 0.16);
+}
+
+.about .button:hover {
+    -fx-background-color: rgba(94, 93, 93, 0.16);
 }

@@ -21,6 +21,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
@@ -92,16 +94,18 @@ public class UserJdkControl implements Initializable {
         return XxbTableCellFactory.cellFactoryWithRowHover(cell -> {
             UserJdkVersionVO vo = cell.getData();
             if (!cell.getTableRow().isHover()) {
-                // 创建一个HBox作为容器
-                HBox hbox = new HBox();
-                hbox.setSpacing(3);
-                hbox.setAlignment(Pos.CENTER_LEFT);
-                Label newV = new Label("New");
-                newV.getStyleClass().add("badge-new");
-                newV.setTranslateY(-5);
-                hbox.getChildren().addAll(new Label(vo.getJavaVersion()), newV);
-                cell.setText(null);
-                cell.setGraphic(hbox);
+                if (vo.isNewJdk()) {
+                    Image image = ResourceUtil.toImage("pic/new.png");
+                    ImageView imageView = new ImageView(image);
+                    imageView.setPreserveRatio(true);
+                    imageView.setFitWidth(35);
+                    imageView.setFitHeight(35);
+                    cell.setText(null);
+                    cell.setGraphic(new Label(vo.getJavaVersion(), imageView));
+                    return;
+                }
+                cell.setText(vo.getJavaVersion());
+                cell.setGraphic(null);
                 return;
             }
             //文件位置按钮，应用按钮

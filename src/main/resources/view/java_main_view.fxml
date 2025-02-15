@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXListView?>
-<?import javafx.scene.layout.BorderPane?>
+<?import io.github.lxxbai.jvs.component.XxbSvg?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="io.github.lxxbai.jvs.control.JvsMainControl" fx:id="mainBorderPane">
     <left>
-        <JFXListView fx:id="listView" minWidth="55" maxWidth="55" styleClass="main-left">
-        </JFXListView>
+        <VBox prefWidth="55" minWidth="55" maxWidth="55" styleClass="main-left" alignment="CENTER">
+            <JFXListView fx:id="menuViewList" VBox.vgrow="ALWAYS">
+            </JFXListView>
+            <Region VBox.vgrow="ALWAYS"/>
+            <VBox fx:id="settingsBox" alignment="CENTER">
+                <XxbSvg path="svg/bars.svg" size="20"/>
+            </VBox>
+            <padding>
+                <Insets bottom="20"/>
+            </padding>
+        </VBox>
     </left>
 </BorderPane>

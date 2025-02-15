@@ -5,16 +5,16 @@ import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXRippler;
+import io.github.lxxbai.jvs.common.util.ResourceUtil;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 
-public class SvgExample extends Application {
+public class PopupDemo extends Application {
 
     @Override
     public void start(Stage primaryStage) {
@@ -24,8 +24,7 @@ public class SvgExample extends Application {
         JFXRippler rippler = new JFXRippler(show, JFXRippler.RipplerMask.CIRCLE, JFXRippler.RipplerPos.BACK);
 
         JFXListView<Label> list = new JFXListView<>();
-        for (int i = 1; i < 5; i++)
-        {
+        for (int i = 1; i < 5; i++) {
             list.getItems().add(new Label("Item " + i));
         }
 
@@ -41,7 +40,7 @@ public class SvgExample extends Application {
         rippler.setOnMouseClicked(e -> popup.show(rippler, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT));
 
         final Scene scene = new Scene(main, 800, 800);
-        scene.getStylesheets().add(JFoenixResources.load("css/jfoenix-components.css").toExternalForm());
+        scene.getStylesheets().add(ResourceUtil.getUrl("css/jf-all.css").toExternalForm());
 
         primaryStage.setTitle("JFX Popup Demo");
         primaryStage.setScene(scene);

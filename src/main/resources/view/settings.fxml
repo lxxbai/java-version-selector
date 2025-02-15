@@ -1,31 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import com.jfoenix.controls.*?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.*?>
-<?import org.kordamp.bootstrapfx.scene.layout.Panel?>
-<Panel fx:controller="io.github.lxxbai.jvs.view.SettingsView" prefWidth="400" prefHeight="100"
-       xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
-    <JFXDialogLayout fx:id="diaLogLayout">
-        <heading>
-            <Label>设置</Label>
-        </heading>
-        <body>
-            <GridPane vgap="20" hgap="10">
-                <Label text="下载任务并行数:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                <JFXComboBox fx:id="parallelDownloadsComboBox" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-                <Label text="下载文件存放地址:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                <JFXTextField fx:id="downloadPathField" GridPane.columnIndex="2" GridPane.rowIndex="1"
-                              editable="false"/>
-                <JFXButton text="..." onAction="#chooseDownloadDirectory" GridPane.columnIndex="3"
-                           GridPane.rowIndex="1"/>
-                <Label text="JDK 文件放置地址:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                <JFXTextField fx:id="jdkPathField" GridPane.columnIndex="2" GridPane.rowIndex="2" editable="false"/>
-                <JFXButton text="..." onAction="#chooseJdkDirectory" GridPane.columnIndex="3"
-                           GridPane.rowIndex="2"/>
-            </GridPane>
-        </body>
-        <actions>
-            <JFXButton text="保存" onAction="#saveSettings"/>
-        </actions>
-    </JFXDialogLayout>
-</Panel>
+<?import com.jfoenix.controls.JFXListView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane fx:controller="io.github.lxxbai.jvs.control.SettingsControl" prefWidth="500" prefHeight="320"
+            xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" styleClass="settings-style">
+    <left>
+        <JFXListView fx:id="menuList" prefWidth="90" styleClass="settings-list-view">
+        </JFXListView>
+    </left>
+    <center>
+        <BorderPane fx:id="center">
+        </BorderPane>
+    </center>
+    <padding>
+        <Insets top="40" right="20" bottom="40"/>
+    </padding>
+</BorderPane>

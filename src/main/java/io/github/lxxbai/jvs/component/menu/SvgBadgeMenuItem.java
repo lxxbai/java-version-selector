@@ -23,9 +23,8 @@ public class SvgBadgeMenuItem extends SvgMenuItem {
         this(svgPath, menuName, menuName);
     }
 
-
     @Override
-    Node menuIcon() {
+    public Node menuIcon() {
         return badge;
     }
 }

@@ -1,6 +1,7 @@
 package io.github.lxxbai.jvs.component.menu;
 
 import com.jfoenix.controls.JFXTooltip;
+import io.github.lxxbai.jvs.view.base.MenuFxmlView;
 import io.github.lxxbai.jvs.view.base.MenuView;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
@@ -11,12 +12,12 @@ import javafx.util.Duration;
 /**
  * @author lxxbai
  */
-public class MenuItemCellFactory implements Callback<ListView<MenuView>, ListCell<MenuView>> {
+public class MenuItemCellFactory implements Callback<ListView<MenuFxmlView>, ListCell<MenuFxmlView>> {
     @Override
-    public ListCell<MenuView> call(ListView<MenuView> menuPageListView) {
+    public ListCell<MenuFxmlView> call(ListView<MenuFxmlView> menuPageListView) {
         return new ListCell<>() {
             @Override
-            protected void updateItem(MenuView item, boolean empty) {
+            protected void updateItem(MenuFxmlView item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) {
                     setText(null);
