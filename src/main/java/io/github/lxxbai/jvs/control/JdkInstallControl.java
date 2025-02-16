@@ -124,7 +124,7 @@ public class JdkInstallControl implements Initializable {
                 case DOWNLOADING -> {
                     //暂停按钮
                     JFXButton pauseButton = buildPauseButtonButton(index, installRecordVO);
-                    hBox.getChildren().addAll(pauseButton, filePathButton, deleteButton);
+                    hBox.getChildren().addAll(pauseButton, filePathButton);
                 }
                 case DOWNLOAD_PAUSE -> {
                     //开始下载按钮

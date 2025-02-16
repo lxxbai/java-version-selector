@@ -88,7 +88,7 @@ public class ModelProperty<T> {
      * @param function 方法
      * @return 属性
      */
-    public <P> Property<P> buildProperty(Func1<T, P> function){
+    public <P> Property<P> buildProperty(Func1<T, P> function) {
         // 获取属性类型
         String fieldName = LambdaUtil.getFieldName(function);
         if (Objects.isNull(clazz)) {
@@ -96,13 +96,18 @@ public class ModelProperty<T> {
         }
         //获取字段
         Field field = ReflectUtil.getField(clazz, fieldName);
+        //获取已有的属性
+        Property<P> property = propertyMap.get(field);
+        if (Objects.nonNull(property)) {
+            return property;
+        }
         // 获取属性类型
         Class<P> type = (Class<P>) field.getType();
         //创建属性
-        Property<P> property = PropertyFactory.buildProperty(type,  function.callWithRuntimeException(model.get()));
+        property = PropertyFactory.buildProperty(type, function.callWithRuntimeException(model.get()));
         property.addListener((observable, oldValue, newValue) -> {
             T result = Objects.isNull(model.get()) ? ReflectUtil.newInstance(clazz) : model.get();
-            ReflectUtil.setFieldValue(result, field, property.getValue());
+            ReflectUtil.setFieldValue(result, field, newValue);
         });
         propertyMap.put(field, property);
         return property;

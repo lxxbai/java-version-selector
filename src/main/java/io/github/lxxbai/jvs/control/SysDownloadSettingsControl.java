@@ -39,13 +39,18 @@ public class SysDownloadSettingsControl implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        parallelDownloadsComboBox.getItems().addAll(2, 3, 4, 5);
+        parallelDownloadsComboBox.getItems().addAll(1, 2, 3, 4, 5);
         parallelDownloadsComboBox.valueProperty().bindBidirectional(settingsViewModel.getModelProperty()
                 .buildProperty(DownloadConfig::getParallelDownloads));
         //配置文件绑定
         defaultPathCheckBox.selectedProperty().bindBidirectional(settingsViewModel.getModelProperty().buildProperty(DownloadConfig::isDefaultConfigured));
         jdkSavePathField.textProperty().bindBidirectional(settingsViewModel.getModelProperty().buildProperty(DownloadConfig::getJdkSavePath));
         jdkInstallPathField.textProperty().bindBidirectional(settingsViewModel.getModelProperty().buildProperty(DownloadConfig::getJdkInstallPath));
+        //监听事件
+        parallelDownloadsComboBox.valueProperty().addListener((observable, oldValue, newValue) -> settingsViewModel.save());
+        defaultPathCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> settingsViewModel.save());
+        jdkSavePathField.textProperty().addListener((observable, oldValue, newValue) -> settingsViewModel.save());
+        jdkInstallPathField.textProperty().addListener((observable, oldValue, newValue) -> settingsViewModel.save());
     }
 
     @FXML
