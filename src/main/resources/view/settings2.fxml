@@ -1,33 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import com.jfoenix.controls.*?>
+
+<?import javafx.geometry.HPos?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane fx:controller="io.github.lxxbai.jvs.control.Settings2Control" prefWidth="600" prefHeight="400"
-            xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
-    <left>
-        <JFXListView fx:id="menuList" prefWidth="60">
-            <Label text="设置"/>
-            <Label text="设置"/>
-            <Label text="设置"/>
-        </JFXListView>
-    </left>
-    <center>
-        <GridPane vgap="20" hgap="10">
-            <Label text="下载任务并行数:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <JFXComboBox fx:id="parallelDownloadsComboBox" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-            <Label text="下载文件存放地址:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <JFXTextField fx:id="downloadPathField" GridPane.columnIndex="2" GridPane.rowIndex="1"
-                          editable="false"/>
-            <JFXButton text="..." onAction="#chooseDownloadDirectory" GridPane.columnIndex="3"
-                       GridPane.rowIndex="1"/>
-            <Label text="JDK 文件放置地址:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <JFXTextField fx:id="jdkPathField" GridPane.columnIndex="2" GridPane.rowIndex="2" editable="false"/>
-            <JFXButton text="..." onAction="#chooseJdkDirectory" GridPane.columnIndex="3"
-                       GridPane.rowIndex="2"/>
-        </GridPane>
-    </center>
-    <padding>
-        <Insets top="40" right="20" bottom="40" left="10"/>
-    </padding>
-</BorderPane>
+<?import javafx.scene.web.WebView?>
+<GridPane vgap="20" hgap="20" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="io.github.lxxbai.jvs.control.AdsControl">
+
+    <WebView fx:id="webView">
+    </WebView>
+    <BorderPane.margin>
+        <Insets left="50"/>
+    </BorderPane.margin>
+    <GridPane.halignment>
+        <HPos fx:constant="LEFT"/>
+    </GridPane.halignment>
+</GridPane>
