@@ -1,12 +1,12 @@
 .root {
     /*主要背景颜色*/
-    -fx-base-background: derive(rgba(241, 194, 241, 1), -20%);
+    -fx-base-background: derive(rgba(29, 23, 23, 0.86), -20%);
     /*主要背景颜色2*/
-    -fx-base-background2: derive(rgba(241, 194, 241, 1.5), -20%);
+    -fx-base-background2: derive(rgba(29, 23, 23, 1.5), -20%);
     /*主要背景颜色3*/
-    -fx-base-background3: derive(rgba(241, 194, 241, 0.5), -20%);
+    -fx-base-background3: derive(rgba(29, 23, 23, 0.5), -20%);
     /*主要背景颜色3*/
-    -fx-base-background4: derive(rgba(241, 194, 241, 0.2), -20%);
+    -fx-base-background4: derive(rgba(29, 23, 23, 0.2), -20%);
     /*tableview的选中背景颜色*/
     -fx-table-view-focused: derive(rgba(250, 224, 250, 0.16), -20%);
     /*字体颜色*/

@@ -7,10 +7,7 @@ import io.github.lxxbai.jvs.spring.AbstractFxmlView;
  */
 public abstract class XxbListFxmlView extends AbstractFxmlView {
 
-
-
     public XxbListFxmlView() {
         super();
     }
-
 }

@@ -1,19 +1,29 @@
-/********************************left-menu*********************************************/
-
-*:focused {
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent; /*边框颜色*/
+.root {
+    /*主要背景颜色*/
+    -fx-base-background: derive(rgba(134, 134, 231, 0.68), -20%);
+    /*主要背景颜色2*/
+    -fx-base-background2: derive(rgba(134, 134, 231, 1.68), -20%);
+    /*主要背景颜色3*/
+    -fx-base-background3: derive(rgba(134, 134, 231, 0.5), -20%);
+    /*主要背景颜色3*/
+    -fx-base-background4: derive(rgba(134, 134, 231, 0.2), -20%);
+    /*tableview的选中背景颜色*/
+    -fx-table-view-focused: derive(rgba(134, 134, 231, 0.16), -20%);
+    /*字体颜色*/
+    -fx-font-color: rgba(0, 0, 0, 0.75);
+    /* 鼠标悬停时的背景颜色 */
+    -fx-button-hover: rgba(243, 191, 243, 0.16);
 }
 
 /*main-view左侧背景*/
+.main-left .list-view,
 .main-left {
-    /*-fx-background-color: derive(#d1e9ec, -20%);*/
-    -fx-background-color: linear-gradient(to bottom, derive(rgba(69, 116, 246, 0.82), -20%), WHITE);
+    -fx-background-color: -fx-base-background2;
 }
 
 .main-left .list-cell {
     -fx-background-color: transparent;
-    -fx-padding: 10 0 10 0; /* 上 右 下 左 */
+    -fx-padding: 20 0 20 0; /* 上 右 下 左 */
 }
 
 .main-left .jfx-svg-glyph {
@@ -21,8 +31,8 @@
 }
 
 .main-left .jfx-svg-glyph:hover {
-    -fx-background-color: #5c6a6c; /* 鼠标悬停时的背景颜色 */
-    -fx-cursor: hand; /* 鼠标悬停时的指针样式 */
+    -fx-background-color: rgba(85, 88, 90, 0.96);
+    -fx-cursor: hand;
 }
 
 /*选中后的颜色修改*/
@@ -33,44 +43,166 @@
 
 /*********************************left-menu******************************************/
 /**********************************center*****************************************/
-
-.main-h-box {
-    -fx-background-radius: 10 10 0 0;
-    /*圆角*/
-    -fx-background-color: WHITE;
-}
-
-.main-center .table-view,
 .main-center {
     -fx-background-color: white;
 }
 
-.main-center .table-view .table-cell,
-.main-center .table-row-cell,
-.main-center .table-row-cell:empty,
-.main-center .table-view .table-row-cell:empty:hover {
+.table-view {
+    -fx-background-color: white;
+    -fx-border-width: 0;
+}
+
+.table-view .table-cell {
+    -fx-alignment: center-left;
+    -fx-text-fill: -fx-font-color;
+}
+
+.table-view .table-row-cell {
+    -fx-cell-size: 40;
+}
+
+.table-view .table-cell,
+.table-row-cell:empty,
+.table-view .table-row-cell:empty:hover {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-border-width: 0 0 0 0;
 }
 
-.main-center .table-row-cell .text {
-    -fx-fill: rgb(92, 2, 87);
+.table-view .table-row-cell:focused {
+    -fx-background-color: -fx-table-view-focused;
 }
 
-.main-center .table-view .table-row-cell:focused {
-    -fx-background-color: derive(rgba(178, 196, 246, 0.82), -20%);
+.table-view .column-header-background {
+    -fx-background-color: white;
+    -fx-border-width: 1 0 1 0; /* top, right, bottom, left */
+    -fx-border-color: -fx-base-background;
 }
 
-.main-center .table-view .column-header {
-    -fx-background-color: derive(rgba(53, 102, 232, 0.82), -20%);
+.table-view .column-header {
+    -fx-background-color: white;
+    -fx-border-width: 0;
+}
+
+.table-view .filler {
+    -fx-background-color: white;
+}
+
+/* 修改 TableView 表头的字体颜色 */
+.table-view .column-header .label {
+    -fx-text-fill: -fx-base-background;
+    -fx-alignment: center-left;
+}
+
+.main-center .table-view .last-column {
+    -fx-alignment: center-left;
 }
 
 .main-center .table-row-cell:hover {
-    -fx-background-color: derive(rgba(177, 195, 245, 0.82), -20%);
+    -fx-background-color: -fx-table-view-focused;
+}
+
+.xxb-download-bar {
+    -fx-padding: 0 0 2 0;
+}
+
+.xxb-download-bar .label {
+    -fx-text-fill: rgba(7, 7, 7, 0.5);
+    -fx-font-size: 10;
+}
+
+.xxb-download-bar .jfx-progress-bar > .bar {
+    -fx-background-color: -fx-base-background;
+    -fx-background-radius: 1;
+}
+
+.xxb-download-bar .jfx-progress-bar > .track {
+    -fx-background-radius: 1;
+}
+
+.main-center .jfx-text-field,
+.main-center .jfx-combo-box {
+    -jfx-focus-color: -fx-font-color;
+    -fx-prompt-text-fill: -fx-font-color;
+    -fx-pref-width: 100;
+}
+
+.jfx-text-field > .input-line,
+.jfx-combo-box > .input-line {
+    -fx-background-color: -fx-base-background;
+}
+
+.main-center .jfx-combo-box .list-view {
+    -fx-pref-width: 100;
+}
+
+.main-center .jfx-combo-box .list-cell {
+    -fx-text-fill: -fx-font-color;
+}
+
+.main-center .jfx-combo-box .list-view .list-cell:filled:selected,
+.main-center .jfx-combo-box .list-cell:hover {
+    -fx-background-color: -fx-base-background;
+    -fx-text-fill: white; /* 修改文字颜色 */
 }
 
 /**********************************center*****************************************/
+
+/******button**********/
+
+.custom-font-button {
+    -fx-border-color: -fx-base-background;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-text-fill: -fx-base-background;
+    -fx-font-size: 12px; /* 字体大小 */
+}
+
+.custom-default-select-button {
+    -fx-border-color: -fx-base-background;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-font-size: 12px; /* 字体大小 */
+    -fx-background-color: -fx-base-background;
+    -fx-text-fill: white;
+}
+
+/* 在 CSS 文件中 */
+.svg-button {
+    /*-fx-effect: dropshadow(gaussian, -fx-base-background, 12, 0, 0, 6);*/
+    /*-fx-background-color: red;*/
+    -fx-background-radius: 50%;
+    -fx-padding: 3;
+}
+
+.svg-button .jfx-rippler {
+    -jfx-rippler-fill: rgba(31, 25, 25, 0);
+}
+
+.svg-button .jfx-svg-glyph {
+    -fx-background-color: -fx-base-background;
+}
+
+.jfx-button:hover {
+    -fx-cursor: hand;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+
+/*.warn-hover:hover .jfx-svg-glyph {*/
+/*    -fx-background-color: #e52c2c;*/
+/*}*/
+
+.readonly-button {
+    -fx-background-radius: 10;
+    -fx-text-fill: white; /* 字体颜色 */
+    -fx-font-size: 12;
+}
+
+
+/******button**********/
+
 
 /*******************************************************************************
 *                                                                              *
@@ -79,55 +211,216 @@
 *******************************************************************************/
 
 .jfx-decorator {
-    -fx-decorator-color: derive(rgba(69, 116, 246, 0.82), -20%);
+    -fx-decorator-color: white;
+    -fx-border-color: -fx-base-background;
+    -fx-border-width: 0.334 0.334 0.334 0;
 }
 
 .jfx-decorator .jfx-decorator-buttons-container {
     -fx-background-color: -fx-decorator-color;
-    -fx-min-height: 40;
 }
 
 .jfx-decorator .resize-border {
-    -fx-border-color: -fx-decorator-color;
-    -fx-border-width: 0 0 0 0;
+    -fx-border-color: rgba(244, 235, 244, 0.97);
+    -fx-border-width: 1 0 0 0;
 }
 
 .jfx-decorator .jfx-decorator-title-container .jfx-decorator-text {
-    -fx-fill: WHITE;
+    -fx-fill: -fx-base-background;
     -fx-font-size: 15;
-}
-
-.jfx-decorator .jfx-decorator-title-container .jfx-svg-glyph {
-    -fx-shape: "M512 682c-128.024-99.309-255.626-199.040-384-298l384-298 384 298c-128.375 98.958-255.974 198.693-384 298zM512 792l314-246 70 54-384 298-384-298 70-54z";
-    -jfx-size: 15;
-    -fx-background-color: WHITE;
-}
-
-/******************************ERROR LABELS**********************/
-.error-label {
-    -fx-text-fill: #D34336;
-    -fx-font-size: 0.75em;
     -fx-font-weight: bold;
 }
 
-.error-icon {
-    -fx-fill: #D34336;
-    -fx-font-size: 1.0em;
+.jfx-decorator .jfx-decorator-title-container .jfx-svg-glyph {
+    -jfx-size: 12;
+    -fx-background-color: -fx-base-background;
 }
 
-.jfx-text-field:error, .jfx-password-field:error, .jfx-text-area:error, .jfx-combo-box:error {
-    -jfx-focus-color: #D34336;
-    -jfx-unfocus-color: #D34336;
+.jfx-decorator .jfx-decorator-buttons-container .jfx-svg-glyph {
+    -fx-background-color: -fx-base-background;
 }
 
-.jfx-text-field .error-label, .jfx-password-field .error-label, .jfx-text-area .error-label {
-    -fx-text-fill: #D34336;
-    -fx-font-size: 0.75em;
+.jfx-badge .badge-pane {
+    -fx-background-color: #f40d0d;
+    -fx-background-radius: 16;
+    -fx-pref-width: 16;
+    -fx-pref-height: 16;
+    -fx-alignment: center;
 }
 
-.jfx-text-field .error-icon, .jfx-password-field .error-icon, .jfx-text-area .error-icon {
-    -fx-fill: #D34336;
-    -fx-font-size: 1.0em;
+.jfx-badge Label {
+    -fx-font-weight: BOLD;
+    -fx-font-size: 9;
+    -fx-text-fill: WHITE;
 }
 
-/******************************ERROR LABELS**********************/
+/*alert*/
+.jfx-alert-overlay > .depth-container > .jfx-alert-content-container,
+.jfx-alert-overlay > .jfx-alert-content-container {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+
+.jfx-dialog-layout > .jfx-layout-heading {
+    -fx-padding: 14 15 14 15;
+    -fx-alignment: center-left;
+}
+
+.jfx-dialog-layout > .jfx-layout-heading .label {
+    -fx-font-size: 14;
+}
+
+.jfx-dialog-layout > .jfx-layout-body {
+    -fx-padding: 0 15 6 15;
+    -fx-alignment: center-left;
+}
+
+.jfx-dialog-layout > .jfx-layout-body .label {
+    -fx-text-fill: #757575;
+    -fx-font-size: 13;
+}
+
+.jfx-dialog-layout > .jfx-layout-heading .label .jfx-svg-glyph {
+    -fx-background-color: -fx-base-background;
+}
+
+.jfx-dialog-layout > .jfx-layout-actions {
+    -fx-alignment: center-right;
+    -fx-padding: 6 15 8 15;
+}
+
+.jfx-snackbar-toast {
+    -fx-padding: 10;
+    -fx-font-size: 12;
+    -fx-text-fill: WHITE;
+    -fx-background-color: -fx-base-background2;
+    -fx-background-radius: 12;
+}
+
+/* 修改 TableView 的滚动条样式 */
+.table-view .scroll-bar:horizontal {
+    -fx-background-color: transparent; /* 设置滚动条背景为透明 */
+}
+
+/*滚动条轨道（Track）*/
+.table-view .scroll-bar:horizontal .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+    -fx-border-radius: 2em;
+}
+
+.table-view .scroll-bar:horizontal .thumb {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0, 0, 0;
+    -fx-background-radius: 0em;
+}
+
+
+/* 修改 TableView 的滚动条样式 */
+.table-view .scroll-bar:vertical {
+    -fx-background-color: transparent; /* 设置滚动条背景为透明 */
+}
+
+/*滚动条轨道（Track）*/
+.table-view .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+    -fx-border-radius: 2em;
+}
+
+.table-view .scroll-bar .increment-arrow,
+.table-view .scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 2;
+}
+
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color: transparent;
+    -fx-background-insets: 3, 0, 0;
+    -fx-background-radius: 2em;
+}
+
+.table-view:hover .scroll-bar:vertical .thumb {
+    -fx-background-color: -fx-base-background3;
+}
+
+.table-view .scroll-bar:vertical .thumb:pressed,
+.table-view .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: -fx-base-background;
+}
+
+.jfx-check-box {
+    -jfx-unchecked-color: #5A5A5A;
+    -jfx-checked-color: -fx-base-background;
+}
+
+.jfx-check-box .box {
+    -fx-border-width: 1;
+}
+
+
+.settings-popup {
+    -fx-border-width: 0.5;
+    -fx-border-color: -fx-base-background4;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-background-color: -fx-base-background4;
+    -fx-control-inner-background: transparent;
+    -fx-control-inner-background-alt: transparent;
+}
+
+.settings-popup .list-cell:hover {
+    -fx-background-color: -fx-base-background3;
+    -fx-background-radius: 5;
+    -fx-text-fill: white;
+}
+
+.settings-popup .list-cell {
+    -fx-text-fill: -fx-font-color;
+    -fx-font-size: 13;
+}
+
+.new-stage-decorator {
+    -fx-decorator-color: transparent;
+    -fx-border-color: #d3d3d3;
+    -fx-border-width: 0.3;
+}
+
+.new-stage-decorator .resize-border {
+    -fx-border-width: 0;
+}
+
+.settings-list-view {
+    -fx-background-color: transparent;
+}
+
+.settings-list-view .list-cell {
+    -fx-background-color: transparent;
+    /*-fx-text-fill: -fx-font-color;*/
+    -fx-border-width: 0 0.3 0 0;
+    -fx-border-color: -fx-base-background;
+}
+
+.settings-list-view .list-cell:selected {
+    -fx-text-fill: -fx-base-background;
+}
+
+.settings-list-view .list-cell:hover {
+    -fx-cursor: hand;
+}
+
+.settings-style {
+    -fx-font-size: 14;
+}
+
+.about .button {
+    -fx-background-color: rgba(184, 183, 183, 0.16);
+}
+
+.about .button:hover {
+    -fx-background-color: rgba(94, 93, 93, 0.16);
+}

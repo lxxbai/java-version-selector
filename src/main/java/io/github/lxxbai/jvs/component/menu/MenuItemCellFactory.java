@@ -28,9 +28,7 @@ public class MenuItemCellFactory implements Callback<ListView<MenuFxmlView>, Lis
                     MenuItem menuItem = item.getMenuItem();
                     setGraphic(menuItem.menuIcon());
                     //添加提示
-                    JFXTooltip tooltip = new JFXTooltip(menuItem.getMenuName());
-                    tooltip.setShowDelay(Duration.millis(100));
-                    JFXTooltip.install(this, tooltip, Pos.BOTTOM_CENTER);
+                    JFXTooltip.install(this, new JFXTooltip(menuItem.getMenuName()), Pos.BOTTOM_CENTER);
                 }
             }
         };

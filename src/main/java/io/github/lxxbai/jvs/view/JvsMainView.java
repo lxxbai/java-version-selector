@@ -6,6 +6,6 @@ import io.github.lxxbai.jvs.spring.FXMLView;
 /**
  * @author lxxbai
  */
-@FXMLView(value = "/view/java_main_view.fxml")
+@FXMLView(value = "/view/java_main_view1.fxml")
 public class JvsMainView extends AbstractFxmlView {
 }

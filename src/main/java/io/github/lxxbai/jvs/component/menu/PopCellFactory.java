@@ -3,9 +3,9 @@ package io.github.lxxbai.jvs.component.menu;
 import cn.hutool.core.util.StrUtil;
 import com.jfoenix.controls.JFXListCell;
 import io.github.lxxbai.jvs.component.XxbSvg;
+import io.github.lxxbai.jvs.spring.AbstractFxmlView;
 import io.github.lxxbai.jvs.spring.FXMLView;
 import io.github.lxxbai.jvs.spring.GUIState;
-import io.github.lxxbai.jvs.view.settings.BaseSettingsView;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
@@ -13,12 +13,12 @@ import javafx.util.Callback;
 /**
  * @author lxxbai
  */
-public class SettingsCellFactory implements Callback<ListView<BaseSettingsView>, ListCell<BaseSettingsView>> {
+public class PopCellFactory implements Callback<ListView<AbstractFxmlView>, ListCell<AbstractFxmlView>> {
     @Override
-    public ListCell<BaseSettingsView> call(ListView<BaseSettingsView> menuPageListView) {
+    public ListCell<AbstractFxmlView> call(ListView<AbstractFxmlView> menuPageListView) {
         return new JFXListCell<>() {
             @Override
-            protected void updateItem(BaseSettingsView item, boolean empty) {
+            protected void updateItem(AbstractFxmlView item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) {
                     setText(null);

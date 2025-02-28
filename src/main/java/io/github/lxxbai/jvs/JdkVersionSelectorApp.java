@@ -44,11 +44,12 @@ public class JdkVersionSelectorApp extends AbstractJavaFxApplicationSupport {
         //初始化数据库 ,后面改成异步或者是springboot后置初始化
         AppInitUtil.initUserData();
         // 设置 Stage 的位置，使其居中
-        ScreenUtil.setScreenPosition(stage, 0.6, 0.6);
+        ScreenUtil.setScreenPosition(stage, 0.55, 0.6);
         // 创建系统托盘
         TrayUtil.createTrayIcon(stage);
         //设置全局样式
-        setGlobalStyle(ResourceUtil.toExternalForm("css/pink-theme.css"));
+        setGlobalStyle(ResourceUtil.toExternalForm("css/pink-theme.css"),
+                ResourceUtil.toExternalForm("css/base.css"));
         GUIState.getStage().setTitle("Jdk版本选择器");
     }
 }

@@ -3,26 +3,26 @@ package io.github.lxxbai.jvs.control;
 import com.jfoenix.controls.JFXDecorator;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSnackbar;
-import com.jfoenix.controls.JFXTooltip;
 import io.github.lxxbai.jvs.common.util.AppContextUtil;
+import io.github.lxxbai.jvs.component.SvgButton;
+import io.github.lxxbai.jvs.component.XxbNumBadge;
 import io.github.lxxbai.jvs.component.XxbPopup;
-import io.github.lxxbai.jvs.component.menu.MenuItemCellFactory;
 import io.github.lxxbai.jvs.component.menu.PopCellFactory;
 import io.github.lxxbai.jvs.spring.AbstractFxmlView;
 import io.github.lxxbai.jvs.spring.FXMLController;
 import io.github.lxxbai.jvs.spring.FxmlViewUtil;
 import io.github.lxxbai.jvs.spring.GUIState;
-import io.github.lxxbai.jvs.view.base.MenuFxmlView;
-import io.github.lxxbai.jvs.view.base.MenuView;
+import io.github.lxxbai.jvs.view.InstallView;
+import io.github.lxxbai.jvs.view.JdkVersionView;
+import io.github.lxxbai.jvs.view.UserJdkView;
+import jakarta.annotation.Resource;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -30,29 +30,32 @@ import java.util.ResourceBundle;
  * @author lxxbai
  */
 @FXMLController
-public class JvsMainControl implements Initializable {
+public class JvsMainControl1 implements Initializable {
 
     @FXML
-    private VBox settingsBox;
-
+    private SvgButton settingsButton;
     @FXML
-    private JFXListView<MenuFxmlView> menuViewList;
-
+    private SvgButton myButton;
+    @FXML
+    private SvgButton downloadingButton;
+    @FXML
+    private SvgButton versionButton;
     @FXML
     private BorderPane mainBorderPane;
 
-    @Autowired
-    private List<MenuFxmlView> menuFxmlViews;
+    @Resource
+    private JdkVersionView jdkVersionView;
+
+    @Resource
+    private InstallView installView;
+
+    @Resource
+    private UserJdkView userJdkView;
+
+    private XxbNumBadge xxbNumBadge;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //排序
-        menuFxmlViews.sort(Comparator.comparingInt(MenuView::order));
-        //设置菜单的工厂
-        menuViewList.setCellFactory(new MenuItemCellFactory());
-        //禁止焦点,不然好像有些问题
-        menuViewList.setFocusTraversable(false);
-        menuViewList.getItems().addAll(menuFxmlViews);
         BorderPane mainPane = new BorderPane();
         mainPane.setPadding(new Insets(0, 10, 0, 10));
         JFXSnackbar snackbar = new JFXSnackbar(mainPane);
@@ -62,16 +65,10 @@ public class JvsMainControl implements Initializable {
         mainBorderPane.setCenter(decoratorView);
         decoratorView.getStyleClass().add("main-center");
         //菜单切换
-        menuViewList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null) {
-                return;
-            }
-            mainPane.setCenter(newValue.getView());
-        });
-        //默认选中
-        menuViewList.getSelectionModel().select(menuFxmlViews.get(0));
-        //设置列表
-        JFXTooltip.install(settingsBox, new JFXTooltip("设置"));
+        versionButton.setOnMouseClicked(event -> mainPane.setCenter(jdkVersionView.getView()));
+        downloadingButton.setOnMouseClicked(event -> mainPane.setCenter(installView.getView()));
+        myButton.setOnMouseClicked(event -> mainPane.setCenter(userJdkView.getView()));
+//        xxbNumBadge = new XxbNumBadge(downloadingButton, 15D, -10D);
         //获取pop内容
         List<AbstractFxmlView> popList = FxmlViewUtil.getGroupView("pop");
         JFXListView<AbstractFxmlView> popupContent = new JFXListView<>();
@@ -81,6 +78,9 @@ public class JvsMainControl implements Initializable {
         popupContent.setCellFactory(new PopCellFactory());
         popupContent.setPrefWidth(70);
         XxbPopup popup = new XxbPopup(popupContent);
-        settingsBox.setOnMouseClicked(event -> popup.showTopRight(settingsBox, 0, 90));
+        settingsButton.setOnMouseClicked(event -> popup.showTopRight(settingsButton, 15, 90));
+    }
+
+    public void buttonOnclick(ActionEvent actionEvent) {
     }
 }

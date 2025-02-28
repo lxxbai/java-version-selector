@@ -6,6 +6,6 @@ import io.github.lxxbai.jvs.spring.FXMLView;
 /**
  * @author lxxbai
  */
-@FXMLView(value = "/view/about.fxml", title = "关于", order = 2, groupKey = "system")
-public class AboutView extends AbstractFxmlView {
+@FXMLView(value = "/view/red_packet.fxml", title = "红包", order = 1, groupKey = "pop")
+public class RedPacketView extends AbstractFxmlView {
 }

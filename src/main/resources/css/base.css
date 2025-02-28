@@ -1,0 +1,24 @@
+*:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent; /*边框颜色*/
+}
+
+.theme-ok-button {
+    -fx-pref-width: 60;
+    -fx-border-width: 0.3;
+    -fx-border-color: rgba(134, 134, 231, 0.68);
+    -fx-border-radius: 5;
+    -fx-background-color: rgba(134, 134, 231, 0.68);
+    -fx-background-radius: 5;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+}
+
+.theme-cancel-button {
+    -fx-pref-width: 60;
+    -fx-border-width: 0.3;
+    -fx-border-color: gray;
+    -fx-border-radius: 5;
+    -fx-text-fill: black;
+    -fx-font-size: 12px;
+}

@@ -2,15 +2,14 @@ package io.github.lxxbai.jvs.control;
 
 import com.jfoenix.controls.JFXListView;
 import io.github.lxxbai.jvs.component.cell.XxbListCellFactory;
+import io.github.lxxbai.jvs.spring.AbstractFxmlView;
 import io.github.lxxbai.jvs.spring.FXMLController;
-import io.github.lxxbai.jvs.view.settings.SystemSettingsView;
+import io.github.lxxbai.jvs.spring.FxmlViewUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.BorderPane;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -24,17 +23,16 @@ public class SettingsControl implements Initializable {
     private BorderPane center;
 
     @FXML
-    private JFXListView<SystemSettingsView> menuList;
+    private JFXListView<AbstractFxmlView> menuList;
 
-    @Autowired
-    private List<SystemSettingsView> settingsViews;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        settingsViews.sort(Comparator.comparingInt(x -> x.getAnnotation().order()));
-        menuList.getItems().addAll(settingsViews);
+        //获取pop内容
+        List<AbstractFxmlView> popList = FxmlViewUtil.getGroupView("system");
+        menuList.getItems().addAll(popList);
         menuList.setCellFactory(XxbListCellFactory.create(x -> {
-            SystemSettingsView item = x.getItem();
+            AbstractFxmlView item = x.getItem();
             x.setText(item.getAnnotation().title());
         }));
         menuList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
