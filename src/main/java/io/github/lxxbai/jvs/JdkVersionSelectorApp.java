@@ -48,7 +48,7 @@ public class JdkVersionSelectorApp extends AbstractJavaFxApplicationSupport {
         // 创建系统托盘
         TrayUtil.createTrayIcon(stage);
         //设置全局样式
-        setGlobalStyle(ResourceUtil.toExternalForm("css/pink-theme.css"),
+        setGlobalStyle(ResourceUtil.toExternalForm("css/black-theme.css"),
                 ResourceUtil.toExternalForm("css/base.css"));
         GUIState.getStage().setTitle("Jdk版本选择器");
     }

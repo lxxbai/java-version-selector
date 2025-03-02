@@ -1,6 +1,6 @@
 .root {
     /*主要背景颜色*/
-    -fx-base-background: derive(rgba(29, 23, 23, 0.86), -20%);
+    -fx-base-background: derive(rgb(69, 66, 66), -20%);
     /*主要背景颜色2*/
     -fx-base-background2: derive(rgba(29, 23, 23, 1.5), -20%);
     /*主要背景颜色3*/
@@ -27,17 +27,19 @@
 }
 
 .main-left .jfx-svg-glyph {
-    -fx-background-color: #d7e4f1;
+    /*-fx-background-color: #8a8888;*/
+    -fx-background-color: #9f9e9e;
+
 }
 
 .main-left .jfx-svg-glyph:hover {
-    -fx-background-color: rgba(85, 88, 90, 0.34);
+    -fx-background-color: white;
     -fx-cursor: hand;
 }
 
 /*选中后的颜色修改*/
 .main-left .list-cell:selected .jfx-svg-glyph {
-    -fx-background-color: white;
+    -fx-background-color: rgb(2, 191, 2);
 }
 
 
