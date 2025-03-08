@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import io.github.lxxbai.jvs.component.XxbToggleImage?>
+<?import javafx.geometry.HPos?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<GridPane vgap="20" hgap="20" fx:controller="io.github.lxxbai.jvs.control.SystemThemeControl" prefWidth="480"
+          prefHeight="300" alignment="CENTER"
+          xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:id="themeGridPane">
+    <fx:define>
+        <!-- 定义 ToggleGroup -->
+        <ToggleGroup fx:id="toggleGroup"/>
+    </fx:define>
+    <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
+        <XxbToggleImage toggleGroup="$toggleGroup" userData="blue">
+            <graphic>
+                <ImageView fitWidth="200" fitHeight="120">
+                    <Image url="@/pic/theme/blue.png"/>
+                </ImageView>
+            </graphic>
+        </XxbToggleImage>
+    </VBox>
+
+    <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
+        <XxbToggleImage toggleGroup="$toggleGroup" userData="dark">
+            <graphic>
+                <ImageView fitWidth="200" fitHeight="120">
+                    <Image url="@/pic/theme/dark.png"/>
+                </ImageView>
+            </graphic>
+        </XxbToggleImage>
+    </VBox>
+    <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1" alignment="CENTER">
+        <XxbToggleImage toggleGroup="$toggleGroup" userData="pink">
+            <graphic>
+                <ImageView fitWidth="200" fitHeight="120">
+                    <Image url="@/pic/theme/pink.png"/>
+                </ImageView>
+            </graphic>
+        </XxbToggleImage>
+    </VBox>
+    <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER">
+        <XxbToggleImage toggleGroup="$toggleGroup" userData="green">
+            <graphic>
+                <ImageView fitWidth="200" fitHeight="120">
+                    <Image url="@/pic/theme/green.png"/>
+                </ImageView>
+            </graphic>
+        </XxbToggleImage>
+    </VBox>
+    <GridPane.halignment>
+        <HPos fx:constant="CENTER"/>
+    </GridPane.halignment>
+</GridPane>

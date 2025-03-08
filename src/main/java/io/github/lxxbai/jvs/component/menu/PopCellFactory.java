@@ -39,6 +39,7 @@ public class PopCellFactory implements Callback<ListView<AbstractFxmlView>, List
                         GUIState.showInNewStage(item.getView(), title);
                         getListView().getSelectionModel().clearSelection();
                     });
+                    setPrefHeight(35);
                 }
             }
         };

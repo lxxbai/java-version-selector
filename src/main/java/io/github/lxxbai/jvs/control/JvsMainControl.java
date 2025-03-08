@@ -14,6 +14,7 @@ import io.github.lxxbai.jvs.spring.FxmlViewUtil;
 import io.github.lxxbai.jvs.spring.GUIState;
 import io.github.lxxbai.jvs.view.base.MenuFxmlView;
 import io.github.lxxbai.jvs.view.base.MenuView;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -80,6 +81,7 @@ public class JvsMainControl implements Initializable {
         popupContent.setFocusTraversable(false);
         popupContent.setCellFactory(new PopCellFactory());
         popupContent.setPrefWidth(70);
+        popupContent.prefHeightProperty().bind(Bindings.size(popupContent.getItems()).multiply(36));
         XxbPopup popup = new XxbPopup(popupContent);
         settingsBox.setOnMouseClicked(event -> popup.showTopRight(settingsBox, 0, 90));
     }

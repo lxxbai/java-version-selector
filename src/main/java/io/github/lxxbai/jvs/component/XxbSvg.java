@@ -12,4 +12,9 @@ public class XxbSvg extends SVGGlyph {
     public XxbSvg(@NamedArg("path") String path) {
         super(SVGGlyphUtil.getSvgContent(path));
     }
+
+    public XxbSvg(@NamedArg("path") String path, double size) {
+        super(SVGGlyphUtil.getSvgContent(path));
+        setSize(size);
+    }
 }

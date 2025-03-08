@@ -13,8 +13,6 @@ import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.paint.Color;
 
 /**
  * svg构建的button

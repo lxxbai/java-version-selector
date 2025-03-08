@@ -1,5 +1,6 @@
 package io.github.lxxbai.jvs.view.model;
 
+import cn.hutool.core.util.StrUtil;
 import io.github.lxxbai.jvs.common.Constants;
 import io.github.lxxbai.jvs.common.util.FileUtil;
 import io.github.lxxbai.jvs.common.util.ObjectMapperUtil;
@@ -44,6 +45,17 @@ public class SettingsViewModel {
         return modelProperty;
     }
 
+    public void saveTheme(String theme) {
+        if (StrUtil.isBlank(theme)) {
+            return;
+        }
+        settingsService.saveConfig("THEME", theme);
+    }
+
+    public String getTheme() {
+        String theme = settingsService.queryStrConfig("THEME");
+        return StrUtil.isBlank(theme) ? "blue" : theme;
+    }
 
     /**
      * 保存配置
@@ -52,10 +64,4 @@ public class SettingsViewModel {
         DownloadConfig model = modelProperty.getModel();
         settingsService.saveConfig(Constants.DOWNLOAD_CONFIG_KEY, ObjectMapperUtil.toJsonString(model));
     }
-
-
-    public boolean configured() {
-        return settingsService.configured();
-    }
-
 }

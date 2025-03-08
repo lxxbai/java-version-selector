@@ -6,6 +6,6 @@ import io.github.lxxbai.jvs.spring.FXMLView;
 /**
  * @author lxxbai
  */
-@FXMLView(value = "/view/System_theme.fxml", title = "测试", order = 2, groupKey = "pop")
-public class SystemTheme extends AbstractFxmlView {
+@FXMLView(value = "/view/system_theme.fxml", title = "主题", order = 2, groupKey = "pop")
+public class SystemThemeView extends AbstractFxmlView {
 }

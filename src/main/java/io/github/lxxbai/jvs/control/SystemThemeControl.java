@@ -6,9 +6,11 @@ import io.github.lxxbai.jvs.view.model.SettingsViewModel;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.GridPane;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -18,36 +20,39 @@ import java.util.ResourceBundle;
 public class SystemThemeControl implements Initializable {
 
     @FXML
-    private StackPane pinkTheme;
+    private GridPane themeGridPane;
     @FXML
-    private StackPane blueTheme;
-    @FXML
-    private StackPane blackTheme;
+    private ToggleGroup toggleGroup;
 
     @Resource
     private SettingsViewModel settingsViewModel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        pinkTheme.setOnMouseClicked(event -> {
-            GUIState.getScene().getStylesheets().remove(0);
-            GUIState.getScene().getStylesheets().add(0, "css/pink-theme.css");
-            pinkTheme.getScene().getStylesheets().remove(0);
-            pinkTheme.getScene().getStylesheets().add(0, "css/pink-theme.css");
+        //当前主题
+        String currentTheme = settingsViewModel.getTheme();
+        //选中
+        toggleGroup.getToggles().forEach(toggle -> {
+            if (toggle.getUserData().equals(currentTheme)) {
+                toggle.setSelected(true);
+            }
         });
-
-        blueTheme.setOnMouseClicked(event -> {
+        toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                return;
+            }
+            Object userData = newValue.getUserData();
+            if (Objects.isNull(userData)) {
+                return;
+            }
+            //转成字符串
+            String theme = (String) userData;
+            String cssPath = "css/%s-theme.css".formatted(theme);
             GUIState.getScene().getStylesheets().remove(0);
-            GUIState.getScene().getStylesheets().add(0, "css/blue-theme.css");
-            blueTheme.getScene().getStylesheets().remove(0);
-            blueTheme.getScene().getStylesheets().add(0, "css/blue-theme.css");
-        });
-
-        blackTheme.setOnMouseClicked(event -> {
-            GUIState.getScene().getStylesheets().remove(0);
-            GUIState.getScene().getStylesheets().add(0, "css/black-theme.css");
-            blackTheme.getScene().getStylesheets().remove(0);
-            blackTheme.getScene().getStylesheets().add(0, "css/black-theme.css");
+            GUIState.getScene().getStylesheets().add(0, cssPath);
+            themeGridPane.getScene().getStylesheets().remove(0);
+            themeGridPane.getScene().getStylesheets().add(0, cssPath);
+            settingsViewModel.saveTheme(theme);
         });
     }
 }

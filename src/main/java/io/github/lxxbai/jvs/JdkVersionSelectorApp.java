@@ -1,11 +1,13 @@
 package io.github.lxxbai.jvs;
 
 import cn.hutool.extra.spring.EnableSpringUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import io.github.lxxbai.jvs.common.util.*;
 import io.github.lxxbai.jvs.config.GlobalExceptionHandler;
 import io.github.lxxbai.jvs.spring.AbstractJavaFxApplicationSupport;
 import io.github.lxxbai.jvs.spring.GUIState;
 import io.github.lxxbai.jvs.view.JvsMainView;
+import io.github.lxxbai.jvs.view.model.SettingsViewModel;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
@@ -47,8 +49,10 @@ public class JdkVersionSelectorApp extends AbstractJavaFxApplicationSupport {
         ScreenUtil.setScreenPosition(stage, 0.55, 0.6);
         // 创建系统托盘
         TrayUtil.createTrayIcon(stage);
+        String theme = SpringUtil.getBean(SettingsViewModel.class).getTheme();
+        String cssPath = "css/%s-theme.css".formatted(theme);
         //设置全局样式
-        setGlobalStyle(ResourceUtil.toExternalForm("css/black-theme.css"),
+        setGlobalStyle(ResourceUtil.toExternalForm(cssPath),
                 ResourceUtil.toExternalForm("css/base.css"));
         GUIState.getStage().setTitle("Jdk版本选择器");
     }

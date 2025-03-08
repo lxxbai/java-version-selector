@@ -34,4 +34,17 @@ public class UserConfigInfoManager extends ServiceImpl<UserConfigInfoMapper, Use
         }
         return ObjectMapperUtil.toObj(oneConfig.getDicValue(), clazz);
     }
+
+    /**
+     * 查询配置信息
+     *
+     * @param dictKey 配置键
+     * @return 配置信息
+     */
+    public String queryStrConfig(String dictKey) {
+        UserConfigInfoDO oneConfig = lambdaQuery()
+                .eq(UserConfigInfoDO::getDicKey, dictKey)
+                .one();
+        return oneConfig.getDicValue();
+    }
 }

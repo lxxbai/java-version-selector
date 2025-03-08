@@ -1,0 +1,19 @@
+.root {
+    /*主要背景颜色*/
+    -fx-base-background: derive(rgb(69, 66, 66), -20%);
+    /*主要背景颜色2*/
+    -fx-base-background2: derive(rgba(29, 23, 23, 1.5), -20%);
+    /*主要背景颜色3*/
+    -fx-base-background3: derive(rgba(29, 23, 23, 0.5), -20%);
+    /*主要背景颜色3*/
+    -fx-base-background4: derive(rgba(29, 23, 23, 0.2), -20%);
+    /*tableview的选中背景颜色*/
+    -fx-table-view-focused: derive(rgba(250, 224, 250, 0.16), -20%);
+    /*字体颜色*/
+    -fx-font-color: rgba(0, 0, 0, 0.75);
+    /* 鼠标悬停时的背景颜色 */
+    -fx-button-hover: rgba(243, 191, 243, 0.16);
+    -fx-left-svg-background: #9f9e9e;
+    -fx-left-svg-hover-background: white;
+    -fx-left-svg-selected-background: rgb(2, 191, 2);
+}
