@@ -402,6 +402,7 @@
     -fx-background-color: -fx-base-background3;
     -fx-background-radius: 5;
     -fx-text-fill: white;
+    -fx-cursor: hand;
 }
 
 .settings-popup .list-cell {

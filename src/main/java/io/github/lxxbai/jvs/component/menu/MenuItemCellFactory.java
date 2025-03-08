@@ -2,12 +2,10 @@ package io.github.lxxbai.jvs.component.menu;
 
 import com.jfoenix.controls.JFXTooltip;
 import io.github.lxxbai.jvs.view.base.MenuFxmlView;
-import io.github.lxxbai.jvs.view.base.MenuView;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
-import javafx.util.Duration;
 
 /**
  * @author lxxbai
