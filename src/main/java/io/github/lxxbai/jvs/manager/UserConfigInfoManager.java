@@ -45,6 +45,6 @@ public class UserConfigInfoManager extends ServiceImpl<UserConfigInfoMapper, Use
         UserConfigInfoDO oneConfig = lambdaQuery()
                 .eq(UserConfigInfoDO::getDicKey, dictKey)
                 .one();
-        return oneConfig.getDicValue();
+        return Objects.isNull(oneConfig) ? null : oneConfig.getDicValue();
     }
 }
