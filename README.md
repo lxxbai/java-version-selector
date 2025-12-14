@@ -1,1 +1,1 @@
-javafx的java版本选择器,目前支持下windows系统
+javafx的java版本选择器,目前仅支持windows系统
